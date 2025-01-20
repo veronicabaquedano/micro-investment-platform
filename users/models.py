@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class MyUser(AbstractBaseUser):
+class User(AbstractBaseUser):
         # Unique identifier for users
     email = models.EmailField(
         verbose_name="email address",
