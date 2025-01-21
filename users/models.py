@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
-
+#creates users
 class UserManager(BaseUserManager):
     # creates and saves regular users.
     def create_user(self, email, password=None):
@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
+#save user to database/ represents user structure in db
 class User(AbstractBaseUser):
         # Unique identifier for users
     email = models.EmailField(
