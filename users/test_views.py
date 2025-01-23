@@ -8,11 +8,11 @@ class UserAuthTests(APITestCase):
     def setUp(self):
         # Create a test user for login tests
         self.test_user = User.objects.create_user(
-            email="testuser@example.com",
+            email="testinguser@example.com",
             password="password123"
         )
-        self.register_url = "/api/register/"
-        self.login_url = "/api/login/"
+        self.register_url = "/users/register/"
+        self.login_url = "/users/login/"
 
     def test_registration_success(self):
         # Test successful user registration
@@ -23,7 +23,7 @@ class UserAuthTests(APITestCase):
         response = self.client.post(self.register_url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("message", response.data)
-        self.assertEqual(response.data["message"], "User registered successfully")
+        self.assertEqual(response.data["message"], "User created successfully.")
 
     def test_registration_missing_fields(self):
         # Test registration with missing fields
@@ -37,7 +37,7 @@ class UserAuthTests(APITestCase):
     def test_login_success(self):
         # Test successful login
         data = {
-            "email": "testuser@example.com",
+            "email": "testinguser@example.com",
             "password": "password123"
         }
         response = self.client.post(self.login_url, data)
@@ -48,7 +48,7 @@ class UserAuthTests(APITestCase):
     def test_login_invalid_credentials(self):
         # Test login with invalid credentials
         data = {
-            "email": "testuser@example.com",
+            "email": "testinguser@example.com",
             "password": "wrongpassword"
         }
         response = self.client.post(self.login_url, data)

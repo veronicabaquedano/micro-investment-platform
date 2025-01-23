@@ -29,9 +29,9 @@ class LoginView(APIView):
         #extract the user's email and password from the incoming HTTP request data. 
         email = request.data.get('email')
         password = request.data.get('password')
-        user = authenticate(username=email, password=password)  # checks the provided email and password against the database.
+        user = authenticate(request, email=email, password=password)  # checks the provided email and password against the database.
 
-        if user:
+        if user is not None:
             return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 

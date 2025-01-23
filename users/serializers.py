@@ -18,6 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 # handles creation of new user
 # validated_data, contains the validated email and password from the API request.
 def create(self, validated_data):
-    # Uses the create_user method from the UserManager to create and save the user
-    # and makes sure password is hashed
-    return User.objects.create_user(**validated_data)
+    user = User(email=validated_data["email"])
+    user.set_password(validated_data["password"])  # Hash password
+    user.save()  # Save user
+    return user
