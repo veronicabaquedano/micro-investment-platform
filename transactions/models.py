@@ -3,7 +3,7 @@ from django.conf import settings  # refer to user model even if it changes
 
 
 # represents structure of transaction table in db
-class Transactions(models.Model):
+class Transaction(models.Model):
     # establish connection between transaction and user tables.
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="transactions"
@@ -16,3 +16,6 @@ class Transactions(models.Model):
     class Meta:
         #order by timestamp descending
         ordering = ["-timestamp"]
+    #how model is represented as a string
+    def __str__(self):
+        return f"Transaction {self.id} - {self.user.email} -${self.amount}"
