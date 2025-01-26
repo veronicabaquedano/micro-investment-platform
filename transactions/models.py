@@ -8,14 +8,16 @@ class Transaction(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="transactions"
     )
-    #store monetary value of transaction
+    # store monetary value of transaction
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    #when transaction is created
+    # when transaction is created
     timestamp = models.DateTimeField(auto_now_add=True)
-    #metadata for model
+
+    # metadata for model
     class Meta:
-        #order by timestamp descending
+        # order by timestamp descending
         ordering = ["-timestamp"]
-    #how model is represented as a string
+
+    # how model is represented as a string
     def __str__(self):
         return f"Transaction {self.id} - {self.user.email} -${self.amount}"
