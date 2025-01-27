@@ -19,5 +19,8 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
+    path('users/', include('users.urls')), # User-related endpoints
+    path('transactions/', include('transactions.urls')),  # Transaction-related endpoints
 ]
+
+    
