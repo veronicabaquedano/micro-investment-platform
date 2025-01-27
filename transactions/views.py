@@ -6,7 +6,7 @@ from .models import Transaction
 from .serializers import TransactionSerializer
 
 
-class TransactionListCreateView(APIView):
+class TransactionView(APIView):
     permission_classes = [IsAuthenticated]  # User must be logged in
 
     def get(self, request):
