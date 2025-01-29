@@ -21,5 +21,11 @@ def update_savings(sender, instance, created, **kwargs):
         round_up = calculate_round_up(instance.amount)
         # Update the savings entry for the user
         savings = Savings.objects.get(user=instance.user)
-        savings.total_amount += round_up
+        print(f"Initial savings for user {savings.user.email}: {savings.total_savings}")  # Debug
+        print(f"Round-up amount: {round_up}")  # Debug
+        
+        savings.total_savings += round_up
+
         savings.save()
+        
+        print(f"Updated savings for user {savings.user.email}: {savings.total_savings}")  # Debug
