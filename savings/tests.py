@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from savings.models import Savings
 from transactions.models import Transaction
 import decimal
+from django.contrib.auth import get_user #debug
 
 class SavingsTests(APITestCase):
     def setUp(self):
@@ -79,9 +80,16 @@ class SavingsTests(APITestCase):
     def test_unauthenticated_user_cannot_access_savings(self):
         # Ensure no user is logged in
         self.client.logout()
-        # Send a GET request without authenticating
-        response = self.client.get(self.savings_url)
+        user = get_user(self.client)
+        print(f"User after logout: {user}")
+        print(f"Session after logout: {self.client.session.items()}")
 
+        # Send a GET request without authenticating
+        session = self.client.session
+        print(f"Session data: {session.items()}")
+        response = self.client.get(self.savings_url)
+        print(f"Response status code: {response.status_code}")
         # Assert that the response status code is 401 (Unauthorized)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+ 

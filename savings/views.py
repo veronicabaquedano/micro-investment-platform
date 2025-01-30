@@ -11,6 +11,7 @@ class SavingsDetailView(generics.RetrieveAPIView):
     def get_object(self):
         #retrieves the Savings object directly tied to the authenticated user.
         print(f"Request user: {self.request.user}")  # Debugging line
+        print(f"User is authenticated: {self.request.user.is_authenticated}")  # Debug
         try:
             savings = Savings.objects.get(user=self.request.user)
             print(f"Retrieved savings for user {self.request.user.email}: {savings.total_savings}")  # Debug

@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Savings
 
-# Register your models here.
+@admin.register(Savings)
+class SavingsAdmin(admin.ModelAdmin):
+    list_display = ('user', 'total_savings', 'last_updated')
