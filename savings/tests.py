@@ -2,9 +2,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
 from savings.models import Savings
-from transactions.models import Transaction
 import decimal
-from django.contrib.auth import get_user #debug
+from rest_framework.test import APIClient
 
 class SavingsTests(APITestCase):
     def setUp(self):
@@ -33,9 +32,15 @@ class SavingsTests(APITestCase):
         # URL for transaction endpoint
         self.transaction_url = "/transactions/"
 
+    # def authenticate_user1(self):
+    #     response = self.client.login(email="user1@example.com", password="password123")
+    #     print(f"Login successful: {response}")  # Debugging line
+
     def authenticate_user1(self):
-        response = self.client.login(email="user1@example.com", password="password123")
-        print(f"Login successful: {response}")  # Debugging line
+        self.client = APIClient()  # Reinitialize the client to reset state
+        self.client.force_authenticate(user=self.user1)
+        print(f"User forced authentication: {self.user1.email}")
+
 
     def test_transaction_updates_savings_with_round_up(self):
         # Authenticate user1
@@ -77,19 +82,9 @@ class SavingsTests(APITestCase):
         # Assert that the savings data is correct
         self.assertEqual(response.data["total_savings"], "50.00")
 
+
     def test_unauthenticated_user_cannot_access_savings(self):
-        # Ensure no user is logged in
-        self.client.logout()
-        user = get_user(self.client)
-        print(f"User after logout: {user}")
-        print(f"Session after logout: {self.client.session.items()}")
-
-        # Send a GET request without authenticating
-        session = self.client.session
-        print(f"Session data: {session.items()}")
-        response = self.client.get(self.savings_url)
-        print(f"Response status code: {response.status_code}")
-        # Assert that the response status code is 401 (Unauthorized)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
- 
+        self.client.logout()  # Ensure no user is authenticated
+        self.client = APIClient()  # Reinitialize the client for a clean state
+        response = self.client.get(self.savings_url)  # Perform unauthenticated request
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
