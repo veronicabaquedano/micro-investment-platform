@@ -25,7 +25,7 @@
 #         # Print debug statements
 #         print(f"User1 savings: {self.savings1.total_savings}")  # Debug
 #         print(f"User2 savings: {self.savings2.total_savings}")  # Debug
-    
+
 #         # URL for savings API endpoint
 #         self.savings_url = "/savings/"
 
@@ -59,7 +59,7 @@
 
 #         # Calculate the expected round-up (round-up function logic)
 #         expected_round_up = decimal.Decimal('6.00').quantize(decimal.Decimal('1.00')).to_integral_value(rounding=decimal.ROUND_UP) - decimal.Decimal('5.75')
-        
+
 #         # Get the updated savings for the user
 #         updated_savings = Savings.objects.get(user=self.user1)
 
@@ -72,7 +72,7 @@
 
 #         # Send a GET request to retrieve savings
 #         response = self.client.get(self.savings_url)
-        
+
 #         # Print the response data
 #         print(f"Response data: {response.data}")  # Debug
 
@@ -90,12 +90,6 @@
 #         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
-
-
-
-
-
-
 #################
 # tests.py
 from rest_framework.test import APITestCase
@@ -106,56 +100,64 @@ from transactions.models import Transaction
 
 User = get_user_model()
 
+
 class TransactionTests(APITestCase):
-    
     def setUp(self):
         # Create users
-        self.user1 = User.objects.create_user(email="user1@example.com", password="password")
-        
+        self.user1 = User.objects.create_user(
+            email="user1@example.com", password="password"
+        )
+
         # Create Savings entry with initial amount of 50.00
         self.savings1, created = Savings.objects.get_or_create(user=self.user1)
         if created:
             self.savings1.total_savings = 50.00
             self.savings1.save()
-        
+
         # Refresh the savings instance to ensure it has the correct value
         self.savings1.refresh_from_db()
-        
+
         # Log in the user using the API client
         self.client.login(email="user1@example.com", password="password")
-    
+
     def test_round_up_on_transaction(self):
         # Create a transaction for the user
         transaction_amount = 5.75  # Example of a transaction
-        transaction = Transaction.objects.create(user=self.user1, amount=transaction_amount)
-        
+        transaction = Transaction.objects.create(
+            user=self.user1, amount=transaction_amount
+        )
+
         # Refresh savings after round-up
         self.savings1.refresh_from_db()
-        
+
         # Round-up should be $0.25 (round to $6.00)
         expected_savings = 50.00 + 0.25
         self.assertEqual(self.savings1.total_savings, expected_savings)
-    
+
     def test_multiple_transactions(self):
         # Create multiple transactions
-        transaction1 = Transaction.objects.create(user=self.user1, amount=5.75)  # Round-up $0.25
-        transaction2 = Transaction.objects.create(user=self.user1, amount=7.50)  # Round-up $0.50
-        
+        transaction1 = Transaction.objects.create(
+            user=self.user1, amount=5.75
+        )  # Round-up $0.25
+        transaction2 = Transaction.objects.create(
+            user=self.user1, amount=7.50
+        )  # Round-up $0.50
+
         # Refresh savings after multiple transactions
         self.savings1.refresh_from_db()
-        
+
         # Total savings should be updated by both round-ups
         expected_savings = 50.00 + 0.25 + 0.50  # $50.75
         self.assertEqual(self.savings1.total_savings, expected_savings)
-    
+
     def test_edge_case_transaction(self):
         # Transaction with no round-up (e.g., exact dollar amount)
-        transaction = Transaction.objects.create(user=self.user1, amount=10.00)  # No round-up
-        
+        transaction = Transaction.objects.create(
+            user=self.user1, amount=10.00
+        )  # No round-up
+
         # Refresh savings after transaction
         self.savings1.refresh_from_db()
-        
+
         # Savings should not change
         self.assertEqual(self.savings1.total_savings, 50.00)
-
-
