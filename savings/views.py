@@ -4,6 +4,7 @@ from rest_framework.exceptions import NotFound
 from .models import Savings
 from .serializers import SavingsSerializer
 
+
 class SavingsDetailView(generics.RetrieveAPIView):
     serializer_class = SavingsSerializer
     permission_classes = [IsAuthenticated]
@@ -13,4 +14,6 @@ class SavingsDetailView(generics.RetrieveAPIView):
             # Retrieve the Savings object associated with the user
             return Savings.objects.get(user=self.request.user)
         except Savings.DoesNotExist:
-            raise NotFound("Savings not found for this user.")  # Raise 404 error if not found
+            raise NotFound(
+                "Savings not found for this user."
+            )  # Raise 404 error if not found
