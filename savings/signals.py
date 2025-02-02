@@ -20,6 +20,6 @@ def update_savings(sender, instance, created, **kwargs):
         # Use the utility function to calculate the round-up amount
         round_up = calculate_round_up(instance.amount)
         # Update the savings entry for the user
-        savings = Savings.objects.get(user=instance.user)   
+        savings = Savings.objects.get(user=instance.user)
         savings.total_savings += round_up
         savings.save()
