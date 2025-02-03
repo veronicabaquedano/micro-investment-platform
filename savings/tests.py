@@ -110,7 +110,7 @@ class SavingsTests(APITestCase):
         self.savings1.total_savings = decimal.Decimal("50.00")
         self.savings1.save()
 
-        # 🔥 Use API login instead of self.client.login()
+        # Use API login instead of self.client.login()
         response = self.client.post(
             "/users/login/",  # Update this if your login endpoint is different
             {"email": "user1@example.com", "password": "password"},
@@ -119,7 +119,7 @@ class SavingsTests(APITestCase):
         
         self.assertEqual(response.status_code, 200, f"Login failed: {response.data}")
 
-        # 🛠 Ensure the client is authenticated using Django's session
+        # Ensure the client is authenticated using Django's session
         self.client.force_login(self.user1)  # Force login using session-based auth
 
 
