@@ -98,63 +98,71 @@ from transactions.models import Transaction
 import decimal
 
 
-class TransactionTests(APITestCase):
+class SavingsTests(APITestCase):
     def setUp(self):
         User = get_user_model()
-        # Create users
         self.user1 = User.objects.create_user(
             email="user1@example.com", password="password"
         )
 
-        # Get or create Savings objects for each user and update their total_savings
+        # Create a savings account for the user
         self.savings1, _ = Savings.objects.get_or_create(user=self.user1)
         self.savings1.total_savings = decimal.Decimal("50.00")
         self.savings1.save()
 
-        # Refresh the savings instance to ensure it has the correct value
-        self.savings1.refresh_from_db()
-
-        # Log in the user using the API client
-        self.client.login(email="user1@example.com", password="password")
-        
-    def test_round_up_on_transaction(self):
-        # Create a transaction for the user
-        transaction_amount = 5.75  # Example of a transaction
-        Transaction.objects.create(
-            user=self.user1, amount=transaction_amount
+        # 🔥 Use API login instead of self.client.login()
+        response = self.client.post(
+            "/users/login/",  # Update this if your login endpoint is different
+            {"email": "user1@example.com", "password": "password"},
+            format="json"
         )
+        
+        self.assertEqual(response.status_code, 200, f"Login failed: {response.data}")
 
-        # Refresh savings after round-up
+        # 🛠 Ensure the client is authenticated using Django's session
+        self.client.force_login(self.user1)  # Force login using session-based auth
+
+
+    def test_round_up_on_transaction(self):
+        # Send API request to create a transaction
+        response = self.client.post(
+            "/transactions/",
+            {"amount": 5.75},
+            format="json"
+        )
+        self.assertEqual(response.status_code, 201)  # Ensure transaction was created
+
+        # Refresh savings after transaction processing
         self.savings1.refresh_from_db()
 
-        # Round-up should be $0.25 (round to $6.00)
-        expected_savings = 50.00 + 0.25
+        # Round-up should be $0.25 (to make it $6.00)
+        expected_savings = decimal.Decimal("50.00") + decimal.Decimal("0.25")
         self.assertEqual(self.savings1.total_savings, expected_savings)
 
     def test_multiple_transactions(self):
-        # Create multiple transactions
-        Transaction.objects.create(
-            user=self.user1, amount=5.75
-        )  # Round-up $0.25
-        Transaction.objects.create(
-            user=self.user1, amount=7.50
-        )  # Round-up $0.50
+        # Create multiple transactions via API
+        self.client.post("/transactions/", {"amount": 5.75}, format="json")  # +$0.25
+        self.client.post("/transactions/", {"amount": 7.50}, format="json")  # +$0.50
 
-        # Refresh savings after multiple transactions
+        # Refresh savings after transactions
         self.savings1.refresh_from_db()
 
-        # Total savings should be updated by both round-ups
-        expected_savings = 50.00 + 0.25 + 0.50  # $50.75
+        # Total savings should be updated correctly
+        expected_savings = decimal.Decimal("50.00") + decimal.Decimal("0.25") + decimal.Decimal("0.50")
         self.assertEqual(self.savings1.total_savings, expected_savings)
 
     def test_edge_case_transaction(self):
-        # Transaction with no round-up (e.g., exact dollar amount)
-        Transaction.objects.create(
-            user=self.user1, amount=10.00
-        )  # No round-up
+        # Create a transaction with an exact dollar amount (no round-up)
+        response = self.client.post(
+            "/transactions/",
+            {"amount": 10.00},
+            format="json"
+        )
+        self.assertEqual(response.status_code, 201)
 
-        # Refresh savings after transaction
+        # Refresh savings
         self.savings1.refresh_from_db()
 
-        # Savings should not change
-        self.assertEqual(self.savings1.total_savings, 50.00)
+        # Savings should remain unchanged
+        self.assertEqual(self.savings1.total_savings, decimal.Decimal("50.00"))
+
