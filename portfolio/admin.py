@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Investment  # Import your model
 
-# Register your models here.
+# Register the Investment porfolio model
+admin.site.register(Investment)

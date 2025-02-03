@@ -22,5 +22,6 @@ urlpatterns = [
     path('users/', include('users.urls')), # User-related endpoints
     path('transactions/', include('transactions.urls')),  # Transaction-related endpoints
     path('savings/', include('savings.urls')),  # Include the Savings app's URLs 
+    path('portfolio/', include('portfolio.urls')),  # Portfolio allocation endpoint
 ]
 
