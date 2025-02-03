@@ -91,39 +91,36 @@
 
 
 #################
-# tests.py
 from rest_framework.test import APITestCase
-from rest_framework import status
 from django.contrib.auth import get_user_model
 from .models import Savings
 from transactions.models import Transaction
-
-User = get_user_model()
+import decimal
 
 
 class TransactionTests(APITestCase):
     def setUp(self):
+        User = get_user_model()
         # Create users
         self.user1 = User.objects.create_user(
             email="user1@example.com", password="password"
         )
 
-        # Create Savings entry with initial amount of 50.00
-        self.savings1, created = Savings.objects.get_or_create(user=self.user1)
-        if created:
-            self.savings1.total_savings = 50.00
-            self.savings1.save()
+        # Get or create Savings objects for each user and update their total_savings
+        self.savings1, _ = Savings.objects.get_or_create(user=self.user1)
+        self.savings1.total_savings = decimal.Decimal("50.00")
+        self.savings1.save()
 
         # Refresh the savings instance to ensure it has the correct value
         self.savings1.refresh_from_db()
 
         # Log in the user using the API client
         self.client.login(email="user1@example.com", password="password")
-
+        
     def test_round_up_on_transaction(self):
         # Create a transaction for the user
         transaction_amount = 5.75  # Example of a transaction
-        transaction = Transaction.objects.create(
+        Transaction.objects.create(
             user=self.user1, amount=transaction_amount
         )
 
@@ -136,10 +133,10 @@ class TransactionTests(APITestCase):
 
     def test_multiple_transactions(self):
         # Create multiple transactions
-        transaction1 = Transaction.objects.create(
+        Transaction.objects.create(
             user=self.user1, amount=5.75
         )  # Round-up $0.25
-        transaction2 = Transaction.objects.create(
+        Transaction.objects.create(
             user=self.user1, amount=7.50
         )  # Round-up $0.50
 
@@ -152,7 +149,7 @@ class TransactionTests(APITestCase):
 
     def test_edge_case_transaction(self):
         # Transaction with no round-up (e.g., exact dollar amount)
-        transaction = Transaction.objects.create(
+        Transaction.objects.create(
             user=self.user1, amount=10.00
         )  # No round-up
 
