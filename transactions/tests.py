@@ -27,3 +27,24 @@ class TransactionTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]["amount"], "200.00")
+        
+    def test_transaction_negative_amount(self):
+        response = self.client.post("/transactions/", {"amount": "-50.00"})
+    
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("amount", response.data)  # Amount should have an error
+        
+    def test_user_cannot_access_other_users_transactions(self):
+        # Create a second user
+        user2 = User.objects.create_user(email="user2@example.com", password="password456")
+    
+        # Log in as user2
+        self.client.force_authenticate(user=user2)
+    
+        # Try to retrieve transactions (should be empty)
+        response = self.client.get("/transactions/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)  # No transactions should be visible
+
+
+        
