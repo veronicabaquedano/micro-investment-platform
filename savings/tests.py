@@ -22,10 +22,6 @@ class SavingsTests(APITestCase):
         self.savings2.total_savings = decimal.Decimal("100.00")
         self.savings2.save()
 
-       #Print debug statements
-        print(f"User1 savings: {self.savings1.total_savings}")  #Debug
-        print(f"User2 savings: {self.savings2.total_savings}")  #Debug
-
        #URL for savings API endpoint
         self.savings_url = "/savings/"
 
@@ -34,7 +30,6 @@ class SavingsTests(APITestCase):
 
     def authenticate_user1(self):
         self.client.force_authenticate(user=self.user1)  # Ensure requests are authenticated
-        print(f"User authenticated: {self.user1.email}")  # Debugging
 
     def test_transaction_updates_savings_with_round_up(self):
         self.authenticate_user1()  # Ensure authentication
@@ -46,9 +41,6 @@ class SavingsTests(APITestCase):
         }
 
         response = self.client.post(self.transaction_url, transaction_data, format="json")
-
-        # Debugging
-        print(f"Transaction Response: {response.status_code} - {response.data}")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -67,9 +59,6 @@ class SavingsTests(APITestCase):
 
        #Send a GET request to retrieve savings
         response = self.client.get(self.savings_url)
-
-       #Print the response data
-        print(f"Response data: {response.data}")  #Debug
 
        #Assert that the response status code is 200 (OK)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -90,9 +79,6 @@ class SavingsTests(APITestCase):
         transaction_data = {"amount": "60.00"}  # User only has $50 in savings
 
         response = self.client.post(self.transaction_url, transaction_data, format="json")
-
-        # Debugging
-        print(f"Transaction Response: {response.status_code} - {response.data}")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 

@@ -1,6 +1,7 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, serializers
 from .models import Investment
 from .serializers import InvestmentSerializer
+from savings.models import Savings
 
 class InvestmentListCreateView(generics.ListCreateAPIView):
     serializer_class = InvestmentSerializer
@@ -11,6 +12,23 @@ class InvestmentListCreateView(generics.ListCreateAPIView):
         return Investment.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        # Ensure the investment is linked to the authenticated user    #post
-        #Allows users to allocate funds from savings to a portfolio.
-        serializer.save(user=self.request.user)
+        user = self.request.user
+        allocated_amount = serializer.validated_data["allocated_amount"]
+        portfolio_name = serializer.validated_data["portfolio_name"]
+        # Get user's savings
+        savings = Savings.objects.get(user=user)
+        
+        # Check if user has enough savings
+        if allocated_amount > savings.total_savings:
+            raise serializers.ValidationError({"error": "Not enough savings available"})
+
+        # Check if portfolio name already exists for this user
+        if Investment.objects.filter(user=user, portfolio_name=portfolio_name).exists():
+            raise serializers.ValidationError({"error": "Portfolio with this name already exists"})
+
+        # Deduct allocated amount from savings
+        savings.total_savings -= allocated_amount
+        savings.save()
+
+        # Create the investment
+        serializer.save(user=user)
