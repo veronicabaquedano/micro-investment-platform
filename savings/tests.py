@@ -36,8 +36,6 @@ class SavingsTests(APITestCase):
         self.client.force_authenticate(user=self.user1)  # Ensure requests are authenticated
         print(f"User authenticated: {self.user1.email}")  # Debugging
 
-
-
     def test_transaction_updates_savings_with_round_up(self):
         self.authenticate_user1()  # Ensure authentication
 
@@ -102,81 +100,34 @@ class SavingsTests(APITestCase):
         self.assertIn("non_field_errors", response.data)
         self.assertIn("Insufficient savings for this transaction.", response.data["non_field_errors"])
 
+    def test_round_up_on_transaction(self):
+        self.authenticate_user1()
 
+        response = self.client.post(self.transaction_url, {"amount": 5.75}, format="json")
+        self.assertEqual(response.status_code, 201)
 
+        self.savings1.refresh_from_db()
+        expected_savings = decimal.Decimal("50.00") + decimal.Decimal("0.25")
+        self.assertEqual(self.savings1.total_savings, expected_savings)
 
-# from rest_framework.test import APITestCase
-# from django.contrib.auth import get_user_model
-# from .models import Savings
-# from transactions.models import Transaction
-# import decimal
+    def test_multiple_transactions(self):
+        self.authenticate_user1()
 
+        self.client.post(self.transaction_url, {"amount": 5.75}, format="json")  # +$0.25
+        self.client.post(self.transaction_url, {"amount": 7.50}, format="json")  # +$0.50
 
-# class SavingsTests(APITestCase):
-#     def setUp(self):
-#         User = get_user_model()
-#         self.user1 = User.objects.create_user(
-#             email="user1@example.com", password="password"
-#         )
+        self.savings1.refresh_from_db()
 
-#         #Create a savings account for the user
-#         self.savings1, _ = Savings.objects.get_or_create(user=self.user1)
-#         self.savings1.total_savings = decimal.Decimal("50.00")
-#         self.savings1.save()
+        expected_savings = decimal.Decimal("50.00") + decimal.Decimal("0.25") + decimal.Decimal("0.50")
+        self.assertEqual(self.savings1.total_savings, expected_savings)
 
-#         #Use API login instead of self.client.login()
-#         response = self.client.post(
-#             "/users/login/",  #Update this if your login endpoint is different
-#             {"email": "user1@example.com", "password": "password"},
-#             format="json"
-#         )
-        
-#         self.assertEqual(response.status_code, 200, f"Login failed: {response.data}")
+    def test_edge_case_transaction(self):
+        self.authenticate_user1()
 
-#         #Ensure the client is authenticated using Django's session
-#         self.client.force_login(self.user1)  #Force login using session-based auth
+        response = self.client.post(self.transaction_url, {"amount": 10.00}, format="json")
+        self.assertEqual(response.status_code, 201)
 
+        self.savings1.refresh_from_db()
 
-    # def test_round_up_on_transaction(self):
-    #     #Send API request to create a transaction
-    #     response = self.client.post(
-    #         "/transactions/",
-    #         {"amount": 5.75},
-    #         format="json"
-    #     )
-    #     self.assertEqual(response.status_code, 201)  #Ensure transaction was created
-
-    #     #Refresh savings after transaction processing
-    #     self.savings1.refresh_from_db()
-
-    #     #Round-up should be $0.25 (to make it $6.00)
-    #     expected_savings = decimal.Decimal("50.00") + decimal.Decimal("0.25")
-    #     self.assertEqual(self.savings1.total_savings, expected_savings)
-
-#     def test_multiple_transactions(self):
-#         #Create multiple transactions via API
-#         self.client.post("/transactions/", {"amount": 5.75}, format="json")  #+$0.25
-#         self.client.post("/transactions/", {"amount": 7.50}, format="json")  #+$0.50
-
-#         #Refresh savings after transactions
-#         self.savings1.refresh_from_db()
-
-#         #Total savings should be updated correctly
-#         expected_savings = decimal.Decimal("50.00") + decimal.Decimal("0.25") + decimal.Decimal("0.50")
-#         self.assertEqual(self.savings1.total_savings, expected_savings)
-
-#     def test_edge_case_transaction(self):
-#         #Create a transaction with an exact dollar amount (no round-up)
-#         response = self.client.post(
-#             "/transactions/",
-#             {"amount": 10.00},
-#             format="json"
-#         )
-#         self.assertEqual(response.status_code, 201)
-
-#         #Refresh savings
-#         self.savings1.refresh_from_db()
-
-#         #Savings should remain unchanged
-#         self.assertEqual(self.savings1.total_savings, decimal.Decimal("50.00"))
-        
+        # Since it's an exact amount, savings should not change
+        self.assertEqual(self.savings1.total_savings, decimal.Decimal("50.00"))  
