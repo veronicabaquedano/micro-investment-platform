@@ -117,3 +117,10 @@ class SavingsTests(APITestCase):
 
         # Since it's an exact amount, savings should not change
         self.assertEqual(self.savings1.total_savings, decimal.Decimal("50.00"))  
+
+    def test_unauthenticated_user_cannot_update_savings(self):
+        """Ensure an unauthenticated user cannot modify savings data."""
+        self.client.logout()
+        response = self.client.patch("/savings/", {"total_savings": "1000.00"})
+    
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

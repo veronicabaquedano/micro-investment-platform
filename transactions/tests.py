@@ -52,3 +52,9 @@ class TransactionTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)  # No transactions should be visible
         
+    def test_unauthenticated_user_cannot_create_transaction(self):
+        """Ensure an unauthenticated user cannot create a transaction."""
+        self.client.logout()
+        response = self.client.post("/transactions/", {"amount": "100.00"})
+    
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

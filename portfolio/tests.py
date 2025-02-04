@@ -71,3 +71,24 @@ class PortfolioTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", response.data)
         self.assertEqual(response.data["error"], "Portfolio with this name already exists")
+        
+    def test_user_cannot_access_other_users_portfolio(self):
+        """Ensure a user cannot access another user's portfolio investments."""
+        user2 = User.objects.create_user(email="otheruser@example.com", password="testpass")
+        Investment.objects.create(user=user2, portfolio_name="Other User Fund", allocated_amount=30.00)
+
+        response = self.client.get("/portfolio/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 0)  # Should return an empty list
+        
+    def test_unauthenticated_user_cannot_create_investment(self):
+        """Ensure an unauthenticated user cannot create an investment."""
+        self.client.logout()  # Ensure the user is logged out
+        data = {"portfolio_name": "Unauthorized Fund", "allocated_amount": 50.00}
+    
+        response = self.client.post("/portfolio/", data)
+    
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
