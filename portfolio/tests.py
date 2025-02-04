@@ -2,19 +2,17 @@ from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
 from .models import Investment
 from savings.models import Savings  # Ensure savings exist before allocation
-import decimal
+from decimal import Decimal
+
+User = get_user_model()
 
 class PortfolioTests(APITestCase):
     def setUp(self):
-        User = get_user_model()
-        # Create a test user
-        self.user = User.objects.create_user(email="user@example.com", password="password")
-
-        # Create Savings object for user
-        self.savings = Savings.objects.create(user=self.user, total_savings=decimal.Decimal("100.00"))
-
-        # Log in the user
-        self.client.login(email="user@example.com", password="password")
+        self.user = User.objects.create_user(email="test@example.com", password="testpass")
+        self.client.force_authenticate(user=self.user)
+    
+        # Ensure only one savings record per user
+        self.savings, _ = Savings.objects.get_or_create(user=self.user, defaults={"total_savings": Decimal("100.00")})
 
     def test_create_investment(self):
         """Test allocating savings to a portfolio."""

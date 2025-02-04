@@ -11,6 +11,7 @@ class UserAuthTests(APITestCase):
             email="testinguser@example.com",
             password="password123"
         )
+
         self.register_url = "/users/register/"
         self.login_url = "/users/login/"
 
@@ -66,3 +67,28 @@ class UserAuthTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertIn("error", response.data)
         self.assertEqual(response.data["error"], "Invalid credentials")
+        
+    def test_registration_duplicate_email(self):
+        # Try to register with an email that already exists
+        data = {
+            "email": "testinguser@example.com",  # Already created in setUp()
+            "password": "password123"
+        }
+        response = self.client.post(self.register_url, data)
+    
+        # Expect a 400 response with an email error
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("email", response.data)  # Email field should have an error
+        
+    def test_login_case_insensitive_email(self):
+        data = {
+            "email": "TESTINGUSER@EXAMPLE.COM",  # Uppercase version
+            "password": "password123"
+        }
+        response = self.client.post(self.login_url, data)
+    
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("message", response.data)
+        self.assertEqual(response.data["message"], "Login successful")
+
+

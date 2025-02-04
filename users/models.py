@@ -37,6 +37,11 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
+
+    def save(self, *args, **kwargs):
+        self.email = self.email.lower()  # Convert email to lowercase before saving
+        super().save(*args, **kwargs)
+ 
     is_active = models.BooleanField(default=True)  # Indicates if the user is active
     is_admin = models.BooleanField(default=False)  # indicates if user is admin
     is_staff = models.BooleanField(default=False)  # Admin access
