@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from users.models import User
 from transactions.models import Transaction
+from savings.models import Savings
 
 
 class TransactionTests(APITestCase):
@@ -9,7 +10,12 @@ class TransactionTests(APITestCase):
         # Create a user for testing
         self.user = User.objects.create_user(email="testtranuser@example.com", password="testtranpassword")
         self.client.login(email="testtranuser@example.com", password="testtranpassword")  # Log in the user
-
+        # Ensure the user has a savings account with enough balance
+        self.savings, created = Savings.objects.get_or_create(user=self.user, defaults={'total_savings': 500.00})  # Set an initial balance
+        self.savings.total_savings = 500.00  # Explicitly set balance
+        self.savings.save()
+        self.savings.refresh_from_db()  # Ensure latest data is used
+        
     def test_transaction_create_and_list(self):
         # Create a transaction
         response = self.client.post("/transactions/", {"amount": "200.00"})  # Only include `amount`
@@ -45,6 +51,4 @@ class TransactionTests(APITestCase):
         response = self.client.get("/transactions/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)  # No transactions should be visible
-
-
         

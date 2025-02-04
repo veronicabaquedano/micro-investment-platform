@@ -19,7 +19,7 @@ class TransactionView(APIView):
     def post(self, request):
         """Create a new transaction for the logged-in user."""
         # validate and process data provided by user
-        serializer = TransactionSerializer(data=request.data)
+        serializer = TransactionSerializer(data=request.data , context={"request": request})
         if serializer.is_valid():
             serializer.save(user=request.user)  # Attach the logged-in user, saves in db
             return Response(serializer.data, status=status.HTTP_201_CREATED)
