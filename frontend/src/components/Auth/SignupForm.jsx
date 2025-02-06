@@ -8,7 +8,7 @@ const SignupForm = ({ onSignup }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
 
-  // Handle form submission
+  // Handle form submission to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
 
