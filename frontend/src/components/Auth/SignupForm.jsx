@@ -20,10 +20,13 @@ const SignupForm = ({ onSignup }) => {
 
     try {
       // Send signup request to backend
-      const response = await axios.post("http://localhost:8000/users/signup/", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://127.0.0.1:8000/users/register/",
+        {
+          email,
+          password,
+        }
+      );
 
       // Notify parent component
       onSignup(response.data);

@@ -42,11 +42,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'savings',
     'portfolio',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware", 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -145,3 +147,7 @@ REST_FRAMEWORK = {
     'UNAUTHENTICATED_USER': None,  # Ensures unauthenticated users are treated as AnonymousUser
 
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React frontend
+]
