@@ -27,7 +27,6 @@ class TransactionTests(APITestCase):
         response = self.client.post(
             "/transactions/", {"amount": "200.00"}
         )  # Only include `amount`
-        print(response.status_code, response.data)  # Debugging output
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Ensure the transaction is created

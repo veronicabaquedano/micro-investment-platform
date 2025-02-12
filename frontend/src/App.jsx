@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,8 +17,21 @@ function App() {
   const [user, setUser] = useState(null);
 
   // Updates user when they log in. (replace this with API authentication later)
-  const handleLogin = (userData) => {
-    setUser(userData);
+  const handleLogin = async (email, password) => {
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/users/login/", {
+        email: email, // Ensure email is a string
+        password: password, // Ensure password is a string
+      });
+
+      // Check if login was successful and update user state
+      if (response.status === 200) {
+        // Handle login success, for example, store user data
+        setUser(response.data);
+      }
+    } catch (error) {
+      // Handle login failure
+    }
   };
 
   // Clears user data to log them out.

@@ -24,13 +24,20 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
-
     def post(self, request):
-        #extract the user's email and password from the incoming HTTP request data. 
-        email = request.data.get("email", "").strip().lower()  # Normalize email
-        password = request.data.get("password", "")
-        user = authenticate(request, email=email, password=password)  # checks the provided email and password against the database.
+        try:
+            # Extract email and password from request data
+            email = request.data.get("email", "").strip().lower()  # Normalize email
+            password = request.data.get("password", "")
 
-        if user is not None:
-            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
-        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            if not email or not password:
+                return Response({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Authenticate the user using the email and password
+            user = authenticate(request, email=email, password=password)
+            if user is not None:
+                return Response({'message': 'Login successful', 'user': user.email}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -10,7 +10,6 @@ const LoginForm = ({ onLogin }) => {
   // Handle form submission to backend
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
-
     try {
       // Send login request to backend
       const response = await axios.post("http://127.0.0.1:8000/users/login/", {
@@ -19,7 +18,7 @@ const LoginForm = ({ onLogin }) => {
       });
 
       // Call onLogin function passed from parent (AuthPage)
-      onLogin(response.data);
+      onLogin(email, password);
     } catch (err) {
       // Handle errors (e.g., wrong credentials)
       setError("Invalid email or password. Please try again.");

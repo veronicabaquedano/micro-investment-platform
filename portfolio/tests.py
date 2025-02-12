@@ -27,11 +27,6 @@ class PortfolioTests(APITestCase):
         """Test allocating savings to a portfolio."""
         data = {"portfolio_name": "Tech Growth Fund", "allocated_amount": 50.00}
         response = self.client.post("/portfolio/", data)
-
-        print(
-            f"Response status: {response.status_code}, Response data: {response.data}"
-        )  # debug
-
         # Check if allocation was successful
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Investment.objects.count(), 1)
