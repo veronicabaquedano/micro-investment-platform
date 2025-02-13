@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 const LoginForm = ({ onLogin }) => {
   // State for email, password, (to store user input) and error messages (handle login failures)
@@ -10,19 +9,10 @@ const LoginForm = ({ onLogin }) => {
   // Handle form submission to backend
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
-    try {
-      // Send login request to backend
-      const response = await axios.post("http://127.0.0.1:8000/users/login/", {
-        email,
-        password,
-      });
-
-      // Call onLogin function passed from parent (AuthPage)
-      onLogin(email, password);
-    } catch (err) {
-      // Handle errors (e.g., wrong credentials)
-      setError("Invalid email or password. Please try again.");
-    }
+    console.log("submitting with Email:", email);
+    console.log("submitting with Password:", password); // Check both values before sending
+    setError(null); // Clear previous error before a new login attempt
+    onLogin(email, password, setError); // This calls `handleLogin` in App.jsx
   };
 
   return (
