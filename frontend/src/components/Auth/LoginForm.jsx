@@ -9,8 +9,6 @@ const LoginForm = ({ onLogin }) => {
   // Handle form submission to backend
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
-    console.log("submitting with Email:", email);
-    console.log("submitting with Password:", password); // Check both values before sending
     setError(null); // Clear previous error before a new login attempt
     onLogin(email, password, setError); // This calls `handleLogin` in App.jsx
   };
