@@ -1,4 +1,4 @@
-"""
+"""s
 URL configuration for micro_investment_platform project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -14,14 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('users/', include('users.urls')), # User-related endpoints
-    path('transactions/', include('transactions.urls')),  # Transaction-related endpoints
-    path('savings/', include('savings.urls')),  # Include the Savings app's URLs 
-    path('portfolio/', include('portfolio.urls')),  # Portfolio allocation endpoint
+    path("admin/", admin.site.urls),
+    path("users/", include("users.urls")),  # User-related endpoints
+    path(
+        "transactions/", include("transactions.urls")
+    ),  # Transaction-related endpoints
+    path("savings/", include("savings.urls")),  # Include the Savings app's URLs
+    path("portfolio/", include("portfolio.urls")),  # Portfolio allocation endpoint
 ]
-
