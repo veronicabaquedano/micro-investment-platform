@@ -10,6 +10,7 @@ function App() {
   // Temporary authentication state (this will later be replaced with backend logic)
   // Temporarly holds user data
   const [user, setUser] = useState(null);
+  // used to programmmatically navigate to different pages.
   const navigate = useNavigate();
 
   // Updates user when they log in. (replace this with API authentication later)
