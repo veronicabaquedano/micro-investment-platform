@@ -4,7 +4,7 @@ from django.conf import settings  # refer to user model even if it changes
 
 # represents structure of transaction table in db
 class Transaction(models.Model):
-    # establish connection between transaction and user tables.   one-to-many
+    # establish connection between transaction and user tables. one-to-many
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="transactions"
     )
