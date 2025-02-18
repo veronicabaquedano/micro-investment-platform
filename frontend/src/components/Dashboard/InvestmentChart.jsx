@@ -2,53 +2,21 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
+  LineElement,
   CategoryScale,
   LinearScale,
   PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
 } from "chart.js";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+//Registers chart components so they can be used.
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 const InvestmentChart = ({ data }) => {
-  const chartData = {
-    labels: data.map((entry) => entry.date),
-    datasets: [
-      {
-        label: "Investment Growth",
-        data: data.map((entry) => entry.value),
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        fill: true,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Investment Growth Over Time",
-      },
-    },
-  };
-
-  return <Line data={chartData} options={options} />;
+  return (
+    <div className="card p-3 mb-3">
+      <h4>Investment Growth</h4>
+      <Line data={data} />
+    </div>
+  );
 };
 
 export default InvestmentChart;

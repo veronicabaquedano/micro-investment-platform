@@ -13,6 +13,7 @@ class InvestmentListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         user = self.request.user
+        #extract the data from the request from the serializer
         allocated_amount = serializer.validated_data["allocated_amount"]
         portfolio_name = serializer.validated_data["portfolio_name"]
         # Get user's savings
