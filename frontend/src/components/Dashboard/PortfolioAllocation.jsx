@@ -9,11 +9,12 @@ const PortfolioAllocation = ({ portfolio }) => {
       <p>Stocks: {portfolio.stocks}%</p>
       <p>Bonds: {portfolio.bonds}%</p>
       <p>Cash: {portfolio.cash}%</p>
-
+      {/* if showDetails is true see button that says hide else show. */}
       <button
         className="btn btn-primary"
         onClick={() => setShowDetails(!showDetails)}
       >
+        /* if showDetails is true see button that says hide else show. */
         {showDetails ? "Hide Details" : "View Portfolio"}
       </button>
 
