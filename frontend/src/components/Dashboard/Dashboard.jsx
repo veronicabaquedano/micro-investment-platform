@@ -1,43 +1,58 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import SavingsSummary from "./SavingsSummary";
 import RecentTransactions from "./RecentTransactions";
 import PortfolioAllocation from "./PortfolioAllocation";
 import InvestmentChart from "./InvestmentChart";
 
 const Dashboard = () => {
-  // Placeholder static data (replace this with API data later)
-  const savings = 500; // Example total savings
-  const transactions = [
-    { id: 1, description: "Coffee round-up", amount: 0.75 },
-    { id: 2, description: "Grocery round-up", amount: 1.25 },
-    { id: 3, description: "Gas round-up", amount: 0.5 },
-  ];
-  const portfolio = {
-    stocks: 60, // 60% stocks
-    bonds: 30, // 30% bonds
-    cash: 10, // 10% cash
-  };
-  // chart using chart.js
-  const chartData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-    datasets: [
-      {
-        label: "Investment Growth",
-        data: [100, 150, 200, 250, 300],
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderWidth: 2,
-      },
-    ],
-  };
-  //passes savings, transactions, protfolio, chartData as props to SavingsSummary etc...
+  const [savings, setSavings] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [portfolio, setPortfolio] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        // Fetch savings
+        const savingsResponse = await axios.get(
+          "http://127.0.0.1:8000/savings/"
+        );
+        setSavings(savingsResponse.data.total_savings);
+
+        // Fetch transactions
+        const transactionsResponse = await axios.get(
+          "http://127.0.0.1:8000/transactions/"
+        );
+        setTransactions(transactionsResponse.data.slice(0, 10)); // Get last 10 transactions
+
+        // Fetch portfolio allocation
+        const portfolioResponse = await axios.get(
+          "http://127.0.0.1:8000/portfolio/"
+        );
+        setPortfolio(portfolioResponse.data);
+
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to load dashboard data.");
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  if (loading) return <p>Loading dashboard...</p>;
+  if (error) return <p className="text-danger">{error}</p>;
+
   return (
     <div className="container mt-4">
       <h2>Dashboard</h2>
       <SavingsSummary savings={savings} />
       <RecentTransactions transactions={transactions} />
       <PortfolioAllocation portfolio={portfolio} />
-      <InvestmentChart data={chartData} />
+      <InvestmentChart data={portfolio} />
     </div>
   );
 };
