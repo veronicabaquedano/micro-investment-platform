@@ -146,6 +146,13 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,  # Ensures unauthenticated users are treated as AnonymousUser
 }
 
+CORS_ALLOW_CREDENTIALS = True  #Allows sending cookies
+CSRF_COOKIE_HTTPONLY = False  #Allows JavaScript to access CSRF cookie
+CSRF_COOKIE_SAMESITE = "Lax"  #Prevents cross-site request issues
+SESSION_COOKIE_SAMESITE = "Lax"  #Prevents session issues maybe delete
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]  # Make sure this exists
+
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React frontend
+    "http://localhost:3000",  #Ensure this includes your frontend
 ]
