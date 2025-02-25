@@ -6,9 +6,6 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import BankLinkingPage from "./components/Bank/BankLinkingPage";
 import Navbar from "./components/Navigation/Navbar";
 
-//Force Axios to send cookies with every request
-axios.defaults.withCredentials = true;
-
 function App() {
   // Temporary authentication state (this will later be replaced with backend logic)
   // Temporarly holds user data
@@ -19,19 +16,11 @@ function App() {
   // Updates user when they log in. (replace this with API authentication later)
   const handleLogin = async (email, password, setError) => {
     try {
-      // Get CSRF token before logging in
-      await axios.get("http://127.0.0.1:8000/users/csrf/", {
-        withCredentials: true,
-      });
       //Send login request
-      const response = await axios.post(
-        "http://127.0.0.1:8000/users/login/",
-        {
-          email: email, // Ensure email is a string
-          password: password, // Ensure password is a string
-        },
-        { withCredentials: true } // Enables session authentication
-      );
+      const response = await axios.post("http://127.0.0.1:8000/users/login/", {
+        email: email, // Ensure email is a string
+        password: password, // Ensure password is a string
+      });
 
       // Check if login was successful and update user state
       if (response.status === 200) {

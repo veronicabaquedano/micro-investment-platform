@@ -4,13 +4,6 @@ from rest_framework import status # Provides HTTP status codes for responses (e.
 from django.contrib.auth import authenticate
 from users.serializers import UserSerializer
 from rest_framework.permissions import AllowAny
-from django.contrib.auth import login
-from django.http import JsonResponse
-from django.middleware.csrf import get_token
-
-#create a function that returns a CSRF token
-def get_csrf_token(request):
-    return JsonResponse({"csrfToken": get_token(request)})
 
 # handles user registration. can handle POST and GET because of APIView
 class RegisterView(APIView):
@@ -42,7 +35,6 @@ class LoginView(APIView):
             # Authenticate the user using the email and password
             user = authenticate(request, email=email, password=password)
             if user is not None:
-                login(request, user)  # Logs in the user and creates a session
                 return Response({'message': 'Login successful', 'user': user.email}, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)

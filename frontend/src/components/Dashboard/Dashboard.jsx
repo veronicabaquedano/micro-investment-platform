@@ -15,7 +15,6 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const config = { withCredentials: true }; // Enables cookies for session auth
         // Fetch savings
         const savingsResponse = await axios.get(
           "http://127.0.0.1:8000/savings/"
