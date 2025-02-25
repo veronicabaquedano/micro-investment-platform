@@ -6,12 +6,15 @@ const RecentTransactions = ({ transactions }) => {
       <h4>Recent Transactions</h4>
       <ul className="list-group">
         {transactions.length > 0 ? (
-          transactions.map((transaction) => (
-            <li key={transaction.id} className="list-group-item">
-              <strong>{transaction.description}</strong>: $
-              {transaction.amount.toFixed(2)}
-            </li>
-          ))
+          transactions.map((transaction) => {
+            // Ensure amount is a number (fallback to 0 if missing)
+            const amount = Number(transaction.amount) || 0;
+            return (
+              <li key={transaction.id} className="list-group-item">
+                <strong>{transaction.description}</strong>: ${amount.toFixed(2)}
+              </li>
+            );
+          })
         ) : (
           <p>No recent transactions.</p>
         )}

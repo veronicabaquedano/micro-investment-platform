@@ -7,15 +7,20 @@ const PortfolioAllocation = ({ portfolio }) => {
     <div className="card p-3 mb-3">
       <h4>Portfolio Allocation</h4>
       {/* Check if portfolio exists and is not empty */}
-      {portfolio && Object.keys(portfolio).length > 0 ? (
+      {Array.isArray(portfolio) && portfolio.length > 0 ? (
         <>
-          {/* Display main investment types and their allocation percentages dynamically */}
-          {Object.entries(portfolio).map(([key, value]) => (
-            <p key={key}>
-              <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
-              {value}%
-            </p>
-          ))}
+          {/* Loop through investments */}
+          {portfolio.map((investment) => {
+            // Ensure allocated_amount is a number (fallback to 0 if missing)
+            const amount = Number(investment.allocated_amount) || 0;
+
+            return (
+              <p key={investment.id}>
+                <strong>{investment.portfolio_name}:</strong> $
+                {amount.toFixed(2)}
+              </p>
+            );
+          })}
 
           {/* Toggle Button */}
           <button

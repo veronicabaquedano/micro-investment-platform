@@ -24,6 +24,8 @@ function App() {
 
       // Check if login was successful and update user state
       if (response.status === 200) {
+        const token = response.data.access; // Get the JWT token
+        localStorage.setItem("token", token); // Store token in local storage
         // Handle login success, for example, store user data
         setUser(response.data);
         navigate("/dashboard"); // Redirects after login

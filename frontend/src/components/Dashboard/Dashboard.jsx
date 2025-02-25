@@ -15,21 +15,31 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
+        const token = localStorage.getItem("token"); //Get token from storage
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`, //Send token with requests
+          },
+        };
+
         // Fetch savings
         const savingsResponse = await axios.get(
-          "http://127.0.0.1:8000/savings/"
+          "http://127.0.0.1:8000/savings/",
+          config
         );
         setSavings(savingsResponse.data.total_savings);
 
         // Fetch transactions
         const transactionsResponse = await axios.get(
-          "http://127.0.0.1:8000/transactions/"
+          "http://127.0.0.1:8000/transactions/",
+          config
         );
         setTransactions(transactionsResponse.data.slice(0, 10)); // Get last 10 transactions
 
         // Fetch portfolio allocation
         const portfolioResponse = await axios.get(
-          "http://127.0.0.1:8000/portfolio/"
+          "http://127.0.0.1:8000/portfolio/",
+          config
         );
         setPortfolio(portfolioResponse.data);
 
