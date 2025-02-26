@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
 import {
@@ -11,68 +11,25 @@ import {
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
-const InvestmentChart = () => {
-  const [chartData, setChartData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const InvestmentChart = ({ data }) => {
+  console.log("Chart Data Received:", data); // Debugging
 
-  useEffect(() => {
-    const fetchInvestmentGrowth = async () => {
-      try {
-        // Get the stored JWT token
-        const token = localStorage.getItem("access_token");
+  if (!data || !data.labels || data.labels.length === 0) {
+    return <p>No investment growth data available.</p>;
+  }
 
-        // Ensure a token exists before making the request
-        if (!token) {
-          setError("User is not authenticated.");
-          setLoading(false);
-          return;
-        }
-
-        const response = await axios.get(
-          "http://127.0.0.1:8000/portfolio/growth/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, //Attach JWT token
-            },
-            withCredentials: true,
-          }
-        );
-
-        console.log("Investment growth data:", response.data);
-
-        if (response.data.labels.length === 0) {
-          setError("No investment growth data available.");
-          setLoading(false);
-          return;
-        }
-
-        setChartData({
-          labels: response.data.labels,
-          datasets: [
-            {
-              label: "Investment Growth",
-              data: response.data.growth,
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
-              borderWidth: 2,
-            },
-          ],
-        });
-
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching investment growth data:", err);
-        setError("Failed to load investment growth data.");
-        setLoading(false);
-      }
-    };
-
-    fetchInvestmentGrowth();
-  }, []);
-
-  if (loading) return <p>Loading chart...</p>;
-  if (error) return <p className="text-danger">{error}</p>;
+  const chartData = {
+    labels: data.labels,
+    datasets: [
+      {
+        label: "Investment Growth",
+        data: data.growth,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderWidth: 2,
+      },
+    ],
+  };
 
   return <Line data={chartData} />;
 };

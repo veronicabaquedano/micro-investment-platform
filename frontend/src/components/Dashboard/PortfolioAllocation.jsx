@@ -3,26 +3,27 @@ import React, { useState } from "react";
 const PortfolioAllocation = ({ portfolio }) => {
   const [showDetails, setShowDetails] = useState(false);
 
+  console.log("Portfolio Data:", portfolio);
+  console.log("Portfolio Keys:", Object.keys(portfolio));
+  console.log("Portfolio Values:", Object.values(portfolio));
+
+  // Extract only investment objects (ignore `growth` key)
+  const investments = Object.values(portfolio).filter(
+    (item) => typeof item === "object" && "portfolio_name" in item
+  );
+
   return (
     <div className="card p-3 mb-3">
       <h4>Portfolio Allocation</h4>
-      {/* Check if portfolio exists and is not empty */}
-      {Array.isArray(portfolio) && portfolio.length > 0 ? (
+      {investments.length > 0 ? (
         <>
-          {/* Loop through investments */}
-          {portfolio.map((investment) => {
-            // Ensure allocated_amount is a number (fallback to 0 if missing)
-            const amount = Number(investment.allocated_amount) || 0;
+          {investments.map((investment) => (
+            <p key={investment.id}>
+              <strong>{investment.portfolio_name}:</strong> $
+              {Number(investment.allocated_amount).toFixed(2)}
+            </p>
+          ))}
 
-            return (
-              <p key={investment.id}>
-                <strong>{investment.portfolio_name}:</strong> $
-                {amount.toFixed(2)}
-              </p>
-            );
-          })}
-
-          {/* Toggle Button */}
           <button
             className="btn btn-primary"
             onClick={() => setShowDetails(!showDetails)}
@@ -30,7 +31,6 @@ const PortfolioAllocation = ({ portfolio }) => {
             {showDetails ? "Hide Details" : "View Portfolio"}
           </button>
 
-          {/* Show Details When Button is Clicked */}
           {showDetails && (
             <div className="mt-3">
               <p>More detailed breakdown will be displayed here...</p>
