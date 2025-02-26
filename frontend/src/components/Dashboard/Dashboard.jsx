@@ -48,12 +48,11 @@ const Dashboard = () => {
           "http://127.0.0.1:8000/portfolio/growth/",
           config
         );
-        console.log("Investment Growth Data:", growthResponse.data); //Debug log
+        //prev is used to access the previous state of the portfolio
         setPortfolio((prev) => ({ ...prev, growth: growthResponse.data }));
 
         setLoading(false);
       } catch (err) {
-        console.error("Error fetching dashboard data:", err);
         setError("Failed to load dashboard data.");
         setLoading(false);
       }

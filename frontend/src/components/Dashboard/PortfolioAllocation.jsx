@@ -3,10 +3,6 @@ import React, { useState } from "react";
 const PortfolioAllocation = ({ portfolio }) => {
   const [showDetails, setShowDetails] = useState(false);
 
-  console.log("Portfolio Data:", portfolio);
-  console.log("Portfolio Keys:", Object.keys(portfolio));
-  console.log("Portfolio Values:", Object.values(portfolio));
-
   // Extract only investment objects (ignore `growth` key)
   const investments = Object.values(portfolio).filter(
     (item) => typeof item === "object" && "portfolio_name" in item

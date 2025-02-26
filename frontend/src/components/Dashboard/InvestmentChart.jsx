@@ -12,8 +12,6 @@ import {
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 const InvestmentChart = ({ data }) => {
-  console.log("Chart Data Received:", data); // Debugging
-
   if (!data || !data.labels || data.labels.length === 0) {
     return <p>No investment growth data available.</p>;
   }

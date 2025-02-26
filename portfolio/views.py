@@ -43,6 +43,7 @@ class InvestmentGrowthView(APIView):
     authentication_classes = [JWTAuthentication]  #Require JWT authentication
 
     def get(self, request):
+        #retrieve logged in user and get all their investments
         user = request.user
         investments = Investment.objects.filter(user=user).order_by("created_at")
 
