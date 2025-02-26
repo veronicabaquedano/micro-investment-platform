@@ -43,6 +43,13 @@ const Dashboard = () => {
         );
         setPortfolio(portfolioResponse.data);
 
+        //Fetch Investment Growth
+        const growthResponse = await axios.get(
+          "http://127.0.0.1:8000/portfolio/growth/",
+          config
+        );
+        setPortfolio((prev) => ({ ...prev, growth: growthResponse.data }));
+
         setLoading(false);
       } catch (err) {
         setError("Failed to load dashboard data.");

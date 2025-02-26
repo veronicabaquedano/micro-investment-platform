@@ -146,6 +146,9 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,  # Ensures unauthenticated users are treated as AnonymousUser
 }
 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  #Ensure this includes your frontend
+    "http://localhost:3000",  #Allow frontend origin
 ]
+CSRF_COOKIE_SECURE = False  #Ensure CSRF cookies are accessible in development

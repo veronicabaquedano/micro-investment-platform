@@ -2,6 +2,9 @@ from rest_framework import generics, permissions, serializers
 from .models import Investment
 from .serializers import InvestmentSerializer
 from savings.models import Savings
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class InvestmentListCreateView(generics.ListCreateAPIView):
     serializer_class = InvestmentSerializer
@@ -33,3 +36,27 @@ class InvestmentListCreateView(generics.ListCreateAPIView):
 
         # Create the investment
         serializer.save(user=user)
+
+#class to fetch investment growth over time
+class InvestmentGrowthView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]  #Require JWT authentication
+
+    def get(self, request):
+        user = request.user
+        investments = Investment.objects.filter(user=user).order_by("created_at")
+
+        if not investments.exists():
+            return Response({"labels": [], "growth": []})
+
+        labels = []
+        growth = []
+        total_growth = 0
+
+        for investment in investments:
+            date_label = investment.created_at.strftime("%b %d")  # Example: "Feb 25"
+            labels.append(date_label)
+            total_growth += float(investment.allocated_amount)  # Convert Decimal to float
+            growth.append(total_growth)
+
+        return Response({"labels": labels, "growth": growth})
