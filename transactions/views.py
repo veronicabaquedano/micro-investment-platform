@@ -4,6 +4,9 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from .models import Transaction
 from .serializers import TransactionSerializer
+import random
+from .models import TRANSACTION_DESCRIPTIONS
+
 
 
 class TransactionView(APIView):
@@ -18,6 +21,12 @@ class TransactionView(APIView):
 
     def post(self, request):
         """Create a new transaction for the logged-in user."""
+        data = request.data.copy()
+
+        # Assign a random description if none is provided
+        if "description" not in data or not data["description"].strip():
+            data["description"] = random.choice(TRANSACTION_DESCRIPTIONS)
+
         # validate and process data provided by user
         serializer = TransactionSerializer(data=request.data , context={"request": request})
         if serializer.is_valid():

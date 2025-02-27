@@ -6,7 +6,7 @@ from savings.models import Savings
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ["id", "amount", "timestamp"]  # Include all fields
+        fields = ["id", "amount", "timestamp", "description"]  # Include all fields
         read_only_fields = ["id", "timestamp"]  # `id` and `timestamp` are auto-generated
 
     def validate_amount(self, value):

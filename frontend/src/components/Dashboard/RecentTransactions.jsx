@@ -11,7 +11,8 @@ const RecentTransactions = ({ transactions }) => {
             const amount = Number(transaction.amount) || 0;
             return (
               <li key={transaction.id} className="list-group-item">
-                <strong>{transaction.description}</strong>: ${amount.toFixed(2)}
+                <strong>{transaction.description || "No Description"}</strong>:
+                ${amount.toFixed(2)}
               </li>
             );
           })
