@@ -78,7 +78,7 @@ const Dashboard = () => {
       <AddInvestmentForm onInvestmentAdded={handleInvestmentAdded} />
       <SavingsSummary savings={savings} />
       <RecentTransactions transactions={transactions} />
-      <PortfolioAllocation portfolio={portfolio} />
+      <PortfolioAllocation portfolio={portfolio} savings={savings} />
       <InvestmentChart data={portfolio.growth} />
     </div>
   );

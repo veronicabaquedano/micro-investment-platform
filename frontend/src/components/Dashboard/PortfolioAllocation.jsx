@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PortfolioAllocation = ({ portfolio }) => {
+const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   // Extract only investment objects (ignore `growth` key)
@@ -8,9 +8,16 @@ const PortfolioAllocation = ({ portfolio }) => {
     (item) => typeof item === "object" && "portfolio_name" in item
   );
 
+  // Calculate total balance (savings + all investments)
+  const totalBalance =
+    parseFloat(savings) +
+    investments.reduce((sum, inv) => sum + parseFloat(inv.allocated_amount), 0);
+
   return (
     <div className="card p-3 mb-3">
       <h4>Portfolio Allocation</h4>
+
+      {/* Always show investments (name & amount) */}
       {investments.length > 0 ? (
         <>
           {investments.map((investment) => (
@@ -20,6 +27,7 @@ const PortfolioAllocation = ({ portfolio }) => {
             </p>
           ))}
 
+          {/* Toggle Button */}
           <button
             className="btn btn-primary"
             onClick={() => setShowDetails(!showDetails)}
@@ -27,9 +35,26 @@ const PortfolioAllocation = ({ portfolio }) => {
             {showDetails ? "Hide Details" : "View Portfolio"}
           </button>
 
+          {/* Show Detailed Breakdown Only When Button is Clicked */}
           {showDetails && (
             <div className="mt-3">
-              <p>More detailed breakdown will be displayed here...</p>
+              <h5>Detailed Breakdown</h5>
+              <ul>
+                {investments.map((investment) => {
+                  const amount = parseFloat(investment.allocated_amount) || 0;
+                  const percentage = ((amount / totalBalance) * 100).toFixed(2);
+                  return (
+                    <li key={investment.id}>
+                      {investment.portfolio_name}: ${amount.toFixed(2)} (
+                      {percentage}%)
+                    </li>
+                  );
+                })}
+                <li>
+                  <strong>Savings:</strong> ${parseFloat(savings).toFixed(2)} (
+                  {((savings / totalBalance) * 100).toFixed(2)}%)
+                </li>
+              </ul>
             </div>
           )}
         </>
