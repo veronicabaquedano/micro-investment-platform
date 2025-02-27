@@ -3,19 +3,36 @@ import axios from "axios";
 
 const AddInvestmentForm = ({ onInvestmentAdded }) => {
   const [portfolioName, setPortfolioName] = useState("");
-  const [amount, setAmount] = useState("");
+  const [allocatedAmount, setAllocatedAmount] = useState("");
   const [error, setError] = useState(null);
-  //function sends POST request to /portfolio/ endpoint to add new investment.
-  const handleInvestment = async (e) => {
+  const [loading, setLoading] = useState(false);
+
+  //Predefined list of portfolios
+  const predefinedPortfolios = [
+    "Green Energy Fund",
+    "Tech & Innovation Fund",
+    "Healthcare & Biotech Fund",
+    "Real Estate Growth Fund",
+    "Cryptocurrency & Blockchain Fund",
+    "Renewable Resources Fund",
+    "Sustainable Ventures",
+    "AI & Automation Fund",
+    "Global Market Index",
+  ];
+  //function sends a POST request to the backend to add a new investment
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token"); // Get stored token
+    setLoading(true);
+    setError(null);
 
     try {
+      const token = localStorage.getItem("token"); // Get stored JWT token
+
       const response = await axios.post(
         "http://127.0.0.1:8000/portfolio/",
         {
           portfolio_name: portfolioName,
-          allocated_amount: parseFloat(amount),
+          allocated_amount: parseFloat(allocatedAmount),
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -23,42 +40,57 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
       );
 
       console.log("Investment added:", response.data);
-      onInvestmentAdded(); // Refresh portfolio after adding
       setPortfolioName(""); // Reset form
-      setAmount("");
+      setAllocatedAmount("");
+      onInvestmentAdded(); // Refresh the dashboard
     } catch (err) {
-      console.error("Error adding investment:", err);
-      setError("Failed to add investment. Please try again.");
+      setError("Failed to add investment. Ensure you have enough savings.");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="card p-3 mb-3">
-      <h4>Add New Investment</h4>
+      <h4>Add Investment</h4>
       {error && <p className="text-danger">{error}</p>}
-      <form onSubmit={handleInvestment}>
-        <div className="mb-2">
-          <label>Portfolio Name:</label>
-          <input
-            type="text"
-            className="form-control"
+      <form onSubmit={handleSubmit}>
+        {/*Portfolio Name Dropdown */}
+        <div className="mb-3">
+          <label className="form-label">Select Portfolio</label>
+          <select
+            className="form-select"
             value={portfolioName}
             onChange={(e) => setPortfolioName(e.target.value)}
             required
-          />
+          >
+            <option value="">-- Select Portfolio --</option>
+            {predefinedPortfolios.map((portfolio, index) => (
+              <option key={index} value={portfolio}>
+                {portfolio}
+              </option>
+            ))}
+          </select>
         </div>
-        <div className="mb-2">
-          <label>Amount:</label>
+
+        {/* ✅ Allocated Amount Input */}
+        <div className="mb-3">
+          <label className="form-label">Allocated Amount ($)</label>
           <input
             type="number"
             className="form-control"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            value={allocatedAmount}
+            onChange={(e) => setAllocatedAmount(e.target.value)}
+            min="1"
+            step="0.01"
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Invest
+
+        {/* ✅ Submit Button */}
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? "Adding..." : "Add Investment"}
         </button>
       </form>
     </div>
