@@ -41,7 +41,9 @@ const Dashboard = () => {
         "http://127.0.0.1:8000/portfolio/",
         config
       );
-      setPortfolio(portfolioResponse.data);
+      setPortfolio(
+        Array.isArray(portfolioResponse.data) ? portfolioResponse.data : []
+      );
 
       //Fetch Investment Growth
       const growthResponse = await axios.get(

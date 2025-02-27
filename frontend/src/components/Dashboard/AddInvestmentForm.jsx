@@ -39,13 +39,21 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
         }
       );
 
-      console.log("Investment added:", response.data);
+      console.log("Investment added or updated:", response.data);
       setPortfolioName(""); // Reset form
       setAllocatedAmount("");
-      onInvestmentAdded(); // Refresh the dashboard
+
+      // Wait briefly before refreshing (ensures database updates fully)
+      setTimeout(() => {
+        onInvestmentAdded(); // Refresh the dashboard
+      }, 500); // Half a second delay
     } catch (err) {
-      setError("Failed to add investment. Ensure you have enough savings.");
-      console.error(err);
+      if (err.response && err.response.data.error) {
+        setError(err.response.data.error); // Show exact backend error
+      } else {
+        setError("Failed to add investment.");
+      }
+      console.error("Error adding/updating investment:", err);
     } finally {
       setLoading(false);
     }
@@ -74,7 +82,7 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
           </select>
         </div>
 
-        {/* ✅ Allocated Amount Input */}
+        {/*Allocated Amount Input */}
         <div className="mb-3">
           <label className="form-label">Allocated Amount ($)</label>
           <input
@@ -88,7 +96,7 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
           />
         </div>
 
-        {/* ✅ Submit Button */}
+        {/*Submit Button */}
         <button type="submit" className="btn btn-primary" disabled={loading}>
           {loading ? "Adding..." : "Add Investment"}
         </button>

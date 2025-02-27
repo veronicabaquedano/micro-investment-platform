@@ -12,8 +12,15 @@ class InvestmentSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "created_at"]
     #compute the growth data for the investment
     def get_growth(self, obj):
+        # Handle both model instances and validated_data dictionaries
+        if isinstance(obj, dict):
+            user = self.context["request"].user  # Get user from request context
+            portfolio_name = obj.get("portfolio_name")
+        else:
+            user = obj.user
+            portfolio_name = obj.portfolio_name
         # Get all investments for this user & portfolio
-        investments = Investment.objects.filter(user=obj.user, portfolio_name=obj.portfolio_name).order_by("created_at")
+        investments = Investment.objects.filter(user=user, portfolio_name=portfolio_name).order_by("created_at")
         # Sum up the total amount invested for each day
         growth_data = defaultdict(float)
         for investment in investments:
