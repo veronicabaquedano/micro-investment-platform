@@ -20,10 +20,17 @@ const InvestmentChart = ({ data }) => {
     labels: data.labels,
     datasets: [
       {
-        label: "Investment Growth",
-        data: data.growth,
+        label: "Total Invested",
+        data: data.invested,
         backgroundColor: "rgba(75,192,192,0.4)",
         borderColor: "rgba(75,192,192,1)",
+        borderWidth: 2,
+      },
+      {
+        label: "Investment Value",
+        data: data.growth,
+        backgroundColor: "rgba(255,99,132,0.4)",
+        borderColor: "rgba(255,99,132,1)",
         borderWidth: 2,
       },
     ],

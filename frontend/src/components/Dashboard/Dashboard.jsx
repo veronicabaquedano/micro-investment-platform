@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [portfolio, setPortfolio] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [investmentData, setInvestmentData] = useState(null);
 
   const fetchDashboardData = async () => {
     try {
@@ -51,10 +52,21 @@ const Dashboard = () => {
         config
       );
       //prev is used to access the previous state of the portfolio
-      setPortfolio((prev) => ({ ...prev, growth: growthResponse.data }));
+      console.log("Growth Data Response:", growthResponse.data); // Debugging line
+      const growthData = growthResponse.data;
+      setPortfolio((prev) => ({ ...prev, growth: growthData }));
+
+      // Construct investment data for chart
+      const chartData = {
+        labels: growthData.labels, // Directly use the labels array
+        invested: [], // Placeholder (since the response doesn't include invested data)
+        growth: growthData.growth, // Directly use the growth array
+      };
+      setInvestmentData(chartData);
 
       setLoading(false);
     } catch (err) {
+      console.error("Error fetching dashboard data:", err); //debug
       setError("Failed to load dashboard data.");
       setLoading(false);
     }
@@ -79,7 +91,7 @@ const Dashboard = () => {
       <SavingsSummary savings={savings} />
       <RecentTransactions transactions={transactions} />
       <PortfolioAllocation portfolio={portfolio} savings={savings} />
-      <InvestmentChart data={portfolio.growth} />
+      <InvestmentChart data={investmentData} />
     </div>
   );
 };

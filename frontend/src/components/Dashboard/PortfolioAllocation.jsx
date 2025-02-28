@@ -8,10 +8,25 @@ const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
     (item) => typeof item === "object" && "portfolio_name" in item
   );
 
+  // Calculate total invested amount
+  const totalInvested = investments.reduce(
+    (sum, inv) => sum + parseFloat(inv.allocated_amount),
+    0
+  );
+
   // Calculate total balance (savings + all investments)
-  const totalBalance =
-    parseFloat(savings) +
-    investments.reduce((sum, inv) => sum + parseFloat(inv.allocated_amount), 0);
+  const totalBalance = parseFloat(savings) + totalInvested;
+
+  // Calculate current portfolio value
+  const currentValue =
+    portfolio.growth?.[portfolio.growth.length - 1]?.value || totalInvested;
+
+  // Calculate total gains and percentage increase
+  const totalGains = currentValue - totalInvested;
+  const percentageIncrease =
+    totalInvested > 0
+      ? ((totalGains / totalInvested) * 100).toFixed(2)
+      : "0.00";
 
   return (
     <div className="card p-3 mb-3">
@@ -32,7 +47,9 @@ const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
             className="btn btn-primary"
             onClick={() => setShowDetails(!showDetails)}
           >
-            {showDetails ? "Hide Details" : "View Portfolio"}
+            {showDetails
+              ? "Hide Details"
+              : `View Portfolio (${percentageIncrease}% growth)`}
           </button>
 
           {/* Show Detailed Breakdown Only When Button is Clicked */}
@@ -53,6 +70,10 @@ const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
                 <li>
                   <strong>Savings:</strong> ${parseFloat(savings).toFixed(2)} (
                   {((savings / totalBalance) * 100).toFixed(2)}%)
+                </li>
+                <li>
+                  <strong>Total Gains:</strong> ${totalGains.toFixed(2)} (
+                  {percentageIncrease}%)
                 </li>
               </ul>
             </div>
