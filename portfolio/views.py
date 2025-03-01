@@ -28,9 +28,13 @@ class InvestmentListCreateView(generics.ListCreateAPIView):
             raise serializers.ValidationError({"error": "Not enough savings available"})
 
         # Check if portfolio name already exists for this user → instead of blocking, update it
-        existing_investment = Investment.objects.filter(user=user, portfolio_name=portfolio_name).first()
+        existing_investment = Investment.objects.filter(
+            user=user, portfolio_name=portfolio_name
+        ).first()
         if existing_investment:
-            existing_investment.allocated_amount += allocated_amount  # Add new investment amount
+            existing_investment.allocated_amount += (
+                allocated_amount  # Add new investment amount
+            )
             existing_investment.save()
         else:
             serializer.save(user=user)  # Create new investment
@@ -38,6 +42,7 @@ class InvestmentListCreateView(generics.ListCreateAPIView):
         # Deduct allocated amount from savings
         savings.total_savings -= allocated_amount
         savings.save()
+
 
 # class to fetch investment growth over time
 class InvestmentGrowthView(APIView):
