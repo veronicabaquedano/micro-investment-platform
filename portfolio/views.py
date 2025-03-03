@@ -5,6 +5,8 @@ from savings.models import Savings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from datetime import datetime, timedelta
+import random
 
 
 class InvestmentListCreateView(generics.ListCreateAPIView):
@@ -55,18 +57,55 @@ class InvestmentGrowthView(APIView):
         investments = Investment.objects.filter(user=user).order_by("created_at")
 
         if not investments.exists():
-            return Response({"labels": [], "growth": []})
+            return Response({"labels": [], "growth": [], "invested": []})
 
+        # Define a fixed start date (simulate history)
+        start_date = datetime.now() - timedelta(days=180)  # Go back 6 months
         labels = []
         growth = []
+        invested = []
         total_growth = 0
-
+        total_invested = 0
+        investment_map = {}
+    
+        #Store Actual Investments in a Dictionary
         for investment in investments:
-            date_label = investment.created_at.strftime("%b %d")  # Example: "Feb 25"
-            labels.append(date_label)
-            total_growth += float(
-                investment.allocated_amount
-            )  # Convert Decimal to float
-            growth.append(total_growth)
+            date_label = investment.created_at.strftime("%Y-%m-%d")
+            investment_map[date_label] = investment_map.get(date_label, 0) + float(investment.allocated_amount)
 
-        return Response({"labels": labels, "growth": growth})
+        #Generate & Process Investment Data
+        current_mock_investment = 100.0  # Start with a base investment
+        current_date = start_date
+
+
+        while current_date <= datetime.now():
+            date_label = current_date.strftime("%Y-%m-%d")  # Example: "2025-02-05"
+            labels.append(date_label)
+            
+            # Add real investments or mock investments if none exist
+            investment_today = investment_map.get(date_label, round(current_mock_investment, 2))
+            investment_variation = random.uniform(-2, 5)  # Small fluctuations in cash flow
+            total_invested += round(investment_today + investment_variation, 2)
+
+            # Increase mock investment slightly for the next cycle
+            current_mock_investment += random.uniform(5, 20)
+            
+            
+            # Ensure growth starts from the first investment (remove early zeros)
+            if total_invested > 0 and total_growth == 0:
+                total_growth = total_invested  # Set growth to match invested amount initially
+            
+            # Ensure investments increase over time
+            if total_invested > 0:
+                # Simulate stock market fluctuations
+                random_factor = random.uniform(-0.05, 0.1)  # Market fluctuates -5% to +10% per week
+                total_growth *= (1 + random_factor)
+                total_growth = max(total_growth, total_invested * 0.85)  # Prevent unrealistic crashes
+            else:
+                total_growth = total_invested
+
+            invested.append(round(total_invested, 2))
+            growth.append(round(total_growth, 2))
+            current_date += timedelta(days=7)  # Move forward by one week
+
+        return Response({"labels": labels, "growth": growth, "invested": invested})
