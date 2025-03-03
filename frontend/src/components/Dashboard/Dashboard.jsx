@@ -52,7 +52,6 @@ const Dashboard = () => {
         config
       );
       //prev is used to access the previous state of the portfolio
-      console.log("Growth Data Response:", growthResponse.data); // Debugging line
       const growthData = growthResponse.data;
       setPortfolio((prev) => ({ ...prev, growth: growthData }));
 
@@ -77,7 +76,6 @@ const Dashboard = () => {
 
       setLoading(false);
     } catch (err) {
-      console.error("Error fetching dashboard data:", err); //debug
       setError("Failed to load dashboard data.");
       setLoading(false);
     }
@@ -94,8 +92,6 @@ const Dashboard = () => {
 
   if (loading) return <p>Loading dashboard...</p>;
   if (error) return <p className="text-danger">{error}</p>;
-
-  console.log(investmentData); // Debugging line
 
   return (
     <div className="container mt-4">

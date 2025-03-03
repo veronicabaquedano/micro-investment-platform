@@ -7,9 +7,10 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
+  Legend,
 } from "chart.js";
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Legend);
 
 const InvestmentChart = ({ data }) => {
   if (!data || !data.labels || data.labels.length === 0) {
@@ -35,8 +36,23 @@ const InvestmentChart = ({ data }) => {
       },
     ],
   };
+  const options = {
+    responsive: true, // Ensures the chart resizes properly
+    plugins: {
+      legend: {
+        display: true, // Ensure legend is enabled
+        position: "top",
+        labels: {
+          font: {
+            size: 14, // Increase label size for visibility
+          },
+          color: "black", // Ensure text color is visible
+        },
+      },
+    },
+  };
 
-  return <Line data={chartData} />;
+  return <Line data={chartData} options={options} />;
 };
 
 export default InvestmentChart;

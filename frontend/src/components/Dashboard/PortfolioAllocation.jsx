@@ -13,7 +13,6 @@ const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
     (sum, inv) => sum + parseFloat(inv.allocated_amount),
     0
   );
-  console.log(totalInvested); // Debugging line
 
   // Calculate total balance (savings + all investments)
   const totalBalance = parseFloat(savings) + totalInvested;
