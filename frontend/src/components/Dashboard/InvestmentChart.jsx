@@ -8,9 +8,17 @@ import {
   LinearScale,
   PointElement,
   Legend,
+  Tooltip,
 } from "chart.js";
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Legend);
+ChartJS.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Legend,
+  Tooltip
+);
 
 const InvestmentChart = ({ data }) => {
   if (!data || !data.labels || data.labels.length === 0) {
@@ -37,16 +45,18 @@ const InvestmentChart = ({ data }) => {
     ],
   };
   const options = {
-    responsive: true, // Ensures the chart resizes properly
+    responsive: true,
     plugins: {
       legend: {
-        display: true, // Ensure legend is enabled
+        display: true, // Show labels for the two lines
         position: "top",
-        labels: {
-          font: {
-            size: 14, // Increase label size for visibility
+      },
+      tooltip: {
+        enabled: true, // Enable tooltips
+        callbacks: {
+          label: function (tooltipItem) {
+            return `$${tooltipItem.raw.toFixed(2)}`; // Show exact value with 2 decimal places
           },
-          color: "black", // Ensure text color is visible
         },
       },
     },
