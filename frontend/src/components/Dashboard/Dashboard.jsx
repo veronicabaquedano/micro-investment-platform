@@ -57,11 +57,22 @@ const Dashboard = () => {
       setPortfolio((prev) => ({ ...prev, growth: growthData }));
 
       // Construct investment data for chart
+      // Mock invested amounts (for testing until real data is available)
+      let investedAmounts = [];
+      growthData.growth.forEach((_, index) => {
+        if (index === 0) {
+          investedAmounts.push(100); // Start with an initial investment
+        } else {
+          investedAmounts.push(investedAmounts[index - 1] + 50); // Simulate adding $50 over time
+        }
+      });
+
       const chartData = {
-        labels: growthData.labels, // Directly use the labels array
-        invested: [], // Placeholder (since the response doesn't include invested data)
-        growth: growthData.growth, // Directly use the growth array
+        labels: growthData.labels,
+        invested: investedAmounts, // Use the mock cumulative invested amounts
+        growth: growthData.growth,
       };
+
       setInvestmentData(chartData);
 
       setLoading(false);
@@ -83,6 +94,8 @@ const Dashboard = () => {
 
   if (loading) return <p>Loading dashboard...</p>;
   if (error) return <p className="text-danger">{error}</p>;
+
+  console.log(investmentData); // Debugging line
 
   return (
     <div className="container mt-4">

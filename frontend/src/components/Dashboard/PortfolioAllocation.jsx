@@ -13,13 +13,14 @@ const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
     (sum, inv) => sum + parseFloat(inv.allocated_amount),
     0
   );
+  console.log(totalInvested); // Debugging line
 
   // Calculate total balance (savings + all investments)
   const totalBalance = parseFloat(savings) + totalInvested;
 
   // Calculate current portfolio value
   const currentValue =
-    portfolio.growth?.[portfolio.growth.length - 1]?.value || totalInvested;
+    portfolio.growth?.[portfolio.growth.length - 1] || totalInvested * 1.1; // Increase by 10% for testing;
 
   // Calculate total gains and percentage increase
   const totalGains = currentValue - totalInvested;
