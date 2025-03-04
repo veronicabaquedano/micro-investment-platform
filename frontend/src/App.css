@@ -1,19 +1,20 @@
 /* Dashboard-specific styles (cards, sections, borders) */
 
 .container {
-  background: white;
+  background: transparent; /* No white background */
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
   margin-top: 20px;
 }
 
 .card {
-  border: 2px solid #4caf50;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 15px;
-  background: rgba(255, 255, 255, 0.9);
+  border: 3px solid #4caf50 !important; /* Green border */
+  border-radius: 10px !important;
+  padding: 15px !important;
+  margin-bottom: 15px !important;
+  background-color: #b6ece9 !important; /* Light green */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
 }
 
 .text-danger {

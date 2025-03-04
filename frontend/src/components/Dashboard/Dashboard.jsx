@@ -102,20 +102,20 @@ const Dashboard = () => {
       <div className="row">
         {/* Left Column: Savings & Transactions */}
         <div className="col-md-4">
-          <div className="card shadow-lg p-3 mb-4 bg-white rounded">
+          <div className="card shadow-lg p-3 mb-4 rounded">
             <SavingsSummary savings={savings} />
           </div>
-          <div className="card shadow-lg p-3 bg-white rounded">
+          <div className="card shadow-lg p-3 rounded">
             <RecentTransactions transactions={transactions} />
           </div>
         </div>
 
         {/* Right Column: Portfolio & Chart */}
         <div className="col-md-8">
-          <div className="card shadow-lg p-3 mb-4 bg-white rounded">
+          <div className="card shadow-lg p-3 mb-4 rounded">
             <PortfolioAllocation portfolio={portfolio} savings={savings} />
           </div>
-          <div className="card shadow-lg p-3 bg-white rounded">
+          <div className="card shadow-lg p-3 rounded">
             <InvestmentChart data={investmentData} />
           </div>
         </div>
@@ -123,7 +123,7 @@ const Dashboard = () => {
 
       {/* Add Investment Section */}
       <div className="text-center mt-4">
-        <div className="card shadow-lg p-3 bg-light">
+        <div className="card shadow-lg p-3">
           <h4 className="text-success">💰 Grow Your Investments</h4>
           <AddInvestmentForm onInvestmentAdded={handleInvestmentAdded} />
         </div>

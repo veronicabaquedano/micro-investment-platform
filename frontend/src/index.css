@@ -1,10 +1,10 @@
-/* Global styles (background, fonts, general spacing) */
-
 @import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
+
+/* Global styles (background, fonts, general spacing) */
 
 body {
   margin: 0;
-  font-family: "Fredoka One", cursive;
+  font-family: "Fredoka One", cursive !important;
   background: linear-gradient(135deg, #85ffbd 0%, #fffb7d 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -13,4 +13,8 @@ body {
 h2 {
   color: #2c3e50;
   text-align: center;
+}
+
+:root {
+  --bs-card-bg: #c9f6fa !important; /* Light green background */
 }
