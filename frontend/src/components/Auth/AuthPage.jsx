@@ -16,7 +16,7 @@ const AuthPage = ({ onLogin }) => {
       {isLogin ? (
         <LoginForm onLogin={onLogin} />
       ) : (
-        <SignupForm onSignup={onLogin} />
+        <SignupForm onSignup={toggleForm} />
       )}
 
       {/* Button to toggle between forms */}

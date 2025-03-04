@@ -28,15 +28,26 @@ const SignupForm = ({ onSignup }) => {
         }
       );
 
-      // Notify parent component
-      onSignup(response.data);
+      // Set success message and switch to login form
+      alert("Signup successful! Please log in.");
+      setError(null); // Clear any previous errors
+      setEmail(""); // Clear form fields
+      setPassword("");
+      setConfirmPassword("");
+      onSignup(); // This will switch the form to login
     } catch (err) {
       setError("Signup failed. Email might already be taken.");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log("Form submitted!");
+        handleSubmit(e);
+      }}
+    >
       {error && <p className="text-danger">{error}</p>}
 
       <div className="mb-3">

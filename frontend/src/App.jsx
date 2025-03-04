@@ -16,6 +16,7 @@ function App() {
   // Updates user when they log in. (replace this with API authentication later)
   const handleLogin = async (email, password, setError) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 300)); // Small delay
       //Send login request
       const response = await axios.post("http://127.0.0.1:8000/users/login/", {
         email: email, // Ensure email is a string
