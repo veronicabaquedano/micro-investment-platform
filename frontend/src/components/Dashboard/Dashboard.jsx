@@ -95,6 +95,7 @@ const Dashboard = () => {
     );
   if (error) return <div className="text-danger text-center mt-5">{error}</div>;
 
+  //No inline styles, just Bootstrap classes
   return (
     <div className="container mt-4">
       <h2 className="text-center mb-4 text-primary">📊 Investment Dashboard</h2>
