@@ -73,7 +73,6 @@ const Dashboard = () => {
       };
 
       setInvestmentData(chartData);
-
       setLoading(false);
     } catch (err) {
       setError("Failed to load dashboard data.");
@@ -90,17 +89,44 @@ const Dashboard = () => {
     fetchDashboardData();
   }, []);
 
-  if (loading) return <p>Loading dashboard...</p>;
-  if (error) return <p className="text-danger">{error}</p>;
+  if (loading)
+    return (
+      <div className="text-center mt-5 text-primary">Loading dashboard...</div>
+    );
+  if (error) return <div className="text-danger text-center mt-5">{error}</div>;
 
   return (
     <div className="container mt-4">
-      <h2>Dashboard</h2>
-      <AddInvestmentForm onInvestmentAdded={handleInvestmentAdded} />
-      <SavingsSummary savings={savings} />
-      <RecentTransactions transactions={transactions} />
-      <PortfolioAllocation portfolio={portfolio} savings={savings} />
-      <InvestmentChart data={investmentData} />
+      <h2 className="text-center mb-4 text-primary">📊 Investment Dashboard</h2>
+      <div className="row">
+        {/* Left Column: Savings & Transactions */}
+        <div className="col-md-4">
+          <div className="card shadow-lg p-3 mb-4 bg-white rounded">
+            <SavingsSummary savings={savings} />
+          </div>
+          <div className="card shadow-lg p-3 bg-white rounded">
+            <RecentTransactions transactions={transactions} />
+          </div>
+        </div>
+
+        {/* Right Column: Portfolio & Chart */}
+        <div className="col-md-8">
+          <div className="card shadow-lg p-3 mb-4 bg-white rounded">
+            <PortfolioAllocation portfolio={portfolio} savings={savings} />
+          </div>
+          <div className="card shadow-lg p-3 bg-white rounded">
+            <InvestmentChart data={investmentData} />
+          </div>
+        </div>
+      </div>
+
+      {/* Add Investment Section */}
+      <div className="text-center mt-4">
+        <div className="card shadow-lg p-3 bg-light">
+          <h4 className="text-success">💰 Grow Your Investments</h4>
+          <AddInvestmentForm onInvestmentAdded={handleInvestmentAdded} />
+        </div>
+      </div>
     </div>
   );
 };
