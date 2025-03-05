@@ -6,7 +6,13 @@ from users.models import User
 # (e.g., email is required, password is not blank).
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
-    password = serializers.CharField(write_only=True, min_length=8)
+    password = serializers.CharField(
+        write_only=True,
+        min_length=8,
+        error_messages={
+            "min_length": "This password is too short. It must contain at least 8 characters."
+        },
+    )
 
     class Meta:
         model = User
@@ -22,7 +28,6 @@ class UserSerializer(serializers.ModelSerializer):
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("A user with this email already exists.")
         return value
-
 
     # handles creation of new user
     # validated_data, contains the validated email and password from the API request.

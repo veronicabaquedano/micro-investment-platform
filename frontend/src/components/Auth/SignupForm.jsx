@@ -11,6 +11,14 @@ const SignupForm = ({ onSignup }) => {
   // Handle form submission to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null); // Clear previous errors
+
+    // Basic email validation using regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
 
     // Simple validation
     if (password !== confirmPassword) {
@@ -30,13 +38,25 @@ const SignupForm = ({ onSignup }) => {
 
       // Set success message and switch to login form
       alert("Signup successful! Please log in.");
-      setError(null); // Clear any previous errors
       setEmail(""); // Clear form fields
       setPassword("");
       setConfirmPassword("");
       onSignup(); // This will switch the form to login
     } catch (err) {
-      setError("Signup failed. Email might already be taken.");
+      if (err.response && err.response.data) {
+        const errorData = err.response.data;
+
+        // Prioritize showing password errors first
+        if (errorData.password) {
+          setError(errorData.password[0]); // Show password error
+        } else if (errorData.email) {
+          setError(errorData.email[0]); // Show email error
+        } else {
+          setError("Signup failed. Please try again.");
+        }
+      } else {
+        setError("Signup failed. Please try again.");
+      }
     }
   };
 
@@ -58,6 +78,9 @@ const SignupForm = ({ onSignup }) => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+        {!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email !== "" && (
+          <p className="text-danger">Please enter a valid email address.</p>
+        )}
       </div>
 
       <div className="mb-3">
