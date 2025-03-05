@@ -38,8 +38,6 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
-      console.log("Investment added or updated:", response.data);
       setPortfolioName(""); // Reset form
       setAllocatedAmount("");
 
@@ -53,7 +51,6 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
       } else {
         setError("Failed to add investment.");
       }
-      console.error("Error adding/updating investment:", err);
     } finally {
       setLoading(false);
     }

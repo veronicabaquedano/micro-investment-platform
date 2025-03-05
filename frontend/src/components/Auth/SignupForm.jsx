@@ -44,7 +44,6 @@ const SignupForm = ({ onSignup }) => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        console.log("Form submitted!");
         handleSubmit(e);
       }}
     >
