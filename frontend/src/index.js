@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css"; //General styles (background, fonts, etc.)
+import "./App.css"; //Custom styles (cards, buttons, etc.)
 import App from "./App.jsx";
 import reportWebVitals from "./reportWebVitals";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

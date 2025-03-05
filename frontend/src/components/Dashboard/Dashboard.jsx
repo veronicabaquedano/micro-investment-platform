@@ -130,7 +130,7 @@ const Dashboard = () => {
           <div className="card shadow-lg p-3 mb-4 rounded">
             <SavingsSummary savings={savings} />
           </div>
-          <div className="card shadow-lg p-3 rounded">
+          <div className="card shadow-lg p-3 mb-4 rounded">
             <RecentTransactions transactions={transactions} />
           </div>
         </div>

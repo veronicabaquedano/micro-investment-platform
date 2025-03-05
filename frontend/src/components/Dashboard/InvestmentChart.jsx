@@ -104,7 +104,7 @@ const InvestmentChart = ({ data }) => {
   };
 
   return (
-    <div className="chart-container p-4 bg-white rounded-xl shadow-lg">
+    <>
       <Line
         ref={chartRef}
         data={chartData}
@@ -112,7 +112,7 @@ const InvestmentChart = ({ data }) => {
         height={400}
         width={800}
       />
-    </div>
+    </>
   );
 };
 

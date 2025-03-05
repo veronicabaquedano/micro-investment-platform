@@ -29,9 +29,8 @@ const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
       : "0.00";
 
   return (
-    <div className="card p-3 mb-3">
+    <>
       <h4>Portfolio Allocation</h4>
-
       {/* Always show investments (name & amount) */}
       {investments.length > 0 ? (
         <>
@@ -82,7 +81,7 @@ const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
       ) : (
         <p>No portfolio data available.</p>
       )}
-    </div>
+    </>
   );
 };
 

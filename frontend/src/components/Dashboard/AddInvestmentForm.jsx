@@ -57,7 +57,7 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
   };
 
   return (
-    <div className="card p-3 mb-3">
+    <>
       <h4>Add Investment</h4>
       {error && <p className="text-danger">{error}</p>}
       <form onSubmit={handleSubmit}>
@@ -98,7 +98,7 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
           {loading ? "Adding..." : "Add Investment"}
         </button>
       </form>
-    </div>
+    </>
   );
 };
 
