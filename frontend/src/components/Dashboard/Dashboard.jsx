@@ -12,7 +12,10 @@ const Dashboard = () => {
   const [portfolio, setPortfolio] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [investmentData, setInvestmentData] = useState(null);
+  const [investmentData, setInvestmentData] = useState({
+    labels: [],
+    datasets: [],
+  });
 
   const fetchDashboardData = async () => {
     try {
@@ -70,6 +73,28 @@ const Dashboard = () => {
         labels: growthData.labels,
         invested: investedAmounts, // Use the mock cumulative invested amounts
         growth: growthData.growth,
+        datasets: [
+          {
+            label: "Total Invested",
+            data: investedAmounts,
+            backgroundColor: "rgba(34, 197, 94, 0.2)",
+            borderColor: "rgba(34, 197, 94, 1)",
+            pointBackgroundColor: "rgba(34, 197, 94, 1)",
+            pointBorderColor: "#fff",
+            borderWidth: 3,
+            tension: 0.3,
+          },
+          {
+            label: "Investment Value",
+            data: growthData.growth,
+            backgroundColor: "rgba(59, 130, 246, 0.2)",
+            borderColor: "rgba(59, 130, 246, 1)",
+            pointBackgroundColor: "rgba(59, 130, 246, 1)",
+            pointBorderColor: "#fff",
+            borderWidth: 3,
+            tension: 0.3,
+          },
+        ],
       };
 
       setInvestmentData(chartData);
@@ -115,7 +140,7 @@ const Dashboard = () => {
           <div className="card shadow-lg p-3 mb-4 rounded">
             <PortfolioAllocation portfolio={portfolio} savings={savings} />
           </div>
-          <div className="card shadow-lg p-3 rounded">
+          <div className="card shadow-lg p-3 mb-4 rounded">
             <InvestmentChart data={investmentData} />
           </div>
         </div>

@@ -14,7 +14,18 @@
   padding: 15px !important;
   margin-bottom: 15px !important;
   background-color: #b6ece9 !important; /* Light green */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+.chart-container {
+  padding: 15px !important;
+  margin-bottom: 15px !important;
+  background-color: rgba(182, 236, 233, 0.8) !important; /* Light green */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+  width: 100%;
+  max-width: 900px; /* Ensures it doesn’t become too wide */
+  min-height: 400px; /* Makes sure it's tall enough */
+  margin: auto; /* Centers it */
 }
 
 .text-danger {

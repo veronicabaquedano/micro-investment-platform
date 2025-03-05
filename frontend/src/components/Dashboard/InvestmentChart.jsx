@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import axios from "axios";
 import {
   Chart as ChartJS,
   LineElement,
@@ -21,35 +20,59 @@ ChartJS.register(
 );
 
 const InvestmentChart = ({ data }) => {
-  if (!data || !data.labels || data.labels.length === 0) {
-    return <p>No investment growth data available.</p>;
-  }
+  const chartRef = useRef(null);
+  console.log("Chart Data Inside InvestmentChart.jsx:", data); //debugging
+  useEffect(() => {
+    if (!data || !data.labels || data.labels.length === 0) return;
 
+    const chart = chartRef.current;
+    if (!chart) return;
+
+    const ctx = chart.ctx;
+    if (!ctx) return;
+
+    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "rgba(34, 197, 94, 0.5)"); // Light Green (Top)
+    gradient.addColorStop(1, "rgba(59, 130, 246, 0.5)"); // Light Blue (Bottom)
+
+    //Check again before applying gradient
+    if (data.datasets && Array.isArray(data.datasets)) {
+      data.datasets.forEach((dataset) => {
+        dataset.backgroundColor = gradient;
+      });
+    }
+  }, [data]);
+
+  if (
+    !data ||
+    !Array.isArray(data.labels) ||
+    !Array.isArray(data.datasets) ||
+    data.datasets.length === 0
+  ) {
+    return (
+      <p className="text-center text-danger">
+        No investment growth data available.
+      </p>
+    );
+  }
   const chartData = {
-    labels: data.labels,
-    datasets: [
-      {
-        label: "Total Invested",
-        data: data.invested,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderWidth: 2,
-      },
-      {
-        label: "Investment Value",
-        data: data.growth,
-        backgroundColor: "rgba(255,99,132,0.4)",
-        borderColor: "rgba(255,99,132,1)",
-        borderWidth: 2,
-      },
-    ],
+    labels: data.labels || [],
+    datasets: data.datasets || [],
   };
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true, // Show labels for the two lines
         position: "top",
+        labels: {
+          color: "#2c3e50", // Dark Blue text
+          font: {
+            size: 14,
+            family: "Fredoka One, cursive",
+          },
+        },
       },
       tooltip: {
         enabled: true, // Enable tooltips
@@ -60,9 +83,37 @@ const InvestmentChart = ({ data }) => {
         },
       },
     },
+    scales: {
+      x: {
+        ticks: {
+          color: "#2c3e50", // Dark Blue x-axis labels
+        },
+        grid: {
+          color: "rgba(255, 255, 255, 0.1)", // Subtle grid lines
+        },
+      },
+      y: {
+        ticks: {
+          color: "#2c3e50", // Dark Blue y-axis labels
+        },
+        grid: {
+          color: "rgba(255, 255, 255, 0.1)", // Subtle grid lines
+        },
+      },
+    },
   };
 
-  return <Line data={chartData} options={options} />;
+  return (
+    <div className="chart-container p-4 bg-white rounded-xl shadow-lg">
+      <Line
+        ref={chartRef}
+        data={chartData}
+        options={options}
+        height={400}
+        width={800}
+      />
+    </div>
+  );
 };
 
 export default InvestmentChart;
