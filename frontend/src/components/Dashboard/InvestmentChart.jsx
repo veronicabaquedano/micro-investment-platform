@@ -87,11 +87,7 @@ const InvestmentChart = ({ data }) => {
     },
   };
 
-  return (
-    <div className="chart-container">
-      <Line data={chartData} options={options} />
-    </div>
-  );
+  return <Line data={chartData} options={options} />;
 };
 
 export default InvestmentChart;

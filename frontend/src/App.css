@@ -9,23 +9,25 @@
 }
 
 .card {
-  border: 3px solid #4caf50 !important; /* Green border */
+  border: 3px solid var(--primary-blue) !important; /* Green border */
   border-radius: 10px !important;
   padding: 15px !important;
   margin-bottom: 15px !important;
-  background-color: #b6ece9 !important; /* Light green */
+  background-color: var(--card-bg) !important; /* Light green */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
 }
 
-.chart-container {
-  padding: 15px !important;
-  margin-bottom: 15px !important;
-  background-color: rgba(131, 245, 159, 0.257) !important; /* Light green */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
-  width: 100%;
-  max-width: 900px; /* Ensures it doesn’t become too wide */
-  min-height: 400px; /* Makes sure it's tall enough */
-  margin: auto; /* Centers it */
+.list-group {
+  background-color: var(--card-bg) !important; /* Match card color */
+  border-radius: 10px !important; /* Rounded corners like cards */
+  padding: 10px !important;
+  border: none !important;
+}
+
+.list-group-item {
+  background-color: transparent !important; /* Inherit from .list-group */
+  border: none !important; /* Remove default Bootstrap border */
+  color: #2c3e50 !important; /* Dark text for readability */
 }
 
 .text-danger {
