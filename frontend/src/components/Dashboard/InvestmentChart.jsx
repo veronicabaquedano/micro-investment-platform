@@ -20,44 +20,38 @@ ChartJS.register(
 );
 
 const InvestmentChart = ({ data }) => {
-  const chartRef = useRef(null);
-  console.log("Chart Data Inside InvestmentChart.jsx:", data); //debugging
-  useEffect(() => {
-    if (!data || !data.labels || data.labels.length === 0) return;
-
-    const chart = chartRef.current;
-    if (!chart) return;
-
-    const ctx = chart.ctx;
-    if (!ctx) return;
-
-    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, "rgba(34, 197, 94, 0.5)"); // Light Green (Top)
-    gradient.addColorStop(1, "rgba(59, 130, 246, 0.5)"); // Light Blue (Bottom)
-
-    //Check again before applying gradient
-    if (data.datasets && Array.isArray(data.datasets)) {
-      data.datasets.forEach((dataset) => {
-        dataset.backgroundColor = gradient;
-      });
-    }
-  }, [data]);
-
-  if (
-    !data ||
-    !Array.isArray(data.labels) ||
-    !Array.isArray(data.datasets) ||
-    data.datasets.length === 0
-  ) {
+  if (!data || !data.labels || data.labels.length === 0) {
     return (
       <p className="text-center text-danger">
         No investment growth data available.
       </p>
     );
   }
+
   const chartData = {
     labels: data.labels || [],
-    datasets: data.datasets || [],
+    datasets: [
+      {
+        label: "Total Invested",
+        data: data.invested || [],
+        backgroundColor: "rgba(34, 197, 94, 0.2)",
+        borderColor: "rgba(34, 197, 94, 1)",
+        pointBackgroundColor: "rgba(34, 197, 94, 1)",
+        pointBorderColor: "#fff",
+        borderWidth: 3,
+        tension: 0.3,
+      },
+      {
+        label: "Investment Value",
+        data: data.growth || [],
+        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        borderColor: "rgba(59, 130, 246, 1)",
+        pointBackgroundColor: "rgba(59, 130, 246, 1)",
+        pointBorderColor: "#fff",
+        borderWidth: 3,
+        tension: 0.3,
+      },
+    ],
   };
   const options = {
     responsive: true,
@@ -77,42 +71,26 @@ const InvestmentChart = ({ data }) => {
       tooltip: {
         enabled: true, // Enable tooltips
         callbacks: {
-          label: function (tooltipItem) {
-            return `$${tooltipItem.raw.toFixed(2)}`; // Show exact value with 2 decimal places
-          },
+          label: (tooltipItem) => `$${tooltipItem.raw.toFixed(2)}`, // Show exact value with 2 decimal places
         },
       },
     },
     scales: {
       x: {
-        ticks: {
-          color: "#2c3e50", // Dark Blue x-axis labels
-        },
-        grid: {
-          color: "rgba(255, 255, 255, 0.1)", // Subtle grid lines
-        },
+        ticks: { color: "#2c3e50" },
+        grid: { color: "rgba(43, 40, 40, 0.16)" },
       },
       y: {
-        ticks: {
-          color: "#2c3e50", // Dark Blue y-axis labels
-        },
-        grid: {
-          color: "rgba(255, 255, 255, 0.1)", // Subtle grid lines
-        },
+        ticks: { color: "#2c3e50" },
+        grid: { color: "rgba(43, 40, 40, 0.16)" },
       },
     },
   };
 
   return (
-    <>
-      <Line
-        ref={chartRef}
-        data={chartData}
-        options={options}
-        height={400}
-        width={800}
-      />
-    </>
+    <div className="chart-container">
+      <Line data={chartData} options={options} />
+    </div>
   );
 };
 

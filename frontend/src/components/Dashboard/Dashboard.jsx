@@ -56,48 +56,19 @@ const Dashboard = () => {
       );
       //prev is used to access the previous state of the portfolio
       const growthData = growthResponse.data;
-      setPortfolio((prev) => ({ ...prev, growth: growthData }));
 
-      // Construct investment data for chart
-      // Mock invested amounts (for testing until real data is available)
-      let investedAmounts = [];
-      growthData.growth.forEach((_, index) => {
-        if (index === 0) {
-          investedAmounts.push(100); // Start with an initial investment
-        } else {
-          investedAmounts.push(investedAmounts[index - 1] + 50); // Simulate adding $50 over time
-        }
+      // Generate invested amounts (mocking for now)
+      let investedAmounts = growthData.growth.map(
+        (_, index) => (index + 1) * 50
+      );
+
+      // Store everything in `investmentData`
+      setInvestmentData({
+        labels: growthData.labels,
+        invested: investedAmounts,
+        growth: growthData.growth,
       });
 
-      const chartData = {
-        labels: growthData.labels,
-        invested: investedAmounts, // Use the mock cumulative invested amounts
-        growth: growthData.growth,
-        datasets: [
-          {
-            label: "Total Invested",
-            data: investedAmounts,
-            backgroundColor: "rgba(34, 197, 94, 0.2)",
-            borderColor: "rgba(34, 197, 94, 1)",
-            pointBackgroundColor: "rgba(34, 197, 94, 1)",
-            pointBorderColor: "#fff",
-            borderWidth: 3,
-            tension: 0.3,
-          },
-          {
-            label: "Investment Value",
-            data: growthData.growth,
-            backgroundColor: "rgba(59, 130, 246, 0.2)",
-            borderColor: "rgba(59, 130, 246, 1)",
-            pointBackgroundColor: "rgba(59, 130, 246, 1)",
-            pointBorderColor: "#fff",
-            borderWidth: 3,
-            tension: 0.3,
-          },
-        ],
-      };
-
-      setInvestmentData(chartData);
       setLoading(false);
     } catch (err) {
       setError("Failed to load dashboard data.");
@@ -105,10 +76,6 @@ const Dashboard = () => {
     }
   };
 
-  //Function to refresh dashboard after a new investment is added
-  const handleInvestmentAdded = () => {
-    fetchDashboardData();
-  };
   // fetch dashboard data when Dashboard.jsx component is first rendered.
   useEffect(() => {
     fetchDashboardData();
@@ -127,20 +94,20 @@ const Dashboard = () => {
       <div className="row">
         {/* Left Column: Savings & Transactions */}
         <div className="col-md-4">
-          <div className="card shadow-lg p-3 mb-4 rounded">
+          <div className="card">
             <SavingsSummary savings={savings} />
           </div>
-          <div className="card shadow-lg p-3 mb-4 rounded">
+          <div className="card">
             <RecentTransactions transactions={transactions} />
           </div>
         </div>
 
         {/* Right Column: Portfolio & Chart */}
         <div className="col-md-8">
-          <div className="card shadow-lg p-3 mb-4 rounded">
+          <div className="card">
             <PortfolioAllocation portfolio={portfolio} savings={savings} />
           </div>
-          <div className="card shadow-lg p-3 mb-4 rounded">
+          <div className="card">
             <InvestmentChart data={investmentData} />
           </div>
         </div>
@@ -148,9 +115,9 @@ const Dashboard = () => {
 
       {/* Add Investment Section */}
       <div className="text-center mt-4">
-        <div className="card shadow-lg p-3">
+        <div className="card">
           <h4 className="text-success">💰 Grow Your Investments</h4>
-          <AddInvestmentForm onInvestmentAdded={handleInvestmentAdded} />
+          <AddInvestmentForm onInvestmentAdded={fetchDashboardData} />
         </div>
       </div>
     </div>

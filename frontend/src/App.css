@@ -20,7 +20,7 @@
 .chart-container {
   padding: 15px !important;
   margin-bottom: 15px !important;
-  background-color: rgba(138, 242, 227, 0.875) !important; /* Light green */
+  background-color: rgba(131, 245, 159, 0.257) !important; /* Light green */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
   width: 100%;
   max-width: 900px; /* Ensures it doesn’t become too wide */
@@ -30,8 +30,4 @@
 
 .text-danger {
   color: #e74c3c;
-}
-
-.shadow-lg {
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
 }
