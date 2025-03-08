@@ -4,13 +4,16 @@ from collections import defaultdict
 
 
 class InvestmentSerializer(serializers.ModelSerializer):
-    growth = serializers.SerializerMethodField()  #computed field that provides data for investment growth chart.
+    growth = (
+        serializers.SerializerMethodField()
+    )  # computed field that provides data for investment growth chart.
 
     class Meta:
         model = Investment
         fields = ["id", "portfolio_name", "allocated_amount", "created_at", "growth"]
         read_only_fields = ["id", "created_at"]
-    #compute the growth data for the investment
+
+    # compute the growth data for the investment
     def get_growth(self, obj):
         # Handle both model instances and validated_data dictionaries
         if isinstance(obj, dict):
@@ -20,7 +23,9 @@ class InvestmentSerializer(serializers.ModelSerializer):
             user = obj.user
             portfolio_name = obj.portfolio_name
         # Get all investments for this user & portfolio
-        investments = Investment.objects.filter(user=user, portfolio_name=portfolio_name).order_by("created_at")
+        investments = Investment.objects.filter(
+            user=user, portfolio_name=portfolio_name
+        ).order_by("created_at")
         # Sum up the total amount invested for each day
         growth_data = defaultdict(float)
         for investment in investments:
