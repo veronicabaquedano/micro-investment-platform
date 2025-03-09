@@ -67,47 +67,67 @@ class InvestmentGrowthView(APIView):
         total_growth = 0
         total_invested = 0
         investment_map = {}
-    
-        #Store Actual Investments in a Dictionary
+
+        # Store Actual Investments in a Dictionary
         for investment in investments:
             date_label = investment.created_at.strftime("%Y-%m-%d")
-            investment_map[date_label] = investment_map.get(date_label, 0) + float(investment.allocated_amount)
+            investment_map[date_label] = investment_map.get(date_label, 0) + float(
+                investment.allocated_amount
+            )
 
-        #Generate & Process Investment Data
+        # Generate & Process Investment Data
         current_mock_investment = 100.0  # Start with a base investment
         current_date = start_date
 
-
-        while current_date <= datetime.now() + timedelta(days=7):  # Extend 1 week into the future
+        while current_date <= datetime.now() + timedelta(
+            days=7
+        ):  # Extend 1 week into the future
             date_label = current_date.strftime("%Y-%m-%d")  # Example: "2025-02-05"
             labels.append(date_label)
-            
+
             # Add real investments or mock investments if none exist
-            investment_today = investment_map.get(date_label, round(current_mock_investment, 2))
-            
+            investment_today = investment_map.get(
+                date_label, round(current_mock_investment, 2)
+            )
+
             # Ensure today's investment is included if missing
-            if date_label == datetime.now().strftime("%Y-%m-%d") and date_label not in investment_map:
+            if (
+                date_label == datetime.now().strftime("%Y-%m-%d")
+                and date_label not in investment_map
+            ):
                 latest_investment = investments.last()
                 if latest_investment:
-                    investment_today = round(float(latest_investment.allocated_amount), 2)
-                    investment_map[date_label] = investment_today  # Store today's investment
-            
-            investment_variation = random.uniform(-2, 5)  # Small fluctuations in cash flow
+                    investment_today = round(
+                        float(latest_investment.allocated_amount), 2
+                    )
+                    investment_map[date_label] = (
+                        investment_today  # Store today's investment
+                    )
+
+            investment_variation = random.uniform(
+                -2, 5
+            )  # Small fluctuations in cash flow
             total_invested += round(investment_today + investment_variation, 2)
 
             # Increase mock investment slightly for the next cycle
             current_mock_investment += random.uniform(5, 20)
-            
+
             # Ensure growth starts from the first investment (remove early zeros)
             if total_invested > 0 and total_growth == 0:
-                total_growth = total_invested  # Set growth to match invested amount initially
-            
+                total_growth = (
+                    total_invested  # Set growth to match invested amount initially
+                )
+
             # Ensure investments increase over time
             if total_invested > 0:
                 # Simulate stock market fluctuations
-                random_factor = random.uniform(-0.05, 0.1)  # Market fluctuates -5% to +10% per week
-                total_growth *= (1 + random_factor)
-                total_growth = max(total_growth, total_invested * 0.85)  # Prevent unrealistic crashes
+                random_factor = random.uniform(
+                    -0.05, 0.1
+                )  # Market fluctuates -5% to +10% per week
+                total_growth *= 1 + random_factor
+                total_growth = max(
+                    total_growth, total_invested * 0.85
+                )  # Prevent unrealistic crashes
             else:
                 total_growth = total_invested
 
