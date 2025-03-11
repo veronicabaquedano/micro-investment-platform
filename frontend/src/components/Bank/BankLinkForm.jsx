@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 // BankLinkForm component allows users to link their bank account
+//onLinkAccount is a callback function that will be called when form is submitted
 const BankLinkForm = ({ onLinkAccount }) => {
   // State variables to store form input values
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [routingNumber, setRoutingNumber] = useState("");
-  const [error, setError] = useState(null); // State variable to store error messages
+  // State variable to store error messages
+  const [error, setError] = useState(null);
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
@@ -31,7 +33,8 @@ const BankLinkForm = ({ onLinkAccount }) => {
             type="text"
             className="form-control"
             value={bankName}
-            onChange={(e) => setBankName(e.target.value)} // Update bankName state on input change
+            /*update bankName state on input change*/
+            onChange={(e) => setBankName(e.target.value)}
             required
           />
         </div>
@@ -41,7 +44,8 @@ const BankLinkForm = ({ onLinkAccount }) => {
             type="text"
             className="form-control"
             value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value)} // Update accountNumber state on input change
+            /*update accountNumber state on input change*/
+            onChange={(e) => setAccountNumber(e.target.value)}
             required
           />
         </div>
@@ -51,7 +55,8 @@ const BankLinkForm = ({ onLinkAccount }) => {
             type="text"
             className="form-control"
             value={routingNumber}
-            onChange={(e) => setRoutingNumber(e.target.value)} // Update routingNumber state on input change
+            /*update routingNumber state on input change*/
+            onChange={(e) => setRoutingNumber(e.target.value)}
             required
           />
         </div>
