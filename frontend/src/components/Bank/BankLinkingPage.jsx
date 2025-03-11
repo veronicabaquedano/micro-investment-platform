@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import BankLinkForm from "./BankLinkForm";
 
 const BankLinkingPage = () => {
-  // State to store linked bank account details
-  const [linkedAccounts, setLinkedAccounts] = useState([]); //Stores accounts in array instead of single object.
+  // State to store linked bank account details (in array instead of single object)
+  const [linkedAccounts, setLinkedAccounts] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [viewingIndex, setViewingIndex] = useState(null); // Track which account is being viewed
+  // Track which account is being viewed
+  const [viewingIndex, setViewingIndex] = useState(null);
 
   //Retrieves accounts from local storage when the page loads
   useEffect(() => {
@@ -16,6 +17,7 @@ const BankLinkingPage = () => {
   }, []);
 
   //Handles linking a new bank account. Saves to state and local storage.
+  //accountDetails used to store and pass details of new bank account to be linked.
   const onLinkAccount = (accountDetails) => {
     try {
       //Adds a new account to the array (instead of replacing the existing one)
@@ -31,7 +33,7 @@ const BankLinkingPage = () => {
     }
   };
 
-  // Handles removing a linked account
+  // Handles removing a linked account. index is position of the account in the array
   const removeAccount = (index) => {
     //Removes the account from both state and local storage
     const updatedAccounts = linkedAccounts.filter((_, i) => i !== index);
