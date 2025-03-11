@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -153,3 +155,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  #Allow frontend origin
 ]
 CSRF_COOKIE_SECURE = False  #Ensure CSRF cookies are accessible in development
+
+load_dotenv()  # Load environment variables from .env file
+
+BANK_ENCRYPTION_KEY = os.getenv("BANK_ENCRYPTION_KEY")
+
+if not BANK_ENCRYPTION_KEY:
+    raise ValueError("Missing BANK_ENCRYPTION_KEY in .env file")
