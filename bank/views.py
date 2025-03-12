@@ -36,12 +36,8 @@ class BankAccountView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def delete(self, request):
+    def delete(self, request, account_id):
         """Delete a specific bank account by ID if it belongs to the authenticated user."""
-        account_id = request.data.get("id")  # Get account ID from request
-        if not account_id:
-            return Response({"error": "Bank account ID is required."}, status=status.HTTP_400_BAD_REQUEST)
-
         try:
             bank_account = BankAccount.objects.get(id=account_id, user=request.user)  # Ensure it belongs to the user
             bank_account.delete()
