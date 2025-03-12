@@ -26,4 +26,6 @@ urlpatterns = [
     ),  # Transaction-related endpoints
     path("savings/", include("savings.urls")),  # Include the Savings app's URLs
     path("portfolio/", include("portfolio.urls")),  # Portfolio allocation endpoint
+    path("bank/", include("bank.urls")),  # Bank account-related endpoints
+
 ]
