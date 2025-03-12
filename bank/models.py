@@ -3,11 +3,8 @@ from django.conf import settings
 from cryptography.fernet import Fernet
 import base64
 import os
-# Generate a secret key for encryption (Run once and store securely)
-# key = Fernet.generate_key()
-# print(key.decode())  # Save this key securely
 
-SECRET_KEY = os.getenv("BANK_ENCRYPTION_KEY")  # Store this securely in environment variables
+SECRET_KEY = os.getenv("BANK_ENCRYPTION_KEY") # Key used to encrypt/decrypt account and routing numbers
 cipher_suite = Fernet(SECRET_KEY.encode())
 
 class BankAccount(models.Model):
@@ -36,4 +33,4 @@ class BankAccount(models.Model):
         return cipher_suite.decrypt(self.encrypted_routing_number).decode()
 
     def __str__(self):
-        return f"{self.bank_name} - ****{self.get_decrypted_account_number()[-4:]}"  # Mask account number
+        return f"{self.bank_name} - ****{self.get_decrypted_account_number()[-4:]}"  # Mask first 4 account numbers
