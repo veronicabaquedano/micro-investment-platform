@@ -26,21 +26,26 @@ class BankAccountView(APIView):
             existing_accounts = BankAccount.objects.filter(
                 user=request.user,
                 bank_name=serializer.validated_data["bank_name"],
-                encrypted_account_number = BankAccount.encrypt_data(serializer.validated_data["account_number"])
             )
             if existing_accounts.exists():
                 return Response({"error": "This bank account is already linked."}, status=status.HTTP_400_BAD_REQUEST)
-
-            serializer.save(user=request.user)  # Save the new account
+            
+            serializer.save(user=request.user)  # Save using serializer (which handles encryption)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, account_id):
         """Delete a specific bank account by ID if it belongs to the authenticated user."""
+        user_accounts = BankAccount.objects.filter(user=request.user)
+        # Prevent deleting the last linked account
         try:
-            bank_account = BankAccount.objects.get(id=account_id, user=request.user)  # Ensure it belongs to the user
+            bank_account = user_accounts.get(id=account_id)  # Ensure it belongs to the user
+            # Check if it's the last remaining account
+            if user_accounts.count() == 1:
+                return Response({"error": "You must have at least one linked bank account."}, status=status.HTTP_400_BAD_REQUEST)
             bank_account.delete()
             return Response({"message": "Bank account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        
         except BankAccount.DoesNotExist:
             return Response({"error": "Bank account not found."}, status=status.HTTP_404_NOT_FOUND)

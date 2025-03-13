@@ -56,12 +56,30 @@ class BankAccountTests(TestCase):
         self.assertEqual(BankAccount.objects.count(), 5)  # Should still be 5
 
     def test_delete_bank_account(self):
-        """Test deleting a bank account"""
-        post_response = self.client.post("/bank/", self.bank_data, format="json")  # Add an account
-        account_id = post_response.data["id"]  # Get the created account's ID
-        delete_response = self.client.delete(f"/bank/{account_id}/")  # Delete account
+        """Test deleting a bank account, allowing deletion unless it's the last one."""
+        # Add two bank accounts to ensure deletion is possible
+        self.client.post("/bank/", self.bank_data, format="json")
+        second_account_data = {
+            "bank_name": "Second Bank",
+            "account_number": "222222222",
+            "routing_number": "333333333"
+        }
+        self.client.post("/bank/", second_account_data, format="json")
+
+        # Retrieve the list of bank accounts
+        response = self.client.get("/bank/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)  # Ensure two accounts exist
+
+        # Delete one account (should succeed)
+        account_id = response.data[0]["id"]
+        delete_response = self.client.delete(f"/bank/{account_id}/")
         self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(BankAccount.objects.count(), 0)  # No accounts should remain
+
+        # Try deleting the last remaining account (should fail with 400)
+        last_account_id = response.data[1]["id"]
+        final_delete_response = self.client.delete(f"/bank/{last_account_id}/")
+        self.assertEqual(final_delete_response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_non_existent_account(self):
         """Test deleting a non-existent bank account should return 404"""
