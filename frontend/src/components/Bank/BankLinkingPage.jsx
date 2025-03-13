@@ -52,15 +52,22 @@ const BankLinkingPage = () => {
 
   // Function to remove a linked bank account
   const removeAccount = async (accountId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this bank account?"
+    );
+    if (!confirmDelete) return; // Stop if user cancels
+
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`http://127.0.0.1:8000/bank/${accountId}/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      // Remove account from state
+      //Remove from UI after successful deletion
       setLinkedAccounts(
         linkedAccounts.filter((account) => account.id !== accountId)
       );
+      setSuccessMessage("Bank account deleted successfully!");
+      setErrorMessage("");
     } catch (error) {
       setErrorMessage("Failed to remove bank account.");
     }
