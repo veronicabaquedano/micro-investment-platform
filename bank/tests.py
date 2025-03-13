@@ -63,3 +63,17 @@ class BankAccountTests(TestCase):
         self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(BankAccount.objects.count(), 0)  # No accounts should remain
 
+    def test_delete_non_existent_account(self):
+        """Test deleting a non-existent bank account should return 404"""
+        response = self.client.delete("/bank/9999/")  # ID that doesn’t exist
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn("Bank account not found.", response.data["error"])
+
+    def test_prevent_deleting_last_account(self):
+        """Test that the last bank account cannot be deleted"""
+        post_response = self.client.post("/bank/", self.bank_data, format="json")  # Add an account
+        account_id = post_response.data["id"]
+
+        delete_response = self.client.delete(f"/bank/{account_id}/")  # Attempt to delete last account
+        self.assertEqual(delete_response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("You must have at least one linked bank account.", delete_response.data["error"])

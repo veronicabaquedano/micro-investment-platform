@@ -26,7 +26,7 @@ class BankAccountView(APIView):
             existing_accounts = BankAccount.objects.filter(
                 user=request.user,
                 bank_name=serializer.validated_data["bank_name"],
-                encrypted_account_number=serializer.validated_data["account_number"],  # Encrypted in save()
+                encrypted_account_number = BankAccount.encrypt_data(serializer.validated_data["account_number"])
             )
             if existing_accounts.exists():
                 return Response({"error": "This bank account is already linked."}, status=status.HTTP_400_BAD_REQUEST)
