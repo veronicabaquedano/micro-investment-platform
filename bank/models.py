@@ -4,8 +4,11 @@ from cryptography.fernet import Fernet
 import base64
 import os
 
-SECRET_KEY = os.getenv("BANK_ENCRYPTION_KEY") # Key used to encrypt/decrypt account and routing numbers
+SECRET_KEY = os.getenv(
+    "BANK_ENCRYPTION_KEY"
+)  # Key used to encrypt/decrypt account and routing numbers
 cipher_suite = Fernet(SECRET_KEY.encode())
+
 
 class BankAccount(models.Model):
     user = models.ForeignKey(
@@ -14,14 +17,20 @@ class BankAccount(models.Model):
     bank_name = models.CharField(max_length=255)
     encrypted_account_number = models.BinaryField()
     encrypted_routing_number = models.BinaryField()
-    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for when the account was linked
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )  # Timestamp for when the account was linked
 
     def save(self, *args, **kwargs):
         """Encrypts account and routing numbers before saving"""
         if isinstance(self.encrypted_account_number, str):
-            self.encrypted_account_number = cipher_suite.encrypt(self.encrypted_account_number.encode())
+            self.encrypted_account_number = cipher_suite.encrypt(
+                self.encrypted_account_number.encode()
+            )
         if isinstance(self.encrypted_routing_number, str):
-            self.encrypted_routing_number = cipher_suite.encrypt(self.encrypted_routing_number.encode())
+            self.encrypted_routing_number = cipher_suite.encrypt(
+                self.encrypted_routing_number.encode()
+            )
         super().save(*args, **kwargs)
 
     def get_decrypted_account_number(self):
