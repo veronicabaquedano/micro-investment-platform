@@ -22,6 +22,14 @@ const BankLinkingPage = () => {
       const response = await axios.get("http://127.0.0.1:8000/bank/", {
         headers: { Authorization: `Bearer ${token}` },
       });
+      // Adjust API response to match frontend expectations
+      const formattedAccounts = response.data.map((account) => ({
+        id: account.id,
+        bank_name: account.bank_name,
+        account_number: account.decrypted_account_number, // Fix name
+        routing_number: account.decrypted_routing_number, // Fix name
+        created_at: account.created_at,
+      }));
       setLinkedAccounts(response.data);
     } catch (error) {
       setErrorMessage("Failed to load linked accounts.");

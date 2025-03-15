@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import BankAccount
 
+
 class BankAccountSerializer(serializers.ModelSerializer):
     # Accept account_number and routing_number when creating a bank account
     account_number = serializers.CharField(write_only=True)  # Input only
@@ -12,8 +13,21 @@ class BankAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BankAccount
-        fields = ["id", "bank_name", "account_number", "routing_number", "decrypted_account_number", "decrypted_routing_number", "created_at"]
-        read_only_fields = ["id", "created_at", "decrypted_account_number", "decrypted_routing_number"]
+        fields = [
+            "id",
+            "bank_name",
+            "account_number",
+            "routing_number",
+            "decrypted_account_number",
+            "decrypted_routing_number",
+            "created_at",
+        ]
+        read_only_fields = [
+            "id",
+            "created_at",
+            "decrypted_account_number",
+            "decrypted_routing_number",
+        ]
 
     def get_decrypted_account_number(self, obj):
         """Return decrypted account number"""
@@ -27,8 +41,9 @@ class BankAccountSerializer(serializers.ModelSerializer):
         """Encrypt account and routing numbers before saving"""
         return BankAccount.objects.create(
             user=self.context["request"].user,
-            encrypted_account_number=validated_data["account_number"],  # Will be encrypted in save()
+            encrypted_account_number=validated_data[
+                "account_number"
+            ],  # Will be encrypted in save()
             encrypted_routing_number=validated_data["routing_number"],
-            bank_name=validated_data["bank_name"]
+            bank_name=validated_data["bank_name"],
         )
-
