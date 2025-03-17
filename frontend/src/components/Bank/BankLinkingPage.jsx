@@ -30,8 +30,10 @@ const BankLinkingPage = () => {
         routing_number: account.decrypted_routing_number, // Fix name
         created_at: account.created_at,
       }));
-      setLinkedAccounts(response.data);
+      console.log("Formatted linked accounts:", formattedAccounts); // Debugging log
+      setLinkedAccounts(formattedAccounts);
     } catch (error) {
+      console.error("Error fetching accounts:", error.response?.data || error); //debugging
       setErrorMessage("Failed to load linked accounts.");
     }
   };
@@ -39,6 +41,7 @@ const BankLinkingPage = () => {
   // Function to handle linking a new bank account
   const onLinkAccount = async (accountDetails) => {
     try {
+      console.log("Data being sent to backend:", accountDetails); // Debugging line
       const token = localStorage.getItem("token");
       const response = await axios.post(
         "http://127.0.0.1:8000/bank/",
@@ -80,6 +83,7 @@ const BankLinkingPage = () => {
       setErrorMessage("Failed to remove bank account.");
     }
   };
+  console.log("Current linked accounts state:", linkedAccounts); // Debugging log
 
   return (
     <div className="container mt-4">
@@ -108,7 +112,9 @@ const BankLinkingPage = () => {
                 >
                   <span>
                     <strong>{account.bank_name}</strong> - ****
-                    {account.account_number.slice(-4)}
+                    {account.account_number
+                      ? account.account_number.slice(-4)
+                      : "XXXX"}
                   </span>
                   <div>
                     {/* Toggle View Button */}
