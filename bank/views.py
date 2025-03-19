@@ -15,6 +15,8 @@ class BankAccountView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):
+        print("Authenticated user:", request.user) # Debugging
+        print("Received data from frontend:", request.data)  # Debugging
         """Add a new bank account for the authenticated user, ensuring no duplicates and limiting to 5 accounts."""
         # Check if the user has reached the limit of linked accounts (5 max)
         if BankAccount.objects.filter(user=request.user).count() >= 5:
@@ -27,8 +29,9 @@ class BankAccountView(APIView):
                 user=request.user,
                 bank_name=serializer.validated_data["bank_name"],
             )
-            if existing_accounts.exists():
-                return Response({"error": "This bank account is already linked."}, status=status.HTTP_400_BAD_REQUEST)
+            for account in existing_accounts:
+                if account.get_decrypted_account_number() == serializer.validated_data["account_number"]:
+                    return Response({"error": "This bank account is already linked."}, status=status.HTTP_400_BAD_REQUEST)
             
             serializer.save(user=request.user)  # Save using serializer (which handles encryption)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

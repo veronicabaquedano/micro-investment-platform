@@ -25,23 +25,27 @@ const BankLinkForm = ({ onLinkAccount }) => {
 
     try {
       const token = localStorage.getItem("token");
+      const requestData = {
+        bank_name: bankName,
+        account_number: accountNumber,
+        routing_number: routingNumber,
+      };
+      console.log("Data being sent to backend:", requestData); // debug
+
       const response = await axios.post(
         "http://127.0.0.1:8000/bank/",
-        {
-          bank_name: bankName,
-          account_number: accountNumber,
-          routing_number: routingNumber,
-        },
+        requestData,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
+      console.log("Response from backend:", response.data); //debug
       onLinkAccount(response.data); // Update parent component with new account
       setBankName("");
       setAccountNumber("");
       setRoutingNumber("");
     } catch (error) {
+      console.log("Error response from backend:", error.response?.data); // debug
       setError(error.response?.data?.error || "Failed to link bank account.");
     }
 

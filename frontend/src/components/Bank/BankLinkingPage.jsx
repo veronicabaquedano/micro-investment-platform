@@ -30,35 +30,19 @@ const BankLinkingPage = () => {
         routing_number: account.decrypted_routing_number, // Fix name
         created_at: account.created_at,
       }));
-      console.log("Formatted linked accounts:", formattedAccounts); // Debugging log
       setLinkedAccounts(formattedAccounts);
     } catch (error) {
-      console.error("Error fetching accounts:", error.response?.data || error); //debugging
       setErrorMessage("Failed to load linked accounts.");
     }
   };
 
   // Function to handle linking a new bank account
-  const onLinkAccount = async (accountDetails) => {
-    try {
-      console.log("Data being sent to backend:", accountDetails); // Debugging line
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://127.0.0.1:8000/bank/",
-        accountDetails,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      // Update state with new accounts
-      setLinkedAccounts([...linkedAccounts, response.data]);
-      setSuccessMessage("Bank account linked successfully!");
-      setErrorMessage("");
-    } catch (error) {
-      setErrorMessage(
-        error.response?.data?.error || "Failed to link bank account."
-      );
-    }
+  const onLinkAccount = async (newAccount) => {
+    console.log("Received new account from form:", newAccount); // Debug
+    setLinkedAccounts((prevAccounts) => [...prevAccounts, newAccount]);
+    await fetchLinkedAccounts(); // Ensures the UI updates properly
+    setSuccessMessage("Bank account linked successfully!");
+    setErrorMessage("");
   };
 
   // Function to remove a linked bank account
@@ -83,7 +67,6 @@ const BankLinkingPage = () => {
       setErrorMessage("Failed to remove bank account.");
     }
   };
-  console.log("Current linked accounts state:", linkedAccounts); // Debugging log
 
   return (
     <div className="container mt-4">
