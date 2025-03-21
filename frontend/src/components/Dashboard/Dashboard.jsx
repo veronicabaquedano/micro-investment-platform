@@ -90,7 +90,7 @@ const Dashboard = () => {
   //No inline styles, just Bootstrap classes
   return (
     <div className="container mt-4">
-      <h2 className="text-center mb-4 text-primary">📊 Investment Dashboard</h2>
+      <h2 className="text-center mb-4 text-primary">Investment Dashboard</h2>
       <div className="row">
         {/* Left Column: Savings & Transactions */}
         <div className="col-md-4">
@@ -116,7 +116,7 @@ const Dashboard = () => {
       {/* Add Investment Section */}
       <div className="text-center mt-4">
         <div className="card">
-          <h4 className="text-success">💰 Grow Your Investments</h4>
+          <h4 className="text-success">Grow Your Investments</h4>
           <AddInvestmentForm onInvestmentAdded={fetchDashboardData} />
         </div>
       </div>

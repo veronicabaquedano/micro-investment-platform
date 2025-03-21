@@ -64,7 +64,16 @@ const BankLinkingPage = () => {
       setSuccessMessage("Bank account deleted successfully!");
       setErrorMessage("");
     } catch (error) {
-      setErrorMessage("Failed to remove bank account.");
+      console.log("Error deleting account:", error.response?.data); // Debugging log
+      // Check if the error message matches our "last account" rule
+      if (
+        error.response?.data?.error ===
+        "You must have at least one linked bank account."
+      ) {
+        setErrorMessage("Cannot delete your last linked bank account!");
+      } else {
+        setErrorMessage("Failed to remove bank account.");
+      }
     }
   };
 
@@ -86,7 +95,7 @@ const BankLinkingPage = () => {
         {/* Display Linked Bank Accounts */}
         {linkedAccounts.length > 0 && (
           <div className="mt-4">
-            <h4 className="text-success">✅ Linked Bank Accounts</h4>
+            <h4 className="text-success">Linked Bank Accounts</h4>
             <ul className="list-group">
               {linkedAccounts.map((account, index) => (
                 <li

@@ -40,15 +40,26 @@ class BankAccountView(APIView):
     
     def delete(self, request, account_id):
         """Delete a specific bank account by ID if it belongs to the authenticated user."""
-        user_accounts = BankAccount.objects.filter(user=request.user)
-        # Prevent deleting the last linked account
         try:
-            bank_account = user_accounts.get(id=account_id)  # Ensure it belongs to the user
-            # Check if it's the last remaining account
+            # Get all bank accounts for this user
+            user_accounts = BankAccount.objects.filter(user=request.user)
+
+            # Debugging logs
+            print(f"👤 User: {request.user.email}")
+            print(f"🔢 Total linked accounts: {user_accounts.count()}")
+
             if user_accounts.count() == 1:
-                return Response({"error": "You must have at least one linked bank account."}, status=status.HTTP_400_BAD_REQUEST)
+                print("🚨 Cannot delete last linked account!")  # Debugging log
+                return Response(
+                    {"error": "You must have at least one linked bank account."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            bank_account = user_accounts.get(id=account_id)
             bank_account.delete()
             return Response({"message": "Bank account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
-        
+
         except BankAccount.DoesNotExist:
+            print("⚠️ Bank account not found!")  # Debugging log
             return Response({"error": "Bank account not found."}, status=status.HTTP_404_NOT_FOUND)
+
