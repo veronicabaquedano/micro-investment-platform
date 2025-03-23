@@ -44,12 +44,7 @@ class BankAccountView(APIView):
             # Get all bank accounts for this user
             user_accounts = BankAccount.objects.filter(user=request.user)
 
-            # Debugging logs
-            print(f"👤 User: {request.user.email}")
-            print(f"🔢 Total linked accounts: {user_accounts.count()}")
-
             if user_accounts.count() == 1:
-                print("🚨 Cannot delete last linked account!")  # Debugging log
                 return Response(
                     {"error": "You must have at least one linked bank account."},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -60,6 +55,5 @@ class BankAccountView(APIView):
             return Response({"message": "Bank account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
         except BankAccount.DoesNotExist:
-            print("⚠️ Bank account not found!")  # Debugging log
             return Response({"error": "Bank account not found."}, status=status.HTTP_404_NOT_FOUND)
 

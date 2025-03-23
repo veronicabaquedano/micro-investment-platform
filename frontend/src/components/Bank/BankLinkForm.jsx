@@ -20,6 +20,22 @@ const BankLinkForm = ({ onLinkAccount }) => {
       return;
     }
 
+    // Ensure account number is numeric and has 6-17 digits
+    const accountNumberRegex = /^\d{6,17}$/;
+    if (!accountNumberRegex.test(accountNumber)) {
+      setError(
+        "Account number must be between 6 and 17 digits and contain only numbers."
+      );
+      return;
+    }
+
+    // Ensure routing number is exactly 9 digits
+    const routingNumberRegex = /^\d{9}$/;
+    if (!routingNumberRegex.test(routingNumber)) {
+      setError("Routing number must be exactly 9 digits.");
+      return;
+    }
+
     setError(null); // Clear any previous error messages
     setLoading(true); // Set loading state
 
@@ -30,7 +46,6 @@ const BankLinkForm = ({ onLinkAccount }) => {
         account_number: accountNumber,
         routing_number: routingNumber,
       };
-      console.log("Data being sent to backend:", requestData); // debug
 
       const response = await axios.post(
         "http://127.0.0.1:8000/bank/",
@@ -39,13 +54,11 @@ const BankLinkForm = ({ onLinkAccount }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Response from backend:", response.data); //debug
       onLinkAccount(response.data); // Update parent component with new account
       setBankName("");
       setAccountNumber("");
       setRoutingNumber("");
     } catch (error) {
-      console.log("Error response from backend:", error.response?.data); // debug
       setError(error.response?.data?.error || "Failed to link bank account.");
     }
 

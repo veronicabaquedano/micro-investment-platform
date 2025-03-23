@@ -38,7 +38,6 @@ const BankLinkingPage = () => {
 
   // Function to handle linking a new bank account
   const onLinkAccount = async (newAccount) => {
-    console.log("Received new account from form:", newAccount); // Debug
     setLinkedAccounts((prevAccounts) => [...prevAccounts, newAccount]);
     await fetchLinkedAccounts(); // Ensures the UI updates properly
     setSuccessMessage("Bank account linked successfully!");
@@ -64,7 +63,6 @@ const BankLinkingPage = () => {
       setSuccessMessage("Bank account deleted successfully!");
       setErrorMessage("");
     } catch (error) {
-      console.log("Error deleting account:", error.response?.data); // Debugging log
       // Check if the error message matches our "last account" rule
       if (
         error.response?.data?.error ===
@@ -79,7 +77,7 @@ const BankLinkingPage = () => {
 
   return (
     <div className="container mt-4">
-      <h2 className="text-center text-primary">🏦 Link Your Bank Account</h2>
+      <h2 className="text-center text-primary">Link Your Bank Account</h2>
       <div className="card shadow-lg p-4">
         {/* Display Success or Error Messages */}
         {successMessage && (
@@ -132,7 +130,7 @@ const BankLinkingPage = () => {
             {/* Display Account Details when "View" is clicked */}
             {viewingIndex !== null && (
               <div className="mt-3 p-3 border rounded bg-light">
-                <h5>🔍 Account Details</h5>
+                <h5>Account Details</h5>
                 <p>
                   <strong>Bank Name:</strong>{" "}
                   {linkedAccounts[viewingIndex].bank_name}

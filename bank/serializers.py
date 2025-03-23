@@ -47,3 +47,20 @@ class BankAccountSerializer(serializers.ModelSerializer):
             encrypted_routing_number=validated_data["routing_number"],
             bank_name=validated_data["bank_name"],
         )
+        
+    def validate_account_number(self, value):
+        """Ensure account number is numeric and 6-17 digits long"""
+        if not value.isdigit():
+            raise serializers.ValidationError("Account number must contain only digits.")
+        if not 6 <= len(value) <= 17:
+            raise serializers.ValidationError("Account number must be between 6 and 17 digits.")
+        return value
+
+    def validate_routing_number(self, value):
+        """Ensure routing number is exactly 9 digits"""
+        if not value.isdigit():
+            raise serializers.ValidationError("Routing number must contain only digits.")
+        if len(value) != 9:
+            raise serializers.ValidationError("Routing number must be exactly 9 digits.")
+        return value
+
