@@ -152,9 +152,9 @@ REST_FRAMEWORK = {
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  #Allow frontend origin
+    "http://localhost:3000",  # Allow frontend origin
 ]
-CSRF_COOKIE_SECURE = False  #Ensure CSRF cookies are accessible in development
+CSRF_COOKIE_SECURE = False  # Ensure CSRF cookies are accessible in development
 
 load_dotenv()  # Load environment variables from .env file
 
