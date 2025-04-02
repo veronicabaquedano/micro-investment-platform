@@ -4,6 +4,7 @@ from rest_framework.exceptions import NotFound
 from .models import Savings
 from .serializers import SavingsSerializer
 
+
 class SavingsDetailView(generics.RetrieveAPIView):
     serializer_class = SavingsSerializer
     permission_classes = [IsAuthenticated]
