@@ -4,10 +4,18 @@ import random
 
 # List of sample transaction descriptions
 TRANSACTION_DESCRIPTIONS = [
-    "Coffee shop purchase", "Grocery store", "Online subscription",
-    "ATM withdrawal", "Dining out", "Gas station", "Retail purchase",
-    "Utility bill payment", "Gym membership", "Streaming service payment"
+    "Coffee shop purchase",
+    "Grocery store",
+    "Online subscription",
+    "ATM withdrawal",
+    "Dining out",
+    "Gas station",
+    "Retail purchase",
+    "Utility bill payment",
+    "Gym membership",
+    "Streaming service payment",
 ]
+
 
 # represents structure of transaction table in db
 class Transaction(models.Model):
@@ -25,7 +33,7 @@ class Transaction(models.Model):
     class Meta:
         # order by timestamp descending
         ordering = ["-timestamp"]
-        
+
     def save(self, *args, **kwargs):
         """Assign a random description if none is provided."""
         if not self.description:
