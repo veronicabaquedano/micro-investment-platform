@@ -8,7 +8,6 @@ import random
 from .models import TRANSACTION_DESCRIPTIONS
 
 
-
 class TransactionView(APIView):
     permission_classes = [IsAuthenticated]  # User must be logged in
 
@@ -28,7 +27,9 @@ class TransactionView(APIView):
             data["description"] = random.choice(TRANSACTION_DESCRIPTIONS)
 
         # validate and process data provided by user
-        serializer = TransactionSerializer(data=request.data , context={"request": request})
+        serializer = TransactionSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             serializer.save(user=request.user)  # Attach the logged-in user, saves in db
             return Response(serializer.data, status=status.HTTP_201_CREATED)
