@@ -41,7 +41,7 @@ class User(AbstractBaseUser):
     def save(self, *args, **kwargs):
         self.email = self.email.lower()  # Convert email to lowercase before saving
         super().save(*args, **kwargs)
- 
+
     is_active = models.BooleanField(default=True)  # Indicates if the user is active
     is_admin = models.BooleanField(default=False)  # indicates if user is admin
     is_staff = models.BooleanField(default=False)  # Admin access
@@ -56,12 +56,12 @@ class User(AbstractBaseUser):
         return self.email
 
     def has_perm(self, perm, obj=None):
-        if self.is_admin: 
+        if self.is_admin:
             return True
         return False
 
     def has_module_perms(self, app_label):
-        if self.is_admin: 
+        if self.is_admin:
             return True
         return False
 
