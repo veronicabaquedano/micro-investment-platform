@@ -29,14 +29,16 @@ class UserAuthTests(APITestCase):
         response = self.client.post(self.register_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("email", response.data)  # Email validation error
-
+        
     def test_login_success(self):
         # Test successful login
         data = {"email": "testinguser@example.com", "password": "password123"}
         response = self.client.post(self.login_url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("message", response.data)
-        self.assertEqual(response.data["message"], "Login successful")
+        self.assertIn("access", response.data)
+        self.assertIn("refresh", response.data)
+        self.assertEqual(response.data["user"], "testinguser@example.com")
+
 
     def test_login_invalid_credentials(self):
         # Test login with invalid credentials
@@ -74,5 +76,7 @@ class UserAuthTests(APITestCase):
         response = self.client.post(self.login_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("message", response.data)
-        self.assertEqual(response.data["message"], "Login successful")
+        self.assertIn("access", response.data)
+        self.assertIn("refresh", response.data)
+        self.assertEqual(response.data["user"], "testinguser@example.com")
+

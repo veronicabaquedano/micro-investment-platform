@@ -1,4 +1,5 @@
 from rest_framework.test import APITestCase
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from users.models import User
 from transactions.models import Transaction
@@ -7,20 +8,20 @@ from savings.models import Savings
 
 class TransactionTests(APITestCase):
     def setUp(self):
-        # Create a user for testing
+        # Create a test user
         self.user = User.objects.create_user(
             email="testtranuser@example.com", password="testtranpassword"
         )
-        self.client.login(
-            email="testtranuser@example.com", password="testtranpassword"
-        )  # Log in the user
-        # Ensure the user has a savings account with enough balance
+        # Authenticate using JWT token
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        # Create a savings account with initial balance
         self.savings, created = Savings.objects.get_or_create(
             user=self.user, defaults={"total_savings": 500.00}
-        )  # Set an initial balance
-        self.savings.total_savings = 500.00  # Explicitly set balance
+        )
+        self.savings.total_savings = 500.00
         self.savings.save()
-        self.savings.refresh_from_db()  # Ensure latest data is used
+        self.savings.refresh_from_db()
 
     def test_transaction_create_and_list(self):
         # Create a transaction
@@ -66,4 +67,5 @@ class TransactionTests(APITestCase):
         self.client.logout()
         response = self.client.post("/transactions/", {"amount": "100.00"})
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+

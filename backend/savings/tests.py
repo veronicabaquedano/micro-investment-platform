@@ -82,7 +82,8 @@ class SavingsTests(APITestCase):
         self.client.logout()  # Ensure no user is authenticated
         self.client = APIClient()  # Reinitialize the client for a clean state
         response = self.client.get(self.savings_url)  # Perform unauthenticated request
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
     def test_transaction_does_not_reduce_savings_below_zero(self):
         self.authenticate_user1()  # Ensure authentication
@@ -149,4 +150,5 @@ class SavingsTests(APITestCase):
         self.client.logout()
         response = self.client.patch("/savings/", {"total_savings": "1000.00"})
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
