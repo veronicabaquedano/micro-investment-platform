@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from decimal import Decimal
 
 
 class Savings(models.Model):
@@ -8,7 +9,7 @@ class Savings(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="savings"
     )  # User ID links to the user model. It references the id field in the User model.
     total_savings = models.DecimalField(
-        max_digits=10, decimal_places=2, default=0.00
+        max_digits=10, decimal_places=2, default=Decimal("0.00")
     )  # Total amount
     last_updated = models.DateTimeField(auto_now=True)  # Last updated timestamp
 
