@@ -44,9 +44,11 @@ python3 manage.py runserver
 
 ### Frontend Setup
 
+```bash
 cd frontend
 npm install
 npm start
+```
 
 ## Folder Structure
 
