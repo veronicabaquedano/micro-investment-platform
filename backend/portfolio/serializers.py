@@ -37,3 +37,14 @@ class InvestmentSerializer(serializers.ModelSerializer):
             "labels": list(growth_data.keys()),
             "growth": list(growth_data.values()),
         }
+
+    def validate(self, data):
+        user = self.context["request"].user
+        portfolio_name = data.get("portfolio_name")
+
+        if Investment.objects.filter(user=user, portfolio_name=portfolio_name).exists():
+            raise serializers.ValidationError(
+                {"error": "Portfolio with this name already exists"}
+            )
+
+        return data

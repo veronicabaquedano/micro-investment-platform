@@ -70,7 +70,8 @@ class PortfolioTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", response.data)
         self.assertEqual(
-            response.data["error"], "Portfolio with this name already exists"
+            str(response.data["error"][0]),
+            "Portfolio with this name already exists"
         )
 
     def test_user_cannot_access_other_users_portfolio(self):
