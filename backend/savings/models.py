@@ -15,3 +15,4 @@ class Savings(models.Model):
 
     def __str__(self):
         return f"Savings for {self.user.email} - ${self.total_savings}"
+    
