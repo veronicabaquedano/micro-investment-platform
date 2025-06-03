@@ -34,11 +34,28 @@ This is an ongoing personal project simulating a micro-investment and savings pl
 ### Backend Setup
 
 ```bash
+pip install -r requirements.txt
 cd backend
 python3 -m venv env
 source env/bin/activate  # or env\Scripts\activate on Windows
-pip install -r requirements.txt
+
+# Create a .env file in your backend directory with the following content:
+BANK_ENCRYPTION_KEY=your-generated-bank-key
+DJANGO_SECRET_KEY=your-django-secret-key
+
+# Generate your BANK_ENCRYPTION_KEY with:
+python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+
+# Replace your-django-secret-key with a strong, unique value (you can use Django’s secret key generator or similar tools).
+# Do not share your .env file or keys publicly.
+
 python3 manage.py migrate
+# Create a superuser for admin access (follow the prompts):
+python3 manage.py createsuperuser
+
+# (Optional) Populate the Database with Test Data. If you want to add fake/demo data for testing.
+python3 populate_test_data.py
+
 python3 manage.py runserver
 ```
 

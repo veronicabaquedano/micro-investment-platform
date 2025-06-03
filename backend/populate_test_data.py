@@ -11,23 +11,23 @@ from savings.utils import calculate_round_up
 from cryptography.fernet import Fernet
 import os
 
-# 🔌 Disconnect savings signal during test data creation
+# Disconnect savings signal during test data creation
 from django.db.models.signals import post_save
 from savings.signals import update_savings
 post_save.disconnect(update_savings, sender=Transaction)
 
-# 🔁 Clear old data (except superuser)
+# Clear old data (except superuser)
 Transaction.objects.all().delete()
 Investment.objects.all().delete()
 Savings.objects.all().delete()
 BankAccount.objects.all().delete()
 User.objects.exclude(is_admin=True).delete()
 
-# 🔐 Set up encryption for fake bank data
+# Set up encryption for fake bank data
 BANK_ENCRYPTION_KEY = os.getenv("BANK_ENCRYPTION_KEY")
 cipher = Fernet(BANK_ENCRYPTION_KEY.encode())
 
-# 👥 Create test users
+# Create test users
 emails = ["user1@example.com", "user2@example.com", "user3@example.com", "user4@example.com"]
 password = "TestPassword123"
 users = []
@@ -39,9 +39,9 @@ for email in emails:
         user.save()
     users.append(user)
 
-print(f"✅ Created {len(users)} test users.")
+print(f" Created {len(users)} test users.")
 
-# 🏦 Add encrypted bank accounts
+# Add encrypted bank accounts
 for user in users:
     account_number = f"{random.randint(100000000000, 999999999999)}"
     routing_number = f"{random.randint(100000000, 999999999)}"
@@ -56,9 +56,9 @@ for user in users:
             "encrypted_routing_number": encrypted_routing_number
         }
     )
-print("✅ Created encrypted bank accounts.")
+print(" Created encrypted bank accounts.")
 
-# 💰 Create savings + transactions with round-up logic
+# Create savings + transactions with round-up logic
 for user in users:
     savings, _ = Savings.objects.get_or_create(user=user)
 
@@ -76,9 +76,9 @@ for user in users:
 
     savings.save()
 
-print("✅ Added 10 transactions per user with round-up savings.")
+print(" Added 10 transactions per user with round-up savings.")
 
-# 📊 Create portfolio investments
+# Create portfolio investments
 portfolio_options = ["Conservative", "Growth", "Tech Focused", "Balanced"]
 
 for user in users:
@@ -90,7 +90,7 @@ for user in users:
             defaults={"allocated_amount": amount}
         )
 
-print("✅ Portfolio allocations complete.")
+print(" Portfolio allocations complete.")
 
-# 🔌 Reconnect the savings signal
+# Reconnect the savings signal
 post_save.connect(update_savings, sender=Transaction)
