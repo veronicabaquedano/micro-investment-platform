@@ -67,7 +67,7 @@ const BankLinkForm = ({ onLinkAccount }) => {
 
   return (
     <div className="card p-4 shadow-lg">
-      <h4 className="text-primary">🔗 Link Your Bank Account</h4>
+      <h4 className="text-primary">Link Your Bank Account</h4>
       {/* Display error message if any */}
       {error && <p className="text-danger">{error}</p>}
 
