@@ -50,6 +50,7 @@ python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().
 # Do not share your .env file or keys publicly.
 
 python3 manage.py migrate
+
 # Create a superuser for admin access (follow the prompts):
 python3 manage.py createsuperuser
 
