@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, TextField, Button, Typography, Alert, Box } from "@mui/material";
+import { TextField, Button, Typography, Alert, Box, Link } from "@mui/material";
 
 const LoginForm = ({ onLogin }) => {
   // State for email, password, (to store user input) and error messages (handle login failures)
@@ -15,41 +15,48 @@ const LoginForm = ({ onLogin }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 400, mx: "auto", mt: 6, p: 3, boxShadow: 3 }}>
+    <Box component="form" onSubmit={handleSubmit}>
       <Typography variant="h5" align="center" gutterBottom>
-        Login
+        Login to your account
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-        <TextField
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          fullWidth
-          margin="normal"
-          required
-        />
-        <TextField
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          fullWidth
-          margin="normal"
-          required
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Login
-        </Button>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+      <TextField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <TextField
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        sx={{ mt: 2, mb: 1 }}
+      >
+        Login
+      </Button>
+      <Box textAlign="right">
+        <Link href="#" variant="body2" underline="hover">
+          Forgot password?
+        </Link>
       </Box>
-    </Card>
+    </Box>
   );
 };
 

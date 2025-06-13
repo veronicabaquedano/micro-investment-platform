@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { TextField, Button, Typography, Alert, Box } from "@mui/material";
 
 const SignupForm = ({ onSignup }) => {
   // State for user input fields
@@ -28,13 +29,10 @@ const SignupForm = ({ onSignup }) => {
 
     try {
       // Send signup request to backend
-      const response = await axios.post(
-        "http://127.0.0.1:8000/users/register/",
-        {
-          email,
-          password,
-        }
-      );
+      await axios.post("http://127.0.0.1:8000/users/register/", {
+        email,
+        password,
+      });
 
       // Set success message and switch to login form
       alert("Signup successful! Please log in.");
@@ -61,54 +59,60 @@ const SignupForm = ({ onSignup }) => {
   };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(e);
-      }}
-    >
-      {error && <p className="text-danger">{error}</p>}
-
-      <div className="mb-3">
-        <label>Email:</label>
-        <input
-          type="email"
-          className="form-control"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        {!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email !== "" && (
-          <p className="text-danger">Please enter a valid email address.</p>
-        )}
-      </div>
-
-      <div className="mb-3">
-        <label>Password:</label>
-        <input
-          type="password"
-          className="form-control"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className="mb-3">
-        <label>Confirm Password:</label>
-        <input
-          type="password"
-          className="form-control"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-      </div>
-
-      <button type="submit" className="btn btn-primary">
+    <Box component="form" onSubmit={handleSubmit}>
+      <Typography variant="h5" align="center" gutterBottom>
+        Create your account
+      </Typography>
+      <Typography
+        variant="body2"
+        align="center"
+        color="text.secondary"
+        sx={{ mb: 2 }}
+      >
+        Sign up to start investing your spare change!
+      </Typography>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+      <TextField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <TextField
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <TextField
+        label="Confirm Password"
+        type="password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        fullWidth
+        margin="normal"
+        required
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        sx={{ mt: 2 }}
+      >
         Sign Up
-      </button>
-    </form>
+      </Button>
+    </Box>
   );
 };
 
