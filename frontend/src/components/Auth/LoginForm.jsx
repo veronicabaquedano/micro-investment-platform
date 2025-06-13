@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Card, TextField, Button, Typography, Alert, Box } from "@mui/material";
 
 const LoginForm = ({ onLogin }) => {
   // State for email, password, (to store user input) and error messages (handle login failures)
@@ -14,35 +15,41 @@ const LoginForm = ({ onLogin }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {error && <p className="text-danger">{error}</p>}
-
-      <div className="mb-3">
-        <label>Email:</label>
-        <input
+    <Card sx={{ maxWidth: 400, mx: "auto", mt: 6, p: 3, boxShadow: 3 }}>
+      <Typography variant="h5" align="center" gutterBottom>
+        Login
+      </Typography>
+      {error && <Alert severity="error">{error}</Alert>}
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+        <TextField
+          label="Email"
           type="email"
-          className="form-control"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+          margin="normal"
           required
         />
-      </div>
-
-      <div className="mb-3">
-        <label>Password:</label>
-        <input
+        <TextField
+          label="Password"
           type="password"
-          className="form-control"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+          margin="normal"
           required
         />
-      </div>
-
-      <button type="submit" className="btn btn-primary">
-        Login
-      </button>
-    </form>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+        >
+          Login
+        </Button>
+      </Box>
+    </Card>
   );
 };
 
