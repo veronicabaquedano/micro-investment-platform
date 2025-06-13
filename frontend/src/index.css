@@ -1,15 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
 /* Global styles (background, fonts, general spacing) */
 
+:root {
+  --primary-blue: #1976d2;
+  --secondary-green: #43a047;
+  --accent-yellow: #ffeb3b;
+  --card-bg: #fff;
+  --background: #f0f2f5;
+}
+
 body {
   margin: 0;
-  font-family: "Fredoka One", cursive !important;
-  background: linear-gradient(
-    135deg,
-    var(--secondary-green) 0%,
-    var(--accent-yellow) 100%
-  );
+  font-family: "Roboto", Arial, sans-serif !important;
+  background: var(--background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -22,12 +26,5 @@ h2 {
 p,
 label,
 button {
-  font-family: "Fredoka One", cursive !important;
-}
-
-:root {
-  --primary-blue: #1980e1;
-  --secondary-green: #85ffbd;
-  --accent-yellow: #fffb7d;
-  --card-bg: #c9f6fa !important; /* Light green background */
+  font-family: "Roboto", Arial, sans-serif !important;
 }

@@ -1,35 +1,60 @@
-/* Dashboard-specific styles (cards, sections, borders) */
+:root {
+  --primary-blue: #1976d2; /* MUI default primary */
+  --card-bg: #fff;
+  --background: #f0f2f5;
+}
 
+/* App-wide background */
+body,
+#root {
+  background: var(--background);
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Roboto", Arial, sans-serif;
+}
+
+/* Container for main content */
 .container {
-  background: transparent; /* No white background */
-  padding: 20px;
-  border-radius: 15px;
+  background: transparent;
+  padding: 24px;
+  border-radius: 16px;
   box-shadow: none;
-  margin-top: 20px;
+  margin-top: 32px;
 }
 
+/* Card styles (for custom cards, not MUI Paper) */
 .card {
-  border: 3px solid var(--primary-blue) !important; /* Green border */
-  border-radius: 10px !important;
-  padding: 15px !important;
-  margin-bottom: 15px !important;
-  background-color: var(--card-bg) !important; /* Light green */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  margin-bottom: 20px !important;
+  background-color: var(--card-bg) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
+/* List group styles (if still used) */
 .list-group {
-  background-color: var(--card-bg) !important; /* Match card color */
-  border-radius: 10px !important; /* Rounded corners like cards */
-  padding: 10px !important;
+  background-color: var(--card-bg) !important;
+  border-radius: 12px !important;
+  padding: 12px !important;
   border: none !important;
 }
 
 .list-group-item {
-  background-color: transparent !important; /* Inherit from .list-group */
-  border: none !important; /* Remove default Bootstrap border */
-  color: #2c3e50 !important; /* Dark text for readability */
+  background-color: transparent !important;
+  border: none !important;
+  color: #2c3e50 !important;
 }
 
-.text-danger {
-  color: #e74c3c;
+/* Error text */
+.text-danger,
+.MuiAlert-root {
+  color: #e74c3c !important;
+}
+
+/* Optional: Remove Bootstrap button styles if using MUI */
+.btn,
+.btn-primary,
+.btn-secondary {
+  all: unset;
 }
