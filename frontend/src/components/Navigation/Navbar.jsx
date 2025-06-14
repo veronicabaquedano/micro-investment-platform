@@ -1,59 +1,64 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 
 function Navbar({ user, onLogout }) {
   return (
-    <nav style={styles.navbar}>
-      {/* App Title */}
-      <h2>Micro Investment Platform</h2>
+    <AppBar position="static" color="primary" elevation={2}>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        {/* App Title */}
+        <Typography
+          variant="h6"
+          component={RouterLink}
+          to="/"
+          sx={{ color: "#fff", textDecoration: "none", fontWeight: 700 }}
+        >
+          MicroInvest
+        </Typography>
 
-      {/* Navigation Links */}
-      <div>
-        {user ? (
-          // If the user is logged in, show these links
-          <>
-            <Link to="/dashboard" style={styles.link}>
-              Dashboard
-            </Link>
-            <Link to="/bank-link" style={styles.link}>
-              Bank Linking
-            </Link>
-            <button onClick={onLogout} style={styles.button}>
-              Logout
-            </button>
-          </>
-        ) : (
-          // If no user is logged in, show login/signup link
-          <Link to="/auth" style={styles.link}>
-            Login / Signup
-          </Link>
-        )}
-      </div>
-    </nav>
+        {/* Navigation Links */}
+        <Box>
+          {user ? (
+            <>
+              <Button
+                component={RouterLink}
+                to="/dashboard"
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
+                Dashboard
+              </Button>
+              <Button
+                component={RouterLink}
+                to="/bank-link"
+                color="inherit"
+                sx={{ mr: 2 }}
+              >
+                Bank Linking
+              </Button>
+              <Button
+                onClick={onLogout}
+                color="secondary"
+                variant="contained"
+                sx={{ ml: 1 }}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Button
+              component={RouterLink}
+              to="/auth"
+              color="inherit"
+              variant="outlined"
+            >
+              Login / Signup
+            </Button>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }
-
-/* Inline styles for the navbar */
-const styles = {
-  navbar: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "10px",
-    background: "#333",
-    color: "#fff",
-  },
-  link: {
-    color: "#fff",
-    marginRight: "10px",
-    textDecoration: "none",
-  },
-  button: {
-    background: "red",
-    color: "#fff",
-    border: "none",
-    padding: "5px 10px",
-    cursor: "pointer",
-  },
-};
 
 export default Navbar;
