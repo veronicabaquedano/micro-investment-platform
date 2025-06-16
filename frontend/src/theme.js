@@ -36,6 +36,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0, // Make navbar square
+        },
+      },
+    },
   },
 });
 
