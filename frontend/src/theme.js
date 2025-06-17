@@ -40,6 +40,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0, // Make navbar square
+          boxShadow: "none",
         },
       },
     },
