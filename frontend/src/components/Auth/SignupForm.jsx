@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button, Typography, Alert, Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const SignupForm = ({ onSignup }) => {
   // State for user input fields
@@ -8,7 +9,7 @@ const SignupForm = ({ onSignup }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
-
+  const theme = useTheme();
   // Handle form submission to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,12 +68,12 @@ const SignupForm = ({ onSignup }) => {
         variant="body2"
         align="center"
         color="text.secondary"
-        sx={{ mb: 2 }}
+        sx={{ mb: theme.spacing(2) }}
       >
         Sign up to start investing your spare change!
       </Typography>
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert severity="error" sx={{ mb: theme.spacing(2) }}>
           {error}
         </Alert>
       )}
@@ -108,7 +109,7 @@ const SignupForm = ({ onSignup }) => {
         variant="contained"
         color="primary"
         fullWidth
-        sx={{ mt: 2 }}
+        sx={{ mt: theme.spacing(2) }}
       >
         Sign Up
       </Button>
