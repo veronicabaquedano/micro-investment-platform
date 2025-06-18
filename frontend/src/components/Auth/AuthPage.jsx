@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import { Grid, Box, Typography, Paper, Button } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const AuthPage = ({ onLogin }) => {
   // State to track whether we're showing login (true) or signup (false)
   const [isLogin, setIsLogin] = useState(true);
+  const theme = useTheme();
 
   // Function to switch between login and signup
   const toggleForm = () => setIsLogin(!isLogin);
@@ -18,7 +20,7 @@ const AuthPage = ({ onLogin }) => {
         xs={12}
         md={6}
         sx={{
-          bgcolor: "#f0f2f5",
+          bgcolor: theme.palette.background.default,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -28,12 +30,7 @@ const AuthPage = ({ onLogin }) => {
         }}
       >
         <Box sx={{ maxWidth: 400 }}>
-          <Typography
-            variant="h2"
-            color="primary"
-            fontWeight={700}
-            gutterBottom
-          >
+          <Typography variant="h2" color="primary" gutterBottom>
             MicroInvest
           </Typography>
           <Typography variant="h5" color="text.secondary" gutterBottom>
@@ -55,7 +52,7 @@ const AuthPage = ({ onLogin }) => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "flex-start",
-          bgcolor: "#fff",
+          bgcolor: theme.palette.background.paper,
           pl: { xs: 0, md: 8 },
           pr: { xs: 0, md: 4 },
         }}
