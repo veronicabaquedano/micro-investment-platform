@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Alert, Box, Link } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const LoginForm = ({ onLogin }) => {
   // State for email, password, (to store user input) and error messages (handle login failures)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const theme = useTheme();
 
   // Handle form submission to backend
   const handleSubmit = async (e) => {
@@ -20,7 +22,7 @@ const LoginForm = ({ onLogin }) => {
         Login to your account
       </Typography>
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert severity="error" sx={{ mb: theme.spacing(2) }}>
           {error}
         </Alert>
       )}
@@ -47,7 +49,7 @@ const LoginForm = ({ onLogin }) => {
         variant="contained"
         color="primary"
         fullWidth
-        sx={{ mt: 2, mb: 1 }}
+        sx={{ mt: theme.spacing(2), mb: theme.spacing(1) }}
       >
         Login
       </Button>
