@@ -1,30 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
-/* Global styles (background, fonts, general spacing) */
-
-:root {
-  --primary-blue: #1976d2;
-  --secondary-green: #43a047;
-  --accent-yellow: #ffeb3b;
-  --card-bg: #fff;
-  --background: #f0f2f5;
-}
-
 body {
   margin: 0;
   font-family: "Roboto", Arial, sans-serif !important;
-  background: var(--background);
+  background: #f0f2f5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-h2 {
-  color: var(--primary-blue);
-  text-align: center;
-}
-
-p,
-label,
-button {
-  font-family: "Roboto", Arial, sans-serif !important;
 }
