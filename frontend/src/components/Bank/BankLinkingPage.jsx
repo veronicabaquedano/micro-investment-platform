@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from "react";
 import BankLinkForm from "./BankLinkForm";
 import axios from "axios";
+import {
+  Box,
+  Paper,
+  Typography,
+  Alert,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  Collapse,
+  Button,
+  Divider,
+} from "@mui/material";
+import { Visibility, VisibilityOff, Delete } from "@mui/icons-material";
 
 const BankLinkingPage = () => {
   // State to store linked bank account details (in array instead of single object)
@@ -76,79 +91,113 @@ const BankLinkingPage = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2 className="text-center text-primary">Link Your Bank Account</h2>
-      <div className="card shadow-lg p-4">
-        {/* Display Success or Error Messages */}
+    <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
+      <Typography variant="h4" color="primary" align="center" gutterBottom>
+        Link Your Bank Account
+      </Typography>
+      <Paper elevation={4} sx={{ p: 4 }}>
+        {/* Success/Error Messages */}
         {successMessage && (
-          <div className="alert alert-success">{successMessage}</div>
+          <Alert severity="success" sx={{ mb: 2 }}>
+            {successMessage}
+          </Alert>
         )}
         {errorMessage && (
-          <div className="alert alert-danger">{errorMessage}</div>
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {errorMessage}
+          </Alert>
         )}
 
         {/* Bank Linking Form */}
         <BankLinkForm onLinkAccount={onLinkAccount} />
 
-        {/* Display Linked Bank Accounts */}
+        {/* Linked Bank Accounts */}
         {linkedAccounts.length > 0 && (
-          <div className="mt-4">
-            <h4 className="text-success">Linked Bank Accounts</h4>
-            <ul className="list-group">
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h6" color="success.main" gutterBottom>
+              Linked Bank Accounts
+            </Typography>
+            <List>
               {linkedAccounts.map((account, index) => (
-                <li
-                  key={account.id}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  <span>
-                    <strong>{account.bank_name}</strong> - ****
-                    {account.account_number
-                      ? account.account_number.slice(-4)
-                      : "XXXX"}
-                  </span>
-                  <div>
-                    {/* Toggle View Button */}
-                    <button
-                      className="btn btn-info btn-sm me-2"
-                      onClick={() =>
-                        setViewingIndex(viewingIndex === index ? null : index)
+                <React.Fragment key={account.id}>
+                  <ListItem
+                    secondaryAction={
+                      <Box>
+                        <IconButton
+                          edge="end"
+                          color="primary"
+                          onClick={() =>
+                            setViewingIndex(
+                              viewingIndex === index ? null : index
+                            )
+                          }
+                          sx={{ mr: 1 }}
+                        >
+                          {viewingIndex === index ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                        <IconButton
+                          edge="end"
+                          color="error"
+                          onClick={() => removeAccount(account.id)}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Box>
+                    }
+                  >
+                    <ListItemText
+                      primary={
+                        <span>
+                          <strong>{account.bank_name}</strong> - ****
+                          {account.account_number
+                            ? account.account_number.slice(-4)
+                            : "XXXX"}
+                        </span>
                       }
+                    />
+                  </ListItem>
+                  {/* Account Details */}
+                  <Collapse
+                    in={viewingIndex === index}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <Box
+                      sx={{
+                        bgcolor: "background.default",
+                        p: 2,
+                        borderRadius: 2,
+                        mb: 2,
+                      }}
                     >
-                      {viewingIndex === index ? "Hide" : "View"}
-                    </button>
-                    {/* Remove Account Button */}
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => removeAccount(account.id)}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </li>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Account Details
+                      </Typography>
+                      <Typography variant="body2">
+                        <strong>Bank Name:</strong> {account.bank_name}
+                      </Typography>
+                      <Typography variant="body2">
+                        <strong>Account Number:</strong>{" "}
+                        {account.account_number}
+                      </Typography>
+                      <Typography variant="body2">
+                        <strong>Routing Number:</strong>{" "}
+                        {account.routing_number}
+                      </Typography>
+                    </Box>
+                  </Collapse>
+                  {index < linkedAccounts.length - 1 && <Divider />}
+                </React.Fragment>
               ))}
-            </ul>
-            {/* Display Account Details when "View" is clicked */}
-            {viewingIndex !== null && (
-              <div className="mt-3 p-3 border rounded bg-light">
-                <h5>Account Details</h5>
-                <p>
-                  <strong>Bank Name:</strong>{" "}
-                  {linkedAccounts[viewingIndex].bank_name}
-                </p>
-                <p>
-                  <strong>Account Number:</strong>{" "}
-                  {linkedAccounts[viewingIndex].account_number}
-                </p>
-                <p>
-                  <strong>Routing Number:</strong>{" "}
-                  {linkedAccounts[viewingIndex].routing_number}
-                </p>
-              </div>
-            )}
-          </div>
+            </List>
+          </Box>
         )}
-      </div>
-    </div>
+      </Paper>
+    </Box>
   );
 };
 
