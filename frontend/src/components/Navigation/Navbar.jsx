@@ -4,14 +4,18 @@ import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 
 function Navbar({ user, onLogout }) {
   return (
-    <AppBar position="static" color="primary" elevation={2}>
+    <AppBar position="static" color="primary" elevation={0}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* App Title */}
         <Typography
           variant="h6"
           component={RouterLink}
           to="/"
-          sx={{ color: "#fff", textDecoration: "none", fontWeight: 700 }}
+          sx={{
+            color: "inherit",
+            textDecoration: "none",
+            fontWeight: "bold",
+          }}
         >
           MicroInvest
         </Typography>
