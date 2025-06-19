@@ -1,5 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 
 // BankLinkForm component allows users to link their bank account
 const BankLinkForm = ({ onLinkAccount }) => {
@@ -66,51 +75,56 @@ const BankLinkForm = ({ onLinkAccount }) => {
   };
 
   return (
-    <div className="card p-4 shadow-lg">
-      <h4 className="text-primary">Link Your Bank Account</h4>
-      {/* Display error message if any */}
-      {error && <p className="text-danger">{error}</p>}
-
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Bank Name:</label>
-          <input
-            type="text"
-            className="form-control"
-            value={bankName}
-            onChange={(e) => setBankName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Account Number:</label>
-          <input
-            type="text"
-            className="form-control"
-            value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Routing Number:</label>
-          <input
-            type="text"
-            className="form-control"
-            value={routingNumber}
-            onChange={(e) => setRoutingNumber(e.target.value)}
-            required
-          />
-        </div>
-        <button
+    <Paper elevation={4} sx={{ maxWidth: 400, mx: "auto", p: 4 }}>
+      <Typography variant="h5" color="primary" align="center" gutterBottom>
+        Link Your Bank Account
+      </Typography>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+      <Box component="form" onSubmit={handleSubmit}>
+        <TextField
+          label="Bank Name"
+          value={bankName}
+          onChange={(e) => setBankName(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+        />
+        <TextField
+          label="Account Number"
+          value={accountNumber}
+          onChange={(e) => setAccountNumber(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+        />
+        <TextField
+          label="Routing Number"
+          value={routingNumber}
+          onChange={(e) => setRoutingNumber(e.target.value)}
+          fullWidth
+          margin="normal"
+          required
+        />
+        <Button
           type="submit"
-          className="btn btn-success w-100"
+          variant="contained"
+          color="primary"
+          fullWidth
           disabled={loading}
+          sx={{ mt: 2 }}
         >
-          {loading ? "Linking..." : "Link Account"}
-        </button>
-      </form>
-    </div>
+          {loading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            "Link Account"
+          )}
+        </Button>
+      </Box>
+    </Paper>
   );
 };
 
