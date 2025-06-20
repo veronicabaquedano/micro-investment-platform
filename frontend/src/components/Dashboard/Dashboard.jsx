@@ -5,6 +5,14 @@ import RecentTransactions from "./RecentTransactions";
 import PortfolioAllocation from "./PortfolioAllocation";
 import InvestmentChart from "./InvestmentChart";
 import AddInvestmentForm from "./AddInvestmentForm";
+import {
+  Grid,
+  Paper,
+  Typography,
+  Box,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 
 const Dashboard = () => {
   const [savings, setSavings] = useState(null);
@@ -83,9 +91,16 @@ const Dashboard = () => {
 
   if (loading)
     return (
-      <div className="text-center mt-5 text-primary">Loading dashboard...</div>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
+        <CircularProgress color="primary" />
+      </Box>
     );
-  if (error) return <div className="text-danger text-center mt-5">{error}</div>;
+  if (error)
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
 
   //No inline styles, just Bootstrap classes
   return (
