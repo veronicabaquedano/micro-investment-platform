@@ -102,40 +102,48 @@ const Dashboard = () => {
       </Box>
     );
 
-  //No inline styles, just Bootstrap classes
   return (
-    <div className="container mt-4">
-      <h2 className="text-center mb-4 text-primary">Investment Dashboard</h2>
-      <div className="row">
+    <Box sx={{ maxWidth: 1200, mx: "auto", mt: 4, px: 2 }}>
+      <Typography variant="h4" color="primary" align="center" gutterBottom>
+        Investment Dashboard
+      </Typography>
+      <Grid container spacing={3}>
         {/* Left Column: Savings & Transactions */}
-        <div className="col-md-4">
-          <div className="card">
+        <Grid item xs={12} md={4}>
+          <Paper sx={{ mb: 3, p: 2 }}>
             <SavingsSummary savings={savings} />
-          </div>
-          <div className="card">
+          </Paper>
+          <Paper sx={{ p: 2 }}>
             <RecentTransactions transactions={transactions} />
-          </div>
-        </div>
+          </Paper>
+        </Grid>
 
         {/* Right Column: Portfolio & Chart */}
-        <div className="col-md-8">
-          <div className="card">
+        <Grid item xs={12} md={8}>
+          <Paper sx={{ mb: 3, p: 2 }}>
             <PortfolioAllocation portfolio={portfolio} savings={savings} />
-          </div>
-          <div className="card">
+          </Paper>
+          <Paper sx={{ p: 2 }}>
             <InvestmentChart data={investmentData} />
-          </div>
-        </div>
-      </div>
+          </Paper>
+        </Grid>
+      </Grid>
 
       {/* Add Investment Section */}
-      <div className="text-center mt-4">
-        <div className="card">
-          <h4 className="text-success">Grow Your Investments</h4>
+      <Box sx={{ mt: 4, maxWidth: 600, mx: "auto" }}>
+        <Paper sx={{ p: 3 }}>
+          <Typography
+            variant="h6"
+            color="success.main"
+            align="center"
+            gutterBottom
+          >
+            Grow Your Investments
+          </Typography>
           <AddInvestmentForm onInvestmentAdded={fetchDashboardData} />
-        </div>
-      </div>
-    </div>
+        </Paper>
+      </Box>
+    </Box>
   );
 };
 
