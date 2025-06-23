@@ -1,4 +1,14 @@
 import React, { useState } from "react";
+import {
+  Typography,
+  Box,
+  Button,
+  Collapse,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 
 const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -29,59 +39,88 @@ const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
       : "0.00";
 
   return (
-    <>
-      <h4>Portfolio Allocation</h4>
-      {/* Always show investments (name & amount) */}
+    <Box>
+      <Typography variant="h6" color="text.secondary" gutterBottom>
+        Portfolio Allocation
+      </Typography>
       {investments.length > 0 ? (
         <>
           {investments.map((investment) => (
-            <p key={investment.id}>
+            <Typography key={investment.id} variant="body1" sx={{ mb: 1 }}>
               <strong>{investment.portfolio_name}:</strong> $
               {Number(investment.allocated_amount).toFixed(2)}
-            </p>
+            </Typography>
           ))}
 
-          {/* Toggle Button */}
-          <button
-            className="btn btn-primary"
+          <Button
+            variant="contained"
+            color="primary"
             onClick={() => setShowDetails(!showDetails)}
+            sx={{ my: 2 }}
           >
             {showDetails
               ? "Hide Details"
               : `View Portfolio (${percentageIncrease}% growth)`}
-          </button>
+          </Button>
 
-          {/* Show Detailed Breakdown Only When Button is Clicked */}
-          {showDetails && (
-            <div className="mt-3">
-              <h5>Detailed Breakdown</h5>
-              <ul>
+          <Collapse in={showDetails}>
+            <Box
+              sx={{
+                mt: 2,
+                bgcolor: "background.default",
+                p: 2,
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="subtitle1" gutterBottom>
+                Detailed Breakdown
+              </Typography>
+              <List dense>
                 {investments.map((investment) => {
                   const amount = parseFloat(investment.allocated_amount) || 0;
                   const percentage = ((amount / totalBalance) * 100).toFixed(2);
                   return (
-                    <li key={investment.id}>
-                      {investment.portfolio_name}: ${amount.toFixed(2)} (
-                      {percentage}%)
-                    </li>
+                    <ListItem key={investment.id} disableGutters>
+                      <ListItemText
+                        primary={`${
+                          investment.portfolio_name
+                        }: $${amount.toFixed(2)} (${percentage}%)`}
+                      />
+                    </ListItem>
                   );
                 })}
-                <li>
-                  <strong>Savings:</strong> ${parseFloat(savings).toFixed(2)} (
-                  {((savings / totalBalance) * 100).toFixed(2)}%)
-                </li>
-                <li>
-                  <strong>Total Gains:</strong> ${totalGains.toFixed(2)} (
-                  {percentageIncrease}%)
-                </li>
-              </ul>
-            </div>
-          )}
+                <Divider />
+                <ListItem disableGutters>
+                  <ListItemText
+                    primary={
+                      <span>
+                        <strong>Savings:</strong> $
+                        {parseFloat(savings).toFixed(2)} (
+                        {((savings / totalBalance) * 100).toFixed(2)}%)
+                      </span>
+                    }
+                  />
+                </ListItem>
+                <ListItem disableGutters>
+                  <ListItemText
+                    primary={
+                      <span>
+                        <strong>Total Gains:</strong> ${totalGains.toFixed(2)} (
+                        {percentageIncrease}%)
+                      </span>
+                    }
+                  />
+                </ListItem>
+              </List>
+            </Box>
+          </Collapse>
         </>
       ) : (
-        <p>No portfolio data available.</p>
+        <Typography variant="body2" color="text.secondary">
+          No portfolio data available.
+        </Typography>
       )}
-    </>
+    </Box>
   );
 };
 
