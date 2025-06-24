@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import { Line } from "react-chartjs-2";
+import { Typography, Box, useTheme } from "@mui/material";
 import {
   Chart as ChartJS,
   LineElement,
@@ -20,11 +21,15 @@ ChartJS.register(
 );
 
 const InvestmentChart = ({ data }) => {
+  const theme = useTheme();
+
   if (!data || !data.labels || data.labels.length === 0) {
     return (
-      <p className="text-center text-danger">
-        No investment growth data available.
-      </p>
+      <Box textAlign="center" my={2}>
+        <Typography color="error">
+          No investment growth data available.
+        </Typography>
+      </Box>
     );
   }
 
@@ -34,9 +39,9 @@ const InvestmentChart = ({ data }) => {
       {
         label: "Total Invested",
         data: data.invested || [],
-        backgroundColor: "rgba(34, 197, 94, 0.2)",
-        borderColor: "rgba(34, 197, 94, 1)",
-        pointBackgroundColor: "rgba(34, 197, 94, 1)",
+        backgroundColor: theme.palette.primary.light + "33", // 20% opacity
+        borderColor: theme.palette.primary.main,
+        pointBackgroundColor: theme.palette.primary.main,
         pointBorderColor: "#fff",
         borderWidth: 3,
         tension: 0.3,
@@ -44,50 +49,55 @@ const InvestmentChart = ({ data }) => {
       {
         label: "Investment Value",
         data: data.growth || [],
-        backgroundColor: "rgba(59, 130, 246, 0.2)",
-        borderColor: "rgba(59, 130, 246, 1)",
-        pointBackgroundColor: "rgba(59, 130, 246, 1)",
+        backgroundColor: theme.palette.secondary.light + "33", // 20% opacity
+        borderColor: theme.palette.secondary.main,
+        pointBackgroundColor: theme.palette.secondary.main,
         pointBorderColor: "#fff",
         borderWidth: 3,
         tension: 0.3,
       },
     ],
   };
+
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true, // Show labels for the two lines
+        display: true,
         position: "top",
         labels: {
-          color: "#2c3e50", // Dark Blue text
+          color: theme.palette.text.primary,
           font: {
             size: 14,
-            family: "Fredoka One, cursive",
+            family: theme.typography.fontFamily,
           },
         },
       },
       tooltip: {
-        enabled: true, // Enable tooltips
+        enabled: true,
         callbacks: {
-          label: (tooltipItem) => `$${tooltipItem.raw.toFixed(2)}`, // Show exact value with 2 decimal places
+          label: (tooltipItem) => `$${tooltipItem.raw.toFixed(2)}`,
         },
       },
     },
     scales: {
       x: {
-        ticks: { color: "#2c3e50" },
-        grid: { color: "rgba(43, 40, 40, 0.16)" },
+        ticks: { color: theme.palette.text.primary },
+        grid: { color: theme.palette.divider },
       },
       y: {
-        ticks: { color: "#2c3e50" },
-        grid: { color: "rgba(43, 40, 40, 0.16)" },
+        ticks: { color: theme.palette.text.primary },
+        grid: { color: theme.palette.divider },
       },
     },
   };
 
-  return <Line data={chartData} options={options} />;
+  return (
+    <Box sx={{ height: 300 }}>
+      <Line data={chartData} options={options} />
+    </Box>
+  );
 };
 
 export default InvestmentChart;
