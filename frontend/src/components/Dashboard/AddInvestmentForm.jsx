@@ -1,5 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {
+  Typography,
+  Box,
+  Button,
+  TextField,
+  MenuItem,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 
 const AddInvestmentForm = ({ onInvestmentAdded }) => {
   const [portfolioName, setPortfolioName] = useState("");
@@ -28,7 +37,7 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
     try {
       const token = localStorage.getItem("token"); // Get stored JWT token
 
-      const response = await axios.post(
+      await axios.post(
         "http://127.0.0.1:8000/portfolio/",
         {
           portfolio_name: portfolioName,
@@ -57,48 +66,56 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
   };
 
   return (
-    <>
-      <h4>Add Investment</h4>
-      {error && <p className="text-danger">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        {/*Portfolio Name Dropdown */}
-        <div className="mb-3">
-          <label className="form-label">Select Portfolio</label>
-          <select
-            className="form-select"
-            value={portfolioName}
-            onChange={(e) => setPortfolioName(e.target.value)}
-            required
-          >
-            <option value="">-- Select Portfolio --</option>
-            {predefinedPortfolios.map((portfolio, index) => (
-              <option key={index} value={portfolio}>
-                {portfolio}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/*Allocated Amount Input */}
-        <div className="mb-3">
-          <label className="form-label">Allocated Amount ($)</label>
-          <input
-            type="number"
-            className="form-control"
-            value={allocatedAmount}
-            onChange={(e) => setAllocatedAmount(e.target.value)}
-            min="1"
-            step="0.01"
-            required
-          />
-        </div>
-
-        {/*Submit Button */}
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Adding..." : "Add Investment"}
-        </button>
-      </form>
-    </>
+    <Box component="form" onSubmit={handleSubmit}>
+      <Typography variant="h6" color="primary" gutterBottom>
+        Add Investment
+      </Typography>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
+      <TextField
+        select
+        label="Select Portfolio"
+        value={portfolioName}
+        onChange={(e) => setPortfolioName(e.target.value)}
+        fullWidth
+        margin="normal"
+        required
+      >
+        <MenuItem value="">-- Select Portfolio --</MenuItem>
+        {predefinedPortfolios.map((portfolio, index) => (
+          <MenuItem key={index} value={portfolio}>
+            {portfolio}
+          </MenuItem>
+        ))}
+      </TextField>
+      <TextField
+        label="Allocated Amount ($)"
+        type="number"
+        value={allocatedAmount}
+        onChange={(e) => setAllocatedAmount(e.target.value)}
+        fullWidth
+        margin="normal"
+        inputProps={{ min: 1, step: 0.01 }}
+        required
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        disabled={loading}
+        sx={{ mt: 2 }}
+      >
+        {loading ? (
+          <CircularProgress size={24} color="inherit" />
+        ) : (
+          "Add Investment"
+        )}
+      </Button>
+    </Box>
   );
 };
 
