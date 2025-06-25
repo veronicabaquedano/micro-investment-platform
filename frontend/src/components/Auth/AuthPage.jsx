@@ -14,7 +14,7 @@ const AuthPage = ({ onLogin }) => {
 
   return (
     <Grid container sx={{ minHeight: "100vh" }}>
-      {/* Left side: Branding/Tagline */}
+      {/* Left side: Branding/Tagline + Illustration */}
       <Grid
         item
         xs={12}
@@ -26,7 +26,7 @@ const AuthPage = ({ onLogin }) => {
           justifyContent: "center",
           alignItems: "flex-end",
           pr: { xs: 0, md: 8 },
-          pl: { xs: 0, md: 4 },
+          pl: { xs: 0, md: 8 },
         }}
       >
         <Box sx={{ maxWidth: 400 }}>
@@ -39,6 +39,19 @@ const AuthPage = ({ onLogin }) => {
           <Typography variant="body1" color="text.secondary">
             Secure, simple, and smart micro-investing for everyone.
           </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
+            <img
+              src="/Savings-bro.svg"
+              alt="Money illustration"
+              style={{ maxWidth: 320, width: "100%", height: "auto" }}
+            />
+          </Box>
         </Box>
       </Grid>
 
@@ -54,7 +67,7 @@ const AuthPage = ({ onLogin }) => {
           alignItems: "flex-start",
           bgcolor: theme.palette.background.paper,
           pl: { xs: 0, md: 8 },
-          pr: { xs: 0, md: 4 },
+          pr: { xs: 0, md: 8 },
         }}
       >
         <Paper elevation={4} sx={{ width: "100%", maxWidth: 400, p: 4, mb: 2 }}>
