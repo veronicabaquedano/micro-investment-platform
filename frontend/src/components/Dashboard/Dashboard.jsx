@@ -103,13 +103,13 @@ const Dashboard = () => {
     );
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: "auto", mt: 4, px: 2 }}>
+    <Box sx={{ maxWidth: 1600, mx: "auto", mt: 4, px: 2 }}>
       <Typography variant="h4" color="primary" align="center" gutterBottom>
         Investment Dashboard
       </Typography>
       <Grid container spacing={3}>
-        {/* Left Column: Savings & Transactions */}
-        <Grid item xs={12} md={4}>
+        {/* Left Column */}
+        <Grid item xs={12} md={3}>
           <Paper sx={{ mb: 3, p: 2 }}>
             <SavingsSummary savings={savings} />
           </Paper>
@@ -118,8 +118,8 @@ const Dashboard = () => {
           </Paper>
         </Grid>
 
-        {/* Right Column: Portfolio & Chart */}
-        <Grid item xs={12} md={8}>
+        {/* Center Column */}
+        <Grid item xs={12} md={6}>
           <Paper sx={{ mb: 3, p: 2 }}>
             <PortfolioAllocation portfolio={portfolio} savings={savings} />
           </Paper>
@@ -127,22 +127,30 @@ const Dashboard = () => {
             <InvestmentChart data={investmentData} />
           </Paper>
         </Grid>
-      </Grid>
 
-      {/* Add Investment Section */}
-      <Box sx={{ mt: 4, maxWidth: 600, mx: "auto" }}>
-        <Paper sx={{ p: 3 }}>
-          <Typography
-            variant="h6"
-            color="success.main"
-            align="center"
-            gutterBottom
+        {/* Right Column */}
+        <Grid item xs={12} md={3}>
+          <Paper
+            sx={{
+              p: 3,
+              minHeight: 300,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+            }}
           >
-            Grow Your Investments
-          </Typography>
-          <AddInvestmentForm onInvestmentAdded={fetchDashboardData} />
-        </Paper>
-      </Box>
+            <Typography
+              variant="h6"
+              color="success.main"
+              align="center"
+              gutterBottom
+            >
+              Grow Your Investments
+            </Typography>
+            <AddInvestmentForm onInvestmentAdded={fetchDashboardData} />
+          </Paper>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
