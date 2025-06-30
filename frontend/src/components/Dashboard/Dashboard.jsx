@@ -107,7 +107,7 @@ const Dashboard = () => {
       <Typography variant="h4" color="primary" align="center" gutterBottom>
         Investment Dashboard
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={8}>
         {/* Left Column */}
         <Grid item xs={12} md={3}>
           <Paper sx={{ mb: 3, p: 2 }}>
