@@ -91,13 +91,13 @@ const Dashboard = () => {
 
   if (loading)
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
-        <CircularProgress color="primary" />
+      <Box textAlign="center" mt={8}>
+        <CircularProgress />
       </Box>
     );
   if (error)
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
+      <Box textAlign="center" mt={8}>
         <Alert severity="error">{error}</Alert>
       </Box>
     );
