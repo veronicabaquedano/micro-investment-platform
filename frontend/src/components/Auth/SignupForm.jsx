@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button, Typography, Alert, Box } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 
 const SignupForm = ({ onSignup }) => {
   // State for user input fields
@@ -9,7 +8,7 @@ const SignupForm = ({ onSignup }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
-  const theme = useTheme();
+
   // Handle form submission to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,19 +60,24 @@ const SignupForm = ({ onSignup }) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
-      <Typography variant="h5" align="center" gutterBottom>
+      <Typography
+        variant="h5"
+        align="center"
+        gutterBottom
+        sx={{ fontSize: { xs: "1.4rem", md: "2rem" } }}
+      >
         Create your account
       </Typography>
       <Typography
         variant="body2"
         align="center"
         color="text.secondary"
-        sx={{ mb: theme.spacing(2) }}
+        sx={{ mb: { xs: 2, md: 3 } }}
       >
         Sign up to start investing your spare change!
       </Typography>
       {error && (
-        <Alert severity="error" sx={{ mb: theme.spacing(2) }}>
+        <Alert severity="error" sx={{ mb: { xs: 2, md: 3 } }}>
           {error}
         </Alert>
       )}
@@ -109,7 +113,7 @@ const SignupForm = ({ onSignup }) => {
         variant="contained"
         color="primary"
         fullWidth
-        sx={{ mt: theme.spacing(2) }}
+        sx={{ mt: { xs: 2, md: 3 }, mb: { xs: 1, md: 2 } }}
       >
         Sign Up
       </Button>
