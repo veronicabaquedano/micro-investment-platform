@@ -24,25 +24,47 @@ const AuthPage = ({ onLogin }) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          alignItems: "flex-end",
-          pr: { xs: 0, md: 8 },
-          pl: { xs: 0, md: 8 },
+          alignItems: { xs: "center", md: "flex-end" },
+          pr: { xs: 2, md: 8 },
+          pl: { xs: 2, md: 8 },
+          py: { xs: 4, md: 0 },
         }}
       >
-        <Box sx={{ maxWidth: 400 }}>
-          <Typography variant="h2" color="primary" gutterBottom>
+        <Box sx={{ maxWidth: 400, width: "100%" }}>
+          <Typography
+            variant="h4"
+            color="primary"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "2rem", md: "2.5rem" },
+              textAlign: { xs: "center", md: "left" },
+            }}
+          >
             MicroInvest
           </Typography>
-          <Typography variant="h5" color="text.secondary" gutterBottom>
+          <Typography
+            variant="h6"
+            color="text.secondary"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "1.1rem", md: "1.5rem" },
+              textAlign: { xs: "center", md: "left" },
+            }}
+          >
             Invest your spare change. Grow your future.
           </Typography>
-          <Typography variant="body1" color="text.secondary">
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{ mb: 4, textAlign: { xs: "center", md: "left" } }}
+          >
             Secure, simple, and smart micro-investing for everyone.
           </Typography>
+          {/* Illustration: hide on mobile */}
           <Box
             sx={{
               width: "100%",
-              display: "flex",
+              display: { xs: "none", md: "flex" },
               justifyContent: "flex-start",
             }}
           >
@@ -64,13 +86,17 @@ const AuthPage = ({ onLogin }) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          alignItems: "flex-start",
+          alignItems: { xs: "center", md: "flex-start" },
           bgcolor: theme.palette.background.paper,
-          pl: { xs: 0, md: 8 },
-          pr: { xs: 0, md: 8 },
+          pl: { xs: 2, md: 8 },
+          pr: { xs: 2, md: 8 },
+          py: { xs: 4, md: 0 },
         }}
       >
-        <Paper elevation={4} sx={{ width: "100%", maxWidth: 400, p: 4, mb: 2 }}>
+        <Paper
+          elevation={4}
+          sx={{ width: "100%", maxWidth: 400, p: { xs: 2, md: 4 }, mb: 2 }}
+        >
           {isLogin ? (
             <>
               <LoginForm onLogin={onLogin} />
@@ -99,7 +125,11 @@ const AuthPage = ({ onLogin }) => {
             </>
           )}
         </Paper>
-        <Typography variant="caption" color="text.secondary" sx={{ mt: 2 }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ mt: 2, textAlign: { xs: "center", md: "left" }, width: "100%" }}
+        >
           © {new Date().getFullYear()} MicroInvest. All rights reserved.
         </Typography>
       </Grid>
