@@ -75,12 +75,25 @@ const BankLinkForm = ({ onLinkAccount }) => {
   };
 
   return (
-    <Paper elevation={4} sx={{ maxWidth: 400, mx: "auto", p: 4 }}>
-      <Typography variant="h5" color="primary" align="center" gutterBottom>
+    <Paper
+      elevation={4}
+      sx={{
+        maxWidth: 400,
+        mx: "auto",
+        p: { xs: 2, md: 4 },
+      }}
+    >
+      <Typography
+        variant="h5"
+        color="primary"
+        align="center"
+        gutterBottom
+        sx={{ fontSize: { xs: "1.4rem", md: "2rem" } }}
+      >
         Link Your Bank Account
       </Typography>
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert severity="error" sx={{ mb: { xs: 2, md: 3 } }}>
           {error}
         </Alert>
       )}
@@ -115,7 +128,7 @@ const BankLinkForm = ({ onLinkAccount }) => {
           color="primary"
           fullWidth
           disabled={loading}
-          sx={{ mt: 2 }}
+          sx={{ mt: { xs: 2, md: 3 }, mb: { xs: 1, md: 2 } }}
         >
           {loading ? (
             <CircularProgress size={24} color="inherit" />
