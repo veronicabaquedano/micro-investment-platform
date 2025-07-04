@@ -89,30 +89,45 @@ const BankLinkingPage = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
-      <Typography variant="h4" color="primary" align="center" gutterBottom>
+    <Box
+      sx={{
+        maxWidth: 600,
+        mx: "auto",
+        mt: { xs: 2, md: 4 },
+        px: { xs: 1, md: 0 },
+      }}
+    >
+      <Typography
+        variant="h4"
+        color="primary"
+        align="center"
+        gutterBottom
+        sx={{ fontSize: { xs: "1.7rem", md: "2.2rem" } }}
+      >
         Link Your Bank Account
       </Typography>
-      <Paper elevation={4} sx={{ p: 4 }}>
-        {/* Success/Error Messages */}
+      <Paper elevation={4} sx={{ p: { xs: 2, md: 4 } }}>
         {successMessage && (
-          <Alert severity="success" sx={{ mb: 2 }}>
+          <Alert severity="success" sx={{ mb: { xs: 2, md: 3 } }}>
             {successMessage}
           </Alert>
         )}
         {errorMessage && (
-          <Alert severity="error" sx={{ mb: 2 }}>
+          <Alert severity="error" sx={{ mb: { xs: 2, md: 3 } }}>
             {errorMessage}
           </Alert>
         )}
 
-        {/* Bank Linking Form */}
         <BankLinkForm onLinkAccount={onLinkAccount} />
 
-        {/* Linked Bank Accounts */}
         {linkedAccounts.length > 0 && (
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="h6" color="success.main" gutterBottom>
+          <Box sx={{ mt: { xs: 3, md: 4 } }}>
+            <Typography
+              variant="h6"
+              color="success.main"
+              gutterBottom
+              sx={{ fontSize: { xs: "1.1rem", md: "1.3rem" } }}
+            >
               Linked Bank Accounts
             </Typography>
             <List>
@@ -158,7 +173,6 @@ const BankLinkingPage = () => {
                       }
                     />
                   </ListItem>
-                  {/* Account Details */}
                   <Collapse
                     in={viewingIndex === index}
                     timeout="auto"
