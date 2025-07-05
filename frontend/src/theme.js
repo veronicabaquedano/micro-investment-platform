@@ -1,6 +1,6 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-const theme = createTheme({
+let theme = createTheme({
   palette: {
     primary: {
       main: "#62cc75",
@@ -16,7 +16,12 @@ const theme = createTheme({
   typography: {
     fontFamily: "'Roboto', Arial, sans-serif",
     h2: { fontWeight: 700 },
+    h4: { fontWeight: 600 },
     h5: { fontWeight: 500 },
+    h6: { fontWeight: 500 },
+    // Optionally, set base font size for body1/body2
+    body1: { fontSize: "1rem" },
+    body2: { fontSize: "0.95rem" },
   },
   shape: {
     borderRadius: 12,
@@ -39,12 +44,15 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          borderRadius: 0, // Make navbar square
+          borderRadius: 0,
           boxShadow: "none",
         },
       },
     },
   },
 });
+
+// Enable responsive font sizes
+theme = responsiveFontSizes(theme);
 
 export default theme;
