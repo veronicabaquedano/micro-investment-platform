@@ -103,36 +103,49 @@ const Dashboard = () => {
     );
 
   return (
-    <Box sx={{ maxWidth: 1600, mx: "auto", mt: 4, px: 2 }}>
-      <Typography variant="h4" color="primary" align="center" gutterBottom>
+    <Box
+      sx={{
+        maxWidth: 1600,
+        mx: "auto",
+        mt: { xs: 2, md: 4 },
+        px: { xs: 1, md: 2 },
+      }}
+    >
+      <Typography
+        variant="h4"
+        color="primary"
+        align="center"
+        gutterBottom
+        sx={{ fontSize: { xs: "1.7rem", md: "2.2rem" } }}
+      >
         Investment Dashboard
       </Typography>
-      <Grid container spacing={8}>
+      <Grid container spacing={3}>
         {/* Left Column */}
         <Grid item xs={12} md={3}>
-          <Paper sx={{ mb: 3, p: 2 }}>
+          <Paper sx={{ mb: { xs: 2, md: 3 }, p: { xs: 1.5, md: 2 } }}>
             <SavingsSummary savings={savings} />
           </Paper>
-          <Paper sx={{ p: 2 }}>
+          <Paper sx={{ p: { xs: 1.5, md: 2 } }}>
             <RecentTransactions transactions={transactions} />
           </Paper>
         </Grid>
 
         {/* Center Column */}
         <Grid item xs={12} md={6}>
-          <Paper sx={{ mb: 3, p: 2 }}>
+          <Paper sx={{ mb: { xs: 2, md: 3 }, p: { xs: 1.5, md: 2 } }}>
             <PortfolioAllocation portfolio={portfolio} savings={savings} />
           </Paper>
-          <Paper sx={{ p: 2 }}>
+          <Paper sx={{ p: { xs: 1.5, md: 2 } }}>
             <InvestmentChart data={investmentData} />
           </Paper>
         </Grid>
 
-        {/* Right Column */}
-        <Grid item xs={12} md={3}>
+        {/* Right Column: Hide on mobile */}
+        <Grid item xs={12} md={3} sx={{ display: { xs: "none", md: "block" } }}>
           <Paper
             sx={{
-              p: 3,
+              p: { xs: 1.5, md: 3 },
               minHeight: 300,
               display: "flex",
               flexDirection: "column",
@@ -144,6 +157,7 @@ const Dashboard = () => {
               color="success.main"
               align="center"
               gutterBottom
+              sx={{ fontSize: { xs: "1.1rem", md: "1.3rem" } }}
             >
               Grow Your Investments
             </Typography>
