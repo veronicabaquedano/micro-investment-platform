@@ -67,11 +67,16 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
-      <Typography variant="h6" color="primary" gutterBottom>
+      <Typography
+        variant="h6"
+        color="primary"
+        gutterBottom
+        sx={{ fontSize: { xs: "1.1rem", md: "1.3rem" } }}
+      >
         Add Investment
       </Typography>
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert severity="error" sx={{ mb: { xs: 2, md: 3 } }}>
           {error}
         </Alert>
       )}
@@ -107,7 +112,7 @@ const AddInvestmentForm = ({ onInvestmentAdded }) => {
         color="primary"
         fullWidth
         disabled={loading}
-        sx={{ mt: 2 }}
+        sx={{ mt: { xs: 2, md: 3 } }}
       >
         {loading ? (
           <CircularProgress size={24} color="inherit" />
