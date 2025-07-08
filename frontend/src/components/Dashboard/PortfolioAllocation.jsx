@@ -40,7 +40,12 @@ const PortfolioAllocation = ({ portfolio, savings = 0 }) => {
 
   return (
     <Box>
-      <Typography variant="h6" color="text.secondary" gutterBottom>
+      <Typography
+        variant="h6"
+        color="text.secondary"
+        gutterBottom
+        sx={{ fontSize: { xs: "1.1rem", md: "1.3rem" } }}
+      >
         Portfolio Allocation
       </Typography>
       {investments.length > 0 ? (
