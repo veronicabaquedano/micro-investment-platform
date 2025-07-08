@@ -26,7 +26,10 @@ const InvestmentChart = ({ data }) => {
   if (!data || !data.labels || data.labels.length === 0) {
     return (
       <Box textAlign="center" my={2}>
-        <Typography color="error">
+        <Typography
+          color="error"
+          sx={{ fontSize: { xs: "1rem", md: "1.2rem" } }}
+        >
           No investment growth data available.
         </Typography>
       </Box>
@@ -39,7 +42,7 @@ const InvestmentChart = ({ data }) => {
       {
         label: "Total Invested",
         data: data.invested || [],
-        backgroundColor: theme.palette.primary.light + "33", // 20% opacity
+        backgroundColor: theme.palette.primary.light + "33",
         borderColor: theme.palette.primary.main,
         pointBackgroundColor: theme.palette.primary.main,
         pointBorderColor: "#fff",
@@ -49,7 +52,7 @@ const InvestmentChart = ({ data }) => {
       {
         label: "Investment Value",
         data: data.growth || [],
-        backgroundColor: theme.palette.secondary.light + "33", // 20% opacity
+        backgroundColor: theme.palette.secondary.light + "33",
         borderColor: theme.palette.secondary.main,
         pointBackgroundColor: theme.palette.secondary.main,
         pointBorderColor: "#fff",
@@ -94,7 +97,7 @@ const InvestmentChart = ({ data }) => {
   };
 
   return (
-    <Box sx={{ height: 300 }}>
+    <Box sx={{ height: { xs: 220, md: 300 } }}>
       <Line data={chartData} options={options} />
     </Box>
   );
