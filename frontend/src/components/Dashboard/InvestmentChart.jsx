@@ -26,10 +26,7 @@ const InvestmentChart = ({ data }) => {
   if (!data || !data.labels || data.labels.length === 0) {
     return (
       <Box textAlign="center" my={2}>
-        <Typography
-          color="error"
-          sx={{ fontSize: { xs: "1rem", md: "1.2rem" } }}
-        >
+        <Typography color="error" sx={{ fontSize: { xs: "1rem", md: "1.2rem" } }}>
           No investment growth data available.
         </Typography>
       </Box>
