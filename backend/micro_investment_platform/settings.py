@@ -39,15 +39,23 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",                # <-- Add this
+    "allauth",                             # <-- Add this
+    "allauth.account",                     # <-- Add this
+    "allauth.socialaccount",               # <-- Add this
+    "allauth.socialaccount.providers.google",  # <-- Add this
+    "rest_framework",
+    "dj_rest_auth",                        # <-- Add this
+    "dj_rest_auth.registration",           # <-- Add this
+    "rest_framework_simplejwt",
     "users",
     "transactions",
-    "rest_framework",
-    "rest_framework_simplejwt",
     "savings",
     "portfolio",
     "bank",
     "corsheaders",
 ]
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
