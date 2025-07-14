@@ -171,3 +171,15 @@ BANK_ENCRYPTION_KEY = os.getenv("BANK_ENCRYPTION_KEY")
 
 if not BANK_ENCRYPTION_KEY:
     raise ValueError("Missing BANK_ENCRYPTION_KEY in .env file")
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+    }
+}
