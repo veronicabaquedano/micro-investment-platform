@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",               # <-- Add this
     "allauth.socialaccount.providers.google",  # <-- Add this
     "rest_framework",
+    "rest_framework.authtoken",
     "dj_rest_auth",                        # <-- Add this
     "dj_rest_auth.registration",           # <-- Add this
     "rest_framework_simplejwt",
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -183,3 +185,11 @@ SOCIALACCOUNT_PROVIDERS = {
         },
     }
 }
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # or "mandatory" if you want email verification
+
+DJREST_AUTH_REGISTER_SERIALIZER = "dj_rest_auth.registration.serializers.RegisterSerializer"
