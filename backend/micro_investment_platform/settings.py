@@ -193,3 +193,9 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # or "mandatory" if you want email verification
 
 DJREST_AUTH_REGISTER_SERIALIZER = "dj_rest_auth.registration.serializers.RegisterSerializer"
+
+REST_USE_JWT = True
+
+DJREST_AUTH = {
+    "USE_JWT": True,
+}
