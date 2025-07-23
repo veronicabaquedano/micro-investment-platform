@@ -39,15 +39,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sites",                # <-- Add this
-    "allauth",                             # <-- Add this
-    "allauth.account",                     # <-- Add this
-    "allauth.socialaccount",               # <-- Add this
-    "allauth.socialaccount.providers.google",  # <-- Add this
+    "django.contrib.sites",               
+    "allauth",                             
+    "allauth.account",                    
+    "allauth.socialaccount",              
+    "allauth.socialaccount.providers.google",  
     "rest_framework",
     "rest_framework.authtoken",
-    "dj_rest_auth",                        # <-- Add this
-    "dj_rest_auth.registration",           # <-- Add this
+    "dj_rest_auth",                        
+    "dj_rest_auth.registration",           
     "rest_framework_simplejwt",
     "users",
     "transactions",
@@ -187,9 +187,8 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "optional"  # or "mandatory" if you want email verification
 
 DJREST_AUTH_REGISTER_SERIALIZER = "dj_rest_auth.registration.serializers.RegisterSerializer"
