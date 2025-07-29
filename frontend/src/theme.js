@@ -19,7 +19,6 @@ let theme = createTheme({
     h4: { fontWeight: 600 },
     h5: { fontWeight: 500 },
     h6: { fontWeight: 500 },
-    // Optionally, set base font size for body1/body2
     body1: { fontSize: "1rem" },
     body2: { fontSize: "0.95rem" },
   },
