@@ -24,7 +24,7 @@ urlpatterns = [
     path(
         "transactions/", include("transactions.urls")
     ),  # Transaction-related endpoints
-    path("savings/", include("savings.urls")),  # Include the Savings app's URLs
+    path("savings/", include("savings.urls")),  # Savings-related endpoints
     path("portfolio/", include("portfolio.urls")),  # Portfolio allocation endpoint
     path("bank/", include("bank.urls")),  # Bank account-related endpoints
     path("auth/", include("dj_rest_auth.urls")),
