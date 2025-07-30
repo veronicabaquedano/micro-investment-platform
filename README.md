@@ -29,15 +29,24 @@ This is an ongoing personal project simulating a micro-investment and savings pl
 - **DevOps & Tools:** Git, GitHub, Visual Studio Code
 - **Architecture:** RESTful APIs, secure JWT auth, modular Django apps, full-stack architecture
 
+## Prerequisites
+
+Make sure the following are installed on your system:
+
+- [Python 3.11+](https://www.python.org/downloads/)
+- [Node.js (LTS)](https://nodejs.org/en/download/)
+
 ## Installation (Backend & Frontend)
 
 ### Backend Setup
 
 ```bash
-pip install -r requirements.txt
 cd backend
+# Create and activate virtual environment
 python3 -m venv env
 source env/bin/activate  # or env\Scripts\activate on Windows
+# Install backend dependencies from root-level requirements.txt
+pip install -r ../requirements.txt
 
 # Create a .env file in your backend directory with the following content:
 BANK_ENCRYPTION_KEY=your-generated-bank-key
@@ -98,6 +107,10 @@ micro-investment-platform/
 ├── README.md
 └── .gitignore
 ```
+
+## Database
+
+This project uses SQLite by default. The db.sqlite3 file is located in the backend directory. If you’d like to reset your database, delete that file and re-run migrations.
 
 ## Status
 
