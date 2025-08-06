@@ -29,6 +29,5 @@ urlpatterns = [
     path("bank/", include("bank.urls")),  # Bank account-related endpoints
     path("auth/", include("dj_rest_auth.urls")),
     path("auth/registration/", include("dj_rest_auth.registration.urls")),
-    path("auth/", include("allauth.socialaccount.urls")),  # For social login
     path('auth/social/', include('allauth.socialaccount.urls')), # enables /auth/social/login/google/
 ]

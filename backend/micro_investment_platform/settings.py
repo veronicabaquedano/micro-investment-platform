@@ -47,8 +47,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "dj_rest_auth",                        
-    "dj_rest_auth.registration", 
-    "dj_rest_auth.socialaccounts",          
+    "dj_rest_auth.registration",        
     "rest_framework_simplejwt",
     "users",
     "transactions",
@@ -199,3 +198,5 @@ REST_USE_JWT = True
 DJREST_AUTH = {
     "USE_JWT": True,
 }
+
+LOGIN_REDIRECT_URL = "http://localhost:3000/oauth-callback/"
